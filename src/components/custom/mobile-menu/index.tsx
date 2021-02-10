@@ -82,8 +82,8 @@ const MobileMenu: React.FunctionComponent = () => {
           <Burger isOpen={isOpen} />
         </Button>
         <Grid flow="col" gap={8}>
-          <Icons name="bond-square-token" />
-          <Icons name="barnbridge" width={113} />
+          <Icons name="xfund-token" />
+          <Icons name="xfund" width={113} />
         </Grid>
       </Grid>
       <div className={s.mask} />

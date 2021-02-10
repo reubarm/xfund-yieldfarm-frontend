@@ -68,8 +68,8 @@ const LayoutSideNav: React.FunctionComponent<LayoutSideNavProps> = props => {
       width={200}>
       <Grid flow="row" gap={48} className={s.headerWrap}>
         <Grid flow="col" gap={12} className={s.headerLogo}>
-          <Icons name="bond-square-token" />
-          {expanded && <Icons name="barnbridge" width="113" color="grey900" />}
+          <Icons name="xfund-token" />
+          {expanded && <Icons name="xfund" width="113" color="grey900" />}
         </Grid>
         <Grid flow="row" gap={24}>
           <NavLink
@@ -78,18 +78,18 @@ const LayoutSideNav: React.FunctionComponent<LayoutSideNavProps> = props => {
             path="/yield-farming"
             expanded={expanded}
           />
-          <NavLink
-            label="Voting"
-            icon="bank-outlined"
-            path="/governance"
-            expanded={expanded}
-          />
-          <NavLink
-            label="Bonds"
-            icon="paper-bill-outlined"
-            path="/bonds"
-            expanded={expanded}
-          />
+          {/*<NavLink*/}
+          {/*  label="Voting"*/}
+          {/*  icon="bank-outlined"*/}
+          {/*  path="/governance"*/}
+          {/*  expanded={expanded}*/}
+          {/*/>*/}
+          {/*<NavLink*/}
+          {/*  label="Bonds"*/}
+          {/*  icon="paper-bill-outlined"*/}
+          {/*  path="/bonds"*/}
+          {/*  expanded={expanded}*/}
+          {/*/>*/}
         </Grid>
       </Grid>
       <Grid flow="row" gap={48} className={s.footerWrap} colsTemplate="48px">

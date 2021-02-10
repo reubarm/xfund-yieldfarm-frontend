@@ -11,26 +11,24 @@ import PoolStakeShareBar, { PoolTokenShare } from '../pool-stake-share-bar';
 
 import {
   formatBigValue,
-  formatBONDValue,
+  formatXFUNDValue,
   formatUSDValue,
+  formatETHValue,
   getPoolIcons,
   getPoolNames,
   PoolTypes,
 } from 'web3/utils';
 import { useWallet } from 'wallets/wallet';
 import { useWeb3Contracts } from 'web3/contracts';
-import { USDCTokenMeta } from 'web3/contracts/usdc';
-import { DAITokenMeta } from 'web3/contracts/dai';
-import { SUSDTokenMeta } from 'web3/contracts/susd';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { BONDTokenMeta } from 'web3/contracts/bond';
+import { XFUNDTokenMeta } from 'web3/contracts/xfund';
 
 import s from './styles.module.scss';
 
 export type PoolCardProps = {
   stableToken?: boolean;
   unilpToken?: boolean;
-  bondToken?: boolean;
+  xfundToken?: boolean;
 };
 
 type PoolCardState = {
@@ -54,91 +52,12 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
   const wallet = useWallet();
   const web3c = useWeb3Contracts();
 
-  const { stableToken = false, unilpToken = false, bondToken = false } = props;
+  const { stableToken = false, unilpToken = false, xfundToken = false } = props;
 
   const [state, setState] = React.useState<PoolCardState>({});
 
   React.useEffect(() => {
-    if (stableToken) {
-      setState(prevState => ({
-        ...prevState,
-        type: PoolTypes.STABLE,
-        enabled: true,
-        isEnded: web3c.yf.isEnded,
-        currentEpoch: web3c.yf.currentEpoch,
-        totalEpochs: web3c.yf.totalEpochs,
-        epochReward: web3c.yf.epochReward,
-        potentialReward: web3c.yf.potentialReward,
-        balance: web3c.aggregated.yfStakedValue,
-        myBalance: web3c.yf.nextEpochStake,
-        effectiveBalance: web3c.aggregated.yfEffectiveStakedValue,
-        myEffectiveBalance: web3c.yf.epochStake,
-        shares: [
-          {
-            icon: USDCTokenMeta.icon,
-            name: USDCTokenMeta.name,
-            color: '#4f6ae6',
-            value: formatUSDValue(web3c.staking.usdc.nextEpochPoolSize),
-            share: web3c.staking.usdc.nextEpochPoolSize
-              ?.multipliedBy(100)
-              .div(web3c.yf.nextPoolSize ?? 1)
-              .toNumber(),
-          },
-          {
-            icon: DAITokenMeta.icon,
-            name: DAITokenMeta.name,
-            color: '#ffd160',
-            value: formatUSDValue(web3c.staking.dai.nextEpochPoolSize),
-            share: web3c.staking.dai.nextEpochPoolSize
-              ?.multipliedBy(100)
-              .div(web3c.yf.nextPoolSize ?? 1)
-              .toNumber(),
-          },
-          {
-            icon: SUSDTokenMeta.icon,
-            name: SUSDTokenMeta.name,
-            color: '#1e1a31',
-            value: formatUSDValue(web3c.staking.susd.nextEpochPoolSize),
-            share: web3c.staking.susd.nextEpochPoolSize
-              ?.multipliedBy(100)
-              .div(web3c.yf.nextPoolSize ?? 1)
-              .toNumber(),
-          },
-        ],
-        myShares: [
-          {
-            icon: USDCTokenMeta.icon,
-            name: USDCTokenMeta.name,
-            color: '#4f6ae6',
-            value: formatUSDValue(web3c.staking.usdc.nextEpochUserBalance),
-            share: web3c.staking.usdc.nextEpochUserBalance
-              ?.multipliedBy(100)
-              .div(web3c.yf.nextEpochStake ?? 1)
-              .toNumber(),
-          },
-          {
-            icon: DAITokenMeta.icon,
-            name: DAITokenMeta.name,
-            color: '#ffd160',
-            value: formatUSDValue(web3c.staking.dai.nextEpochUserBalance),
-            share: web3c.staking.dai.nextEpochUserBalance
-              ?.multipliedBy(100)
-              .div(web3c.yf.nextEpochStake ?? 1)
-              .toNumber(),
-          },
-          {
-            icon: SUSDTokenMeta.icon,
-            name: SUSDTokenMeta.name,
-            color: '#1e1a31',
-            value: formatUSDValue(web3c.staking.susd.nextEpochUserBalance),
-            share: web3c.staking.susd.nextEpochUserBalance
-              ?.multipliedBy(100)
-              .div(web3c.yf.nextEpochStake ?? 1)
-              .toNumber(),
-          },
-        ],
-      }));
-    } else if (unilpToken) {
+    if (unilpToken) {
       setState(prevState => ({
         ...prevState,
         type: PoolTypes.UNILP,
@@ -185,63 +104,61 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
           },
         ],
       }));
-    } else if (bondToken) {
+    } else if (xfundToken) {
       setState(prevState => ({
         ...prevState,
-        type: PoolTypes.BOND,
+        type: PoolTypes.XFUND,
         enabled: true,
-        isEnded: web3c.yfBOND.isEnded,
-        currentEpoch: web3c.yfBOND.currentEpoch,
-        totalEpochs: web3c.yfBOND.totalEpochs,
-        epochReward: web3c.yfBOND.epochReward,
-        potentialReward: web3c.yfBOND.potentialReward,
-        balance: web3c.aggregated.yfBONDStakedValue,
-        myBalance: web3c.aggregated.myBONDStakedValue,
-        effectiveBalance: web3c.aggregated.yfBONDEffectiveStakedValue,
-        myEffectiveBalance: web3c.aggregated.myBondEffectiveStakedValue,
+        isEnded: web3c.yfXFUND.isEnded,
+        currentEpoch: web3c.yfXFUND.currentEpoch,
+        totalEpochs: web3c.yfXFUND.totalEpochs,
+        epochReward: web3c.yfXFUND.epochReward,
+        potentialReward: web3c.yfXFUND.potentialReward,
+        balance: web3c.aggregated.yfXFUNDStakedValue,
+        myBalance: web3c.aggregated.myXFUNDStakedValue,
+        effectiveBalance: web3c.aggregated.yfXFUNDEffectiveStakedValue,
+        myEffectiveBalance: web3c.aggregated.myXFUNDEffectiveStakedValue,
         shares: [
           {
-            icon: BONDTokenMeta.icon,
-            name: BONDTokenMeta.name,
+            icon: XFUNDTokenMeta.icon,
+            name: XFUNDTokenMeta.name,
             color: 'var(--text-color-3)',
             value: formatBigValue(
-              web3c.yfBOND.nextPoolSize,
-              BONDTokenMeta.decimals,
+              web3c.yfXFUND.nextPoolSize,
+              XFUNDTokenMeta.decimals,
             ),
             share:
-              web3c.staking.bond.nextEpochPoolSize
+              web3c.staking.xfund.nextEpochPoolSize
                 ?.multipliedBy(100)
-                .div(web3c.yfBOND.nextPoolSize ?? 1)
+                .div(web3c.yfXFUND.nextPoolSize ?? 1)
                 .toNumber() ?? 0,
           },
         ],
         myShares: [
           {
-            icon: BONDTokenMeta.icon,
-            name: BONDTokenMeta.name,
+            icon: XFUNDTokenMeta.icon,
+            name: XFUNDTokenMeta.name,
             color: 'var(--text-color-3)',
             value: formatBigValue(
-              web3c.yfBOND.nextEpochStake,
-              BONDTokenMeta.decimals,
+              web3c.yfXFUND.nextEpochStake,
+              XFUNDTokenMeta.decimals,
             ),
             share:
-              web3c.staking.bond.nextEpochUserBalance
+              web3c.staking.xfund.nextEpochUserBalance
                 ?.multipliedBy(100)
-                .div(web3c.yfBOND.nextEpochStake ?? 1)
+                .div(web3c.yfXFUND.nextEpochStake ?? 1)
                 .toNumber() ?? 0,
           },
         ],
       }));
     }
-  }, [stableToken, unilpToken, bondToken, web3c]);
+  }, [stableToken, unilpToken, xfundToken, web3c]);
 
   function handleStaking() {
-    if (stableToken) {
-      history.push('/yield-farming/stable');
-    } else if (unilpToken) {
+    if (unilpToken) {
       history.push('/yield-farming/unilp');
-    } else if (bondToken) {
-      history.push('/yield-farming/bond');
+    } else if (xfundToken) {
+      history.push('/yield-farming/xfund');
     }
   }
 
@@ -282,7 +199,7 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
                 Reward
               </Label>
               <Paragraph type="p1" semiBold className={s.value}>
-                {formatBONDValue(state.epochReward)} BOND
+                {formatXFUNDValue(state.epochReward)} XFUND
               </Paragraph>
             </div>
             {wallet.isActive && (
@@ -291,7 +208,7 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
                   My Potential Reward
                 </Label>
                 <Paragraph type="p1" semiBold className={s.value}>
-                  {formatBONDValue(state.potentialReward)} BOND
+                  {formatXFUNDValue(state.potentialReward)} XFUND
                 </Paragraph>
               </div>
             )}
@@ -320,10 +237,10 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
                 />
               </div>
               <Paragraph type="p1" semiBold className={s.value}>
-                {formatUSDValue(state.balance)}
+                {formatETHValue(state.balance)}
               </Paragraph>
               <Paragraph type="p2" className={s.hint}>
-                {formatUSDValue(state.effectiveBalance)} effective balance
+                {formatETHValue(state.effectiveBalance)} effective balance
               </Paragraph>
               <PoolStakeShareBar shares={state.shares} />
             </div>
@@ -355,10 +272,10 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
               />
             </div>
             <Paragraph type="p1" semiBold className={s.value}>
-              {formatUSDValue(state.myBalance)}
+              {formatETHValue(state.myBalance)}
             </Paragraph>
             <Paragraph type="p2" className={s.hint}>
-              {formatUSDValue(state.myEffectiveBalance)} effective balance
+              {formatETHValue(state.myEffectiveBalance)} effective balance
             </Paragraph>
 
             {!state.isEnded && (
@@ -370,10 +287,10 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
           <div className={s.box}>
             <Grid flow="row" align="start">
               <Paragraph type="p2" semiBold color="grey500">
-                The $BOND staking pool ended after 12 epochs on Feb 08, 00:00 UTC. Deposits are now disabled, but
+                The $XFUND staking pool ended after 12 epochs on Feb 08, 00:00 UTC. Deposits are now disabled, but
                 you
                 can
-                still withdraw your tokens and collect any unclaimed rewards. To continue to stake $BOND
+                still withdraw your tokens and collect any unclaimed rewards. To continue to stake $XFUND
               </Paragraph>
               <Button type="link" onClick={handleDaoStaking}>Go to governance staking</Button>
             </Grid>

@@ -5,14 +5,15 @@ import Sprite from 'resources/svg/icons-sprite.svg';
 
 import s from './styles.module.scss';
 
-export type LogoIconNames = 'barnbridge';
+export type LogoIconNames = 'xfund';
 export type TokenIconNames =
   | 'bond-token'
   | 'bond-square-token'
   | 'dai-token'
   | 'susd-token'
   | 'usdc-token'
-  | 'uniswap-token';
+  | 'uniswap-token'
+  | 'xfund-token';
 export type NavIconNames =
   | 'paper-bill-outlined'
   | 'chats-outlined'

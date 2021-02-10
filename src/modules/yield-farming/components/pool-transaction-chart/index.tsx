@@ -23,16 +23,12 @@ import s from './styles.module.css';
 
 const PoolFilters: SelectOption[] = [
   {
-    value: 'stable',
-    label: getPoolNames(PoolTypes.STABLE).join('/'),
-  },
-  {
     value: 'unilp',
     label: getPoolNames(PoolTypes.UNILP).join('/'),
   },
   {
-    value: 'bond',
-    label: getPoolNames(PoolTypes.BOND).join('/'),
+    value: 'xfund',
+    label: getPoolNames(PoolTypes.XFUND).join('/'),
   },
 ];
 
@@ -47,7 +43,7 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
   const poolTxChart = usePoolTxChart();
 
   const [poolFilter, setPoolFilter] = React.useState<PoolTypes>(
-    PoolTypes.STABLE,
+    PoolTypes.UNILP,
   );
   const [periodFilter, setPeriodFilter] = React.useState<string | number>(
     'all',
@@ -57,22 +53,18 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
   const PeriodFilters = React.useMemo<SelectOption[]>(() => {
     const filters = [{ value: 'all', label: 'All epochs' }];
 
-    if (poolFilter === PoolTypes.STABLE) {
-      for (let i = 0; i <= web3c.yf.currentEpoch!; i++) {
-        filters.push({ value: String(i), label: `Epoch ${i}` });
-      }
-    } else if (poolFilter === PoolTypes.UNILP) {
+    if (poolFilter === PoolTypes.UNILP) {
       for (let i = 1; i <= web3c.yfLP.currentEpoch!; i++) {
         filters.push({ value: String(i), label: `Epoch ${i}` });
       }
-    } else if (poolFilter === PoolTypes.BOND) {
-      for (let i = 0; i <= web3c.yfBOND.currentEpoch!; i++) {
+    } else if (poolFilter === PoolTypes.XFUND) {
+      for (let i = 0; i <= web3c.yfXFUND.currentEpoch!; i++) {
         filters.push({ value: String(i), label: `Epoch ${i}` });
       }
     }
 
     return filters;
-  }, [web3c.staking, web3c.yfLP, web3c.yfBOND, poolFilter]);
+  }, [web3c.staking, web3c.yfLP, web3c.yfXFUND, poolFilter]);
 
   React.useEffect(() => {
     poolTxChart

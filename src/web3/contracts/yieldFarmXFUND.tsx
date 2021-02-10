@@ -6,14 +6,13 @@ import { useAsyncEffect } from 'hooks/useAsyncEffect';
 import { useWallet } from 'wallets/wallet';
 import { getHumanValue, ZERO_BIG_NUMBER } from 'web3/utils';
 import Web3Contract from 'web3/contract';
-import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
 import { XFUNDTokenMeta } from 'web3/contracts/xfund';
 
-export const CONTRACT_YIELD_FARM_LP_ADDR = String(
-  process.env.REACT_APP_CONTRACT_YIELD_FARM_LP_ADDR,
+export const CONTRACT_YIELD_FARM_XFUND_ADDR = String(
+  process.env.REACT_APP_CONTRACT_YIELD_FARM_XFUND_ADDR,
 );
 
-type YieldFarmLPContractData = {
+type YieldFarmXFUNDContractData = {
   isEnded?: boolean;
   delayedEpochs?: number;
   totalEpochs?: number;
@@ -29,13 +28,13 @@ type YieldFarmLPContractData = {
   potentialReward?: BigNumber;
 };
 
-export type YieldFarmLPContract = YieldFarmLPContractData & {
+export type YieldFarmXFUNDContract = YieldFarmXFUNDContractData & {
   contract: Web3Contract;
   massHarvestSend: () => void;
   reload: () => void;
 };
 
-const InitialData: YieldFarmLPContractData = {
+const InitialData: YieldFarmXFUNDContractData = {
   isEnded: undefined,
   delayedEpochs: undefined,
   totalEpochs: undefined,
@@ -51,22 +50,33 @@ const InitialData: YieldFarmLPContractData = {
   potentialReward: undefined,
 };
 
-export function useYieldFarmLPContract(): YieldFarmLPContract {
+export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
   const [reload] = useReload();
   const wallet = useWallet();
 
   const contract = React.useMemo<Web3Contract>(() => {
     return new Web3Contract(
-      require('web3/abi/yield_farm_lp.json'),
-      CONTRACT_YIELD_FARM_LP_ADDR,
-      'YIELD_FARM_LP',
+      require('web3/abi/yield_farm_xfund.json'),
+      CONTRACT_YIELD_FARM_XFUND_ADDR,
+      'YIELD_FARM_XFUND',
     );
   }, []);
 
-  const [data, setData] = React.useState<YieldFarmLPContractData>(InitialData);
+  const [data, setData] = React.useState<YieldFarmXFUNDContractData>(
+    InitialData,
+  );
 
   useAsyncEffect(async () => {
-    let [totalEpochs, totalReward, currentEpoch] = await contract.batch([
+    let [
+      delayedEpochs,
+      totalEpochs,
+      totalReward,
+      currentEpoch,
+    ] = await contract.batch([
+      {
+        method: 'EPOCHS_DELAYED_FROM_STAKING_CONTRACT',
+        transform: (value: string) => Number(value),
+      },
       {
         method: 'NR_OF_EPOCHS',
         transform: (value: string) => Number(value),
@@ -99,7 +109,7 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
     setData(prevState => ({
       ...prevState,
       isEnded,
-      delayedEpochs: 1,
+      delayedEpochs,
       totalEpochs,
       totalReward,
       epochReward,
@@ -112,13 +122,13 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
         method: 'getPoolSize',
         methodArgs: [currentEpoch],
         transform: (value: string) =>
-          getHumanValue(new BigNumber(value), UNISWAPTokenMeta.decimals),
+          getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
       },
       {
         method: 'getPoolSize',
         methodArgs: [currentEpoch + 1],
         transform: (value: string) =>
-          getHumanValue(new BigNumber(value), UNISWAPTokenMeta.decimals),
+          getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
       },
     ]);
 
@@ -142,13 +152,13 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
           method: 'getEpochStake',
           methodArgs: [wallet.account, currentEpoch],
           transform: (value: string) =>
-            getHumanValue(new BigNumber(value), UNISWAPTokenMeta.decimals),
+            getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
         },
         {
           method: 'getEpochStake',
           methodArgs: [wallet.account, currentEpoch + 1],
           transform: (value: string) =>
-            getHumanValue(new BigNumber(value), UNISWAPTokenMeta.decimals),
+            getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
         },
         {
           method: 'massHarvest',
@@ -201,7 +211,7 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
       .then(reload);
   }, [reload, contract, wallet.account]);
 
-  return React.useMemo<YieldFarmLPContract>(
+  return React.useMemo<YieldFarmXFUNDContract>(
     () => ({
       ...data,
       contract,

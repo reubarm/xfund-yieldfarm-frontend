@@ -10,8 +10,8 @@ import { TokenMeta } from 'web3/types';
 import { getHumanValue } from 'web3/utils';
 import Web3Contract from 'web3/contract';
 import { CONTRACT_STAKING_ADDR } from 'web3/contracts/staking';
-import { USDCTokenMeta } from 'web3/contracts/usdc';
-import { BONDTokenMeta } from 'web3/contracts/bond';
+import { WETHTokenMeta } from 'web3/contracts/weth';
+import { XFUNDTokenMeta } from 'web3/contracts/xfund';
 
 export const CONTRACT_UNISWAP_ADDR = String(
   process.env.REACT_APP_CONTRACT_UNISWAP_V2_ADDR,
@@ -19,18 +19,18 @@ export const CONTRACT_UNISWAP_ADDR = String(
 
 export const UNISWAPTokenMeta: TokenMeta = {
   icon: <Icons key="uniswap" name="uniswap-token" />,
-  name: 'USDC_BOND_UNI_LP',
+  name: 'ETH-XFUND Uniswap LP',
   address: CONTRACT_UNISWAP_ADDR,
   decimals: 18,
 };
 
 type UNISWAPContractData = {
   totalSupply?: BigNumber;
-  usdcReserve?: BigNumber;
-  bondReserve?: BigNumber;
+  wethReserve?: BigNumber;
+  xfundReserve?: BigNumber;
   stablePrice: BigNumber;
   unilpPrice?: BigNumber;
-  bondPrice?: BigNumber;
+  xfundPrice?: BigNumber;
   balance?: BigNumber;
   allowance?: BigNumber;
 };
@@ -43,11 +43,11 @@ export type UNISWAPContract = UNISWAPContractData & {
 
 const InitialData: UNISWAPContractData = {
   totalSupply: undefined,
-  usdcReserve: undefined,
-  bondReserve: undefined,
+  wethReserve: undefined,
+  xfundReserve: undefined,
   stablePrice: new BigNumber(1),
   unilpPrice: undefined,
-  bondPrice: undefined,
+  xfundPrice: undefined,
   balance: undefined,
   allowance: undefined,
 };
@@ -90,28 +90,29 @@ export function useUNISWAPContract(): UNISWAPContract {
       },
     ]);
 
-    let usdcReserve: BigNumber | undefined;
-    let bondReserve: BigNumber | undefined;
+    let wethReserve: BigNumber | undefined;
+    let xfundReserve: BigNumber | undefined;
 
-    if (token0 === USDCTokenMeta.address) {
-      usdcReserve = getHumanValue(reserves[0], USDCTokenMeta.decimals);
-      bondReserve = getHumanValue(reserves[1], BONDTokenMeta.decimals);
-    } else if (token1 === USDCTokenMeta.address) {
-      usdcReserve = getHumanValue(reserves[1], USDCTokenMeta.decimals);
-      bondReserve = getHumanValue(reserves[0], BONDTokenMeta.decimals);
+    if (token0 === WETHTokenMeta.address) {
+      wethReserve = getHumanValue(reserves[0], WETHTokenMeta.decimals);
+      xfundReserve = getHumanValue(reserves[1], XFUNDTokenMeta.decimals);
+    } else if (token1 === WETHTokenMeta.address) {
+      wethReserve = getHumanValue(reserves[1], WETHTokenMeta.decimals);
+      xfundReserve = getHumanValue(reserves[0], XFUNDTokenMeta.decimals);
     }
 
-    const lpPrice = usdcReserve?.div(totalSupply ?? 1).multipliedBy(2);
+    const lpPrice = wethReserve?.div(totalSupply ?? 1);
 
-    const bondPrice = usdcReserve?.div(bondReserve ?? 1);
+    //amountB = amountA.mul(reserveB) / reserveA;
+    const xfundPrice = wethReserve?.div(xfundReserve ?? 1);
 
     setData(prevState => ({
       ...prevState,
       totalSupply,
-      usdcReserve,
+      wethReserve: wethReserve,
       unilpPrice: lpPrice,
-      bondReserve,
-      bondPrice,
+      xfundReserve: xfundReserve,
+      xfundPrice: xfundPrice,
     }));
   }, []);
 

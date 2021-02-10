@@ -9,18 +9,15 @@ import Button from 'components/antd/button';
 import Icons from 'components/custom/icon';
 
 import { getPoolNames, PoolTypes } from 'web3/utils';
-import { USDCTokenMeta } from 'web3/contracts/usdc';
-import { DAITokenMeta } from 'web3/contracts/dai';
-import { SUSDTokenMeta } from 'web3/contracts/susd';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { BONDTokenMeta } from 'web3/contracts/bond';
+import { XFUNDTokenMeta } from 'web3/contracts/xfund';
 
 import s from './styles.module.css';
 
 export type PoolStakProps = {
   stableToken?: boolean;
   unilpToken?: boolean;
-  bondToken?: boolean;
+  xfundToken?: boolean;
 };
 
 const PoolStak: React.FunctionComponent<PoolStakProps> = props => {
@@ -41,26 +38,18 @@ const PoolStak: React.FunctionComponent<PoolStakProps> = props => {
         className={s.headerLabel}
         icon={<Icons name="left-arrow" />}
         onClick={goBack}>
-        {props.stableToken && getPoolNames(PoolTypes.STABLE).join('/')}
         {props.unilpToken && getPoolNames(PoolTypes.UNILP).join('/')}
-        {props.bondToken && getPoolNames(PoolTypes.BOND).join('/')}
+        {props.xfundToken && getPoolNames(PoolTypes.XFUND).join('/')}
       </Button>
 
       <Antd.Tabs className={s.tabs} defaultActiveKey="deposit">
         <Antd.Tabs.TabPane key="deposit" tab="Deposit">
           <div className={s.dataRows}>
-            {props.stableToken && (
-              <>
-                <PoolTokenRow token={USDCTokenMeta} type="deposit" />
-                <PoolTokenRow token={DAITokenMeta} type="deposit" />
-                <PoolTokenRow token={SUSDTokenMeta} type="deposit" />
-              </>
-            )}
             {props.unilpToken && (
               <PoolTokenRow token={UNISWAPTokenMeta} type="deposit" expanded />
             )}
-            {props.bondToken && (
-              <PoolTokenRow token={BONDTokenMeta} type="deposit" expanded />
+            {props.xfundToken && (
+              <PoolTokenRow token={XFUNDTokenMeta} type="deposit" expanded />
             )}
           </div>
           <PoolTransactionTable
@@ -68,25 +57,17 @@ const PoolStak: React.FunctionComponent<PoolStakProps> = props => {
             label="My Transactions"
             ownTransactions
             deposits
-            stableToken={props.stableToken}
             unilpToken={props.unilpToken}
-            bondToken={props.bondToken}
+            xfundToken={props.xfundToken}
           />
         </Antd.Tabs.TabPane>
         <Antd.Tabs.TabPane key="withdraw" tab="Withdraw">
           <div className={s.dataRows}>
-            {props.stableToken && (
-              <>
-                <PoolTokenRow token={USDCTokenMeta} type="withdraw" />
-                <PoolTokenRow token={DAITokenMeta} type="withdraw" />
-                <PoolTokenRow token={SUSDTokenMeta} type="withdraw" />
-              </>
-            )}
             {props.unilpToken && (
               <PoolTokenRow token={UNISWAPTokenMeta} type="withdraw" expanded />
             )}
-            {props.bondToken && (
-              <PoolTokenRow token={BONDTokenMeta} type="withdraw" expanded />
+            {props.xfundToken && (
+              <PoolTokenRow token={XFUNDTokenMeta} type="withdraw" expanded />
             )}
           </div>
           <PoolTransactionTable
@@ -94,9 +75,8 @@ const PoolStak: React.FunctionComponent<PoolStakProps> = props => {
             label="My Transactions"
             ownTransactions
             withdrawals
-            stableToken={props.stableToken}
             unilpToken={props.unilpToken}
-            bondToken={props.bondToken}
+            xfundToken={props.xfundToken}
           />
         </Antd.Tabs.TabPane>
       </Antd.Tabs>

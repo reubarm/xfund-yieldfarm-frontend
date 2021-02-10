@@ -56,19 +56,14 @@ const YieldFarmingView: React.FunctionComponent = () => {
             {wallet.isActive && (
               <>
                 <Route
-                  path="/yield-farming/stable"
-                  exact
-                  render={() => <PoolStak stableToken />}
-                />
-                <Route
                   path="/yield-farming/unilp"
                   exact
                   render={() => <PoolStak unilpToken />}
                 />
                 <Route
-                  path="/yield-farming/bond"
+                  path="/yield-farming/xfund"
                   exact
-                  render={() => <PoolStak bondToken />}
+                  render={() => <PoolStak xfundToken />}
                 />
               </>
             )}

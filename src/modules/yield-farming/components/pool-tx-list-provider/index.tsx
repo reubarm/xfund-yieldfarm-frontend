@@ -83,7 +83,7 @@ const PoolTxListProvider: React.FunctionComponent = props => {
       loadingRef.current = true;
       forceRender({});
 
-      const url = new URL('/staking-actions/list', API_URL);
+      const url = new URL('api/staking-actions/list', API_URL);
       url.searchParams.append('count', String(TX_LIMIT));
 
       if (timestamp) {
@@ -104,6 +104,7 @@ const PoolTxListProvider: React.FunctionComponent = props => {
         url.searchParams.append('type', typeFilterRef.current);
       }
 
+      console.log("url", url)
       try {
         const result = await fetch(url.toString());
         const stakingActions: StakingAction[] = await result.json();

@@ -4,7 +4,6 @@ import * as Antd from 'antd';
 import { isMobile } from 'react-device-detect';
 
 import YieldFarmingView from 'modules/yield-farming';
-import GovernanceView from 'modules/governance';
 
 import Warnings from 'components/custom/warnings';
 import MobileMenu from 'components/custom/mobile-menu';
@@ -12,8 +11,7 @@ import ExternalLink from 'components/custom/externalLink';
 import StayTuned from 'components/custom/stay-tuned';
 import LayoutSideNav from 'layout/components/layout-side-nav';
 
-import { BONDTokenMeta } from 'web3/contracts/bond';
-import { USDCTokenMeta } from 'web3/contracts/usdc';
+import { XFUNDTokenMeta } from 'web3/contracts/xfund';
 
 import s from './styles.module.scss';
 
@@ -26,9 +24,9 @@ const LayoutView: React.FunctionComponent = () => {
           <Antd.Layout.Content className={s.content}>
             <Switch>
               <Route path="/yield-farming" component={YieldFarmingView} />
-              <Route path="/governance/:vt(\w+)" component={GovernanceView} />
-              <Route path="/governance" component={GovernanceView} />
-              <Route path="/bonds" render={() => <StayTuned />} />
+              {/*<Route path="/governance/:vt(\w+)" component={GovernanceView} />*/}
+              {/*<Route path="/governance" component={GovernanceView} />*/}
+              {/*<Route path="/bonds" render={() => <StayTuned />} />*/}
               <Redirect from="/" to="/yield-farming" />
             </Switch>
           </Antd.Layout.Content>
@@ -53,12 +51,12 @@ const LayoutView: React.FunctionComponent = () => {
                 Docs
               </ExternalLink>
               <ExternalLink
-                href={`https://app.uniswap.org/#/add/${BONDTokenMeta.address}/${USDCTokenMeta.address}`}>
-                Uniswap v2 USDC/BOND add liquidity
+                href={`https://app.uniswap.org/#/add/${XFUNDTokenMeta.address}/ETH`}>
+                Uniswap v2 ETH/xFUND add liquidity
               </ExternalLink>
               <ExternalLink
-                href={`https://app.uniswap.org/#/swap?inputCurrency=${BONDTokenMeta.address}&outputCurrency=${USDCTokenMeta.address}`}>
-                Uniswap v2 USDC/BOND market
+                href={`https://app.uniswap.org/#/swap?inputCurrency=${XFUNDTokenMeta.address}&outputCurrency=ETH`}>
+                Uniswap v2 ETH/xFUND market
               </ExternalLink>
             </div>
           </Antd.Layout.Footer>
