@@ -2,7 +2,7 @@ import React from 'react';
 import BigNumber from 'bignumber.js';
 
 import {
-  formatBONDValue,
+  formatXFUNDValue,
   getPoolIcons,
   getPoolNames,
   PoolTypes,
@@ -50,10 +50,10 @@ const PoolHarvestSelect: React.FunctionComponent<PoolHarvestSelectProps> = props
           </Label>
           <Grid flow="col" gap={4}>
             <Paragraph type="p1" semiBold color="grey900">
-              {formatBONDValue(reward)}
+              {formatXFUNDValue(reward)}
             </Paragraph>
             <Paragraph type="p2" color="grey500">
-              BOND
+              XFUND
             </Paragraph>
           </Grid>
         </Grid>
@@ -65,47 +65,34 @@ const PoolHarvestSelect: React.FunctionComponent<PoolHarvestSelectProps> = props
 const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props => {
   const { ...modalProps } = props;
 
-  const { yf, yfLP, yfBOND, bond } = useWeb3Contracts();
-  const [yfHarvesting, setYFHarvesting] = React.useState<boolean>(false);
+  const { yfLP, yfXFUND, xfund } = useWeb3Contracts();
   const [yfLPHarvesting, setYFLPHarvesting] = React.useState<boolean>(false);
-  const [yfBONDHarvesting, setYFBONDHarvesting] = React.useState<boolean>(
+  const [yfXFUNDHarvesting, setYFXFUNDHarvesting] = React.useState<boolean>(
     false,
   );
-
-  async function handleYFHarvest() {
-    setYFHarvesting(true);
-
-    try {
-      await yf.massHarvestSend();
-      bond.reload();
-    } catch (e) {
-    }
-
-    setYFHarvesting(false);
-  }
 
   async function handleYFLPHarvest() {
     setYFLPHarvesting(true);
 
     try {
       await yfLP.massHarvestSend();
-      bond.reload();
+      xfund.reload();
     } catch (e) {
     }
 
     setYFLPHarvesting(false);
   }
 
-  async function handleYFBONDHarvest() {
-    setYFBONDHarvesting(true);
+  async function handleYFXFUNDHarvest() {
+    setYFXFUNDHarvesting(true);
 
     try {
-      await yfBOND.massHarvestSend();
-      bond.reload();
+      await yfXFUND.massHarvestSend();
+      xfund.reload();
     } catch (e) {
     }
 
-    setYFBONDHarvesting(false);
+    setYFXFUNDHarvesting(false);
   }
 
   return (
@@ -121,13 +108,6 @@ const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props =
         </Grid>
         <Grid flow="col" gap={24} colsTemplate="repeat(auto-fit, 240px)">
           <PoolHarvestSelect
-            icons={getPoolIcons(PoolTypes.STABLE)}
-            label={getPoolNames(PoolTypes.STABLE).join('/')}
-            reward={yf?.currentReward}
-            loading={yfHarvesting}
-            onClick={handleYFHarvest}
-          />
-          <PoolHarvestSelect
             icons={getPoolIcons(PoolTypes.UNILP)}
             label={getPoolNames(PoolTypes.UNILP).join('/')}
             reward={yfLP?.currentReward}
@@ -135,11 +115,11 @@ const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props =
             onClick={handleYFLPHarvest}
           />
           <PoolHarvestSelect
-            icons={getPoolIcons(PoolTypes.BOND)}
-            label={getPoolNames(PoolTypes.BOND).join('/')}
-            reward={yfBOND?.currentReward}
-            loading={yfBONDHarvesting}
-            onClick={handleYFBONDHarvest}
+            icons={getPoolIcons(PoolTypes.XFUND)}
+            label={getPoolNames(PoolTypes.XFUND).join('/')}
+            reward={yfXFUND?.currentReward}
+            loading={yfXFUNDHarvesting}
+            onClick={handleYFXFUNDHarvest}
           />
         </Grid>
       </Grid>

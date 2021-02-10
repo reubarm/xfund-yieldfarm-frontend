@@ -6,82 +6,49 @@ import { useWallet } from 'wallets/wallet';
 import { PoolTypes, ZERO_BIG_NUMBER } from 'web3/utils';
 import Web3Contract from 'web3/contract';
 import {
-  BONDContract,
-  BONDTokenMeta,
-  useBONDContract,
-} from 'web3/contracts/bond';
-import {
-  USDCContract,
-  USDCTokenMeta,
-  useUSDCContract,
-} from 'web3/contracts/usdc';
-import { DAIContract, DAITokenMeta, useDAIContract } from 'web3/contracts/dai';
-import {
-  SUSDContract,
-  SUSDTokenMeta,
-  useSUSDContract,
-} from 'web3/contracts/susd';
+  XFUNDContract,
+  XFUNDTokenMeta,
+  useXFUNDContract,
+} from 'web3/contracts/xfund';
 import {
   UNISWAPContract,
   UNISWAPTokenMeta,
   useUNISWAPContract,
 } from 'web3/contracts/uniswap';
 import {
-  useYieldFarmContract,
-  YieldFarmContract,
-} from 'web3/contracts/yieldFarm';
-import {
   useYieldFarmLPContract,
   YieldFarmLPContract,
 } from 'web3/contracts/yieldFarmLP';
 import {
-  useYieldFarmBONDContract,
-  YieldFarmBONDContract,
-} from 'web3/contracts/yieldFarmBOND';
+  useYieldFarmXFUNDContract,
+  YieldFarmXFUNDContract,
+} from 'web3/contracts/yieldFarmXFUND';
 import { StakingContract, useStakingContract } from 'web3/contracts/staking';
-import { DAOBarnContract, useDAOBarnContract } from 'web3/contracts/daoBarn';
-import {
-  DAORewardContract,
-  useDAORewardContract,
-} from 'web3/contracts/daoReward';
-import {
-  DAOGovernanceContract,
-  useDAOGovernanceContract,
-} from 'web3/contracts/daoGovernance';
 
 import UserRejectedModal from 'web3/components/user-rejected-modal';
 
 export type Web3ContractsData = {
-  bond: BONDContract;
-  usdc: USDCContract;
-  dai: DAIContract;
-  susd: SUSDContract;
+  xfund: XFUNDContract;
   uniswap: UNISWAPContract;
-  yf: YieldFarmContract;
   yfLP: YieldFarmLPContract;
-  yfBOND: YieldFarmBONDContract;
+  yfXFUND: YieldFarmXFUNDContract;
   staking: StakingContract;
-  daoBarn: DAOBarnContract;
-  daoReward: DAORewardContract;
-  daoGovernance: DAOGovernanceContract;
   aggregated: {
-    yfStakedValue?: BigNumber;
-    yfEffectiveStakedValue?: BigNumber;
     yfLPStakedValue?: BigNumber;
     myLPStakedValue?: BigNumber;
     yfLPEffectiveStakedValue?: BigNumber;
     myLPEffectiveStakedValue?: BigNumber;
-    yfBONDStakedValue?: BigNumber;
-    myBONDStakedValue?: BigNumber;
-    yfBONDEffectiveStakedValue?: BigNumber;
-    myBondEffectiveStakedValue?: BigNumber;
+    yfXFUNDStakedValue?: BigNumber;
+    myXFUNDStakedValue?: BigNumber;
+    yfXFUNDEffectiveStakedValue?: BigNumber;
+    myXFUNDEffectiveStakedValue?: BigNumber;
     totalStaked?: BigNumber;
     totalEffectiveStaked?: BigNumber;
     totalCurrentReward?: BigNumber;
     totalPotentialReward?: BigNumber;
-    totalBondReward?: BigNumber;
-    bondReward?: BigNumber;
-    bondLockedPrice?: BigNumber;
+    totalXfundReward?: BigNumber;
+    xfundReward?: BigNumber;
+    xfundLockedPrice?: BigNumber;
   };
 };
 
@@ -98,18 +65,11 @@ export function useWeb3Contracts(): Web3Contracts {
 
 const Web3ContractsProvider: React.FunctionComponent = props => {
   const wallet = useWallet();
-  const bondContract = useBONDContract();
-  const daiContract = useDAIContract();
-  const usdcContract = useUSDCContract();
-  const susdContract = useSUSDContract();
+  const xfundContract = useXFUNDContract();
   const uniswapContract = useUNISWAPContract();
-  const yfContract = useYieldFarmContract();
   const yfLPContract = useYieldFarmLPContract();
-  const yfBONDContract = useYieldFarmBONDContract();
+  const yfXFUNDContract = useYieldFarmXFUNDContract();
   const stakingContract = useStakingContract();
-  const daoBarnContract = useDAOBarnContract();
-  const daoRewardContract = useDAORewardContract();
-  const daoGovernanceContract = useDAOGovernanceContract();
 
   const [userRejectedVisible, setUserRejectedVisible] = React.useState<boolean>(
     false,
@@ -117,18 +77,11 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
 
   React.useEffect(() => {
     const contracts = [
-      bondContract.contract,
-      daiContract.contract,
-      usdcContract.contract,
-      susdContract.contract,
+      xfundContract.contract,
       uniswapContract.contract,
-      yfContract.contract,
       yfLPContract.contract,
-      yfBONDContract.contract,
+      yfXFUNDContract.contract,
       stakingContract.contract,
-      daoBarnContract.contract,
-      daoRewardContract.contract,
-      daoGovernanceContract.contract,
     ];
 
     function handleError(
@@ -160,18 +113,11 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
 
   React.useEffect(() => {
     const contracts = [
-      bondContract.contract,
-      daiContract.contract,
-      usdcContract.contract,
-      susdContract.contract,
+      xfundContract.contract,
       uniswapContract.contract,
-      yfContract.contract,
       yfLPContract.contract,
-      yfBONDContract.contract,
+      yfXFUNDContract.contract,
       stakingContract.contract,
-      daoBarnContract.contract,
-      daoRewardContract.contract,
-      daoGovernanceContract.contract,
     ];
 
     contracts.forEach(contract => {
@@ -185,8 +131,8 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
         return uniswapContract.stablePrice;
       case PoolTypes.UNILP:
         return uniswapContract.unilpPrice;
-      case PoolTypes.BOND:
-        return uniswapContract.bondPrice;
+      case PoolTypes.XFUND:
+        return uniswapContract.xfundPrice;
       default:
         return undefined;
     }
@@ -194,39 +140,13 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
 
   function getTokenUsdPrice(tokenAddress: string): BigNumber | undefined {
     switch (tokenAddress) {
-      case USDCTokenMeta.address:
-      case DAITokenMeta.address:
-      case SUSDTokenMeta.address:
-        return getPoolUsdPrice(PoolTypes.STABLE);
       case UNISWAPTokenMeta.address:
         return getPoolUsdPrice(PoolTypes.UNILP);
-      case BONDTokenMeta.address:
-        return getPoolUsdPrice(PoolTypes.BOND);
+      case XFUNDTokenMeta.address:
+        return getPoolUsdPrice(PoolTypes.XFUND);
       default:
         return undefined;
     }
-  }
-
-  function yfStakedValue() {
-    const poolSize = yfContract.nextPoolSize;
-    const price = uniswapContract.stablePrice;
-
-    if (poolSize === undefined || price === undefined) {
-      return undefined;
-    }
-
-    return poolSize.multipliedBy(price);
-  }
-
-  function yfEffectiveStakedValue() {
-    const poolSize = yfContract.poolSize;
-    const price = uniswapContract.stablePrice;
-
-    if (poolSize === undefined || price === undefined) {
-      return undefined;
-    }
-
-    return poolSize.multipliedBy(price);
   }
 
   function yfLPStakedValue() {
@@ -273,9 +193,9 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
     return epochStake.multipliedBy(price);
   }
 
-  function yfBONDStakedValue() {
-    const poolSize = yfBONDContract.nextPoolSize;
-    const price = uniswapContract.bondPrice;
+  function yfXFUNDStakedValue() {
+    const poolSize = yfXFUNDContract.nextPoolSize;
+    const price = uniswapContract.xfundPrice;
 
     if (poolSize === undefined || price === undefined) {
       return undefined;
@@ -284,9 +204,9 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
     return poolSize.multipliedBy(price);
   }
 
-  function myBONDStakedValue() {
-    const epochStake = yfBONDContract.nextEpochStake;
-    const price = uniswapContract.bondPrice;
+  function myXFUNDStakedValue() {
+    const epochStake = yfXFUNDContract.nextEpochStake;
+    const price = uniswapContract.xfundPrice;
 
     if (epochStake === undefined || price === undefined) {
       return undefined;
@@ -295,9 +215,9 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
     return epochStake.multipliedBy(price);
   }
 
-  function yfBONDEffectiveStakedValue() {
-    const poolSize = yfBONDContract.poolSize;
-    const price = uniswapContract.bondPrice;
+  function yfXFUNDEffectiveStakedValue() {
+    const poolSize = yfXFUNDContract.poolSize;
+    const price = uniswapContract.xfundPrice;
 
     if (poolSize === undefined || price === undefined) {
       return undefined;
@@ -306,163 +226,120 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
     return poolSize.multipliedBy(price);
   }
 
-  function myBondEffectiveStakedValue() {
-    const epochStake = yfBONDContract.epochStake;
-    const price = uniswapContract.bondPrice;
+  function myXfundEffectiveStakedValue() {
+    const epochStake = yfXFUNDContract.epochStake;
+    const price = uniswapContract.xfundPrice;
 
     if (epochStake === undefined || price === undefined) {
       return undefined;
     }
 
     return epochStake.multipliedBy(price);
-  }
-
-  function bondLockedPrice() {
-    const bondStaked = daoBarnContract.bondStaked;
-    const price = uniswapContract.bondPrice;
-
-    if (bondStaked === undefined || price === undefined) {
-      return undefined;
-    }
-
-    return bondStaked.multipliedBy(price);
   }
 
   function totalStaked(): BigNumber | undefined {
-    const yfStaked = yfStakedValue();
     const yfLPStaked = yfLPStakedValue();
-    const yfBONDStaked = yfBONDStakedValue();
+    const yfXFUNDStaked = yfXFUNDStakedValue();
 
     if (
-      yfStaked === undefined ||
       yfLPStaked === undefined ||
-      yfBONDStaked === undefined
+      yfXFUNDStaked === undefined
     ) {
       return undefined;
     }
 
-    return yfStaked.plus(yfLPStaked).plus(yfBONDStaked);
+    return yfLPStaked.plus(yfXFUNDStaked);
   }
 
   function totalEffectiveStaked(): BigNumber | undefined {
-    const yfStaked = yfEffectiveStakedValue();
     const yfLPStaked = yfLPEffectiveStakedValue();
-    const yfBONDStaked = yfBONDEffectiveStakedValue();
+    const yfXFUNDStaked = yfXFUNDEffectiveStakedValue();
 
     if (
-      yfStaked === undefined ||
       yfLPStaked === undefined ||
-      yfBONDStaked === undefined
+      yfXFUNDStaked === undefined
     ) {
       return undefined;
     }
 
-    return yfStaked.plus(yfLPStaked).plus(yfBONDStaked);
+    return yfLPStaked.plus(yfXFUNDStaked);
   }
 
   function totalCurrentReward(): BigNumber | undefined {
-    const yfReward =
-      yfContract.currentEpoch === 0
-        ? ZERO_BIG_NUMBER
-        : yfContract.currentReward;
     const yfLPReward =
       yfLPContract.currentEpoch === 0
         ? ZERO_BIG_NUMBER
         : yfLPContract.currentReward;
-    const yfBONDReward =
-      yfBONDContract.currentEpoch === 0
+    const yfXFUNDReward =
+      yfXFUNDContract.currentEpoch === 0
         ? ZERO_BIG_NUMBER
-        : yfBONDContract.currentReward;
+        : yfXFUNDContract.currentReward;
 
     if (
-      yfReward === undefined ||
       yfLPReward === undefined ||
-      yfBONDReward === undefined
+      yfXFUNDReward === undefined
     )
       return undefined;
 
-    return yfReward.plus(yfLPReward).plus(yfBONDReward);
+    return yfLPReward.plus(yfXFUNDReward);
   }
 
   function totalPotentialReward(): BigNumber | undefined {
-    const yfReward = yfContract.potentialReward;
     const yfLPReward = yfLPContract.potentialReward;
-    const yfBONDReward = yfBONDContract.potentialReward;
+    const yfXFUNDReward = yfXFUNDContract.potentialReward;
 
     if (
-      yfReward === undefined ||
       yfLPReward === undefined ||
-      yfBONDReward === undefined
+      yfXFUNDReward === undefined
     )
       return undefined;
 
     let total = ZERO_BIG_NUMBER;
 
-    if (yfContract.isEnded === false) {
-      total = total.plus(yfReward);
-    }
-
     if (yfLPContract.isEnded === false) {
       total = total.plus(yfLPReward);
     }
 
-    if (yfBONDContract.isEnded === false) {
-      total = total.plus(yfBONDReward);
+    if (yfXFUNDContract.isEnded === false) {
+      total = total.plus(yfXFUNDReward);
     }
 
     return total;
   }
 
-  function totalBondReward(): BigNumber | undefined {
-    const yfTotalReward = yfContract.totalReward;
+  function totalXfundReward(): BigNumber | undefined {
     const yfLPTotalReward = yfLPContract.totalReward;
-    const yfBONDTotalReward = yfBONDContract.totalReward;
+    const yfXFUNDTotalReward = yfXFUNDContract.totalReward;
 
     if (
-      yfTotalReward === undefined ||
       yfLPTotalReward === undefined ||
-      yfBONDTotalReward === undefined
+      yfXFUNDTotalReward === undefined
     )
       return undefined;
 
-    return yfTotalReward.plus(yfLPTotalReward).plus(yfBONDTotalReward);
+    return yfLPTotalReward.plus(yfXFUNDTotalReward);
   }
 
-  function bondReward(): BigNumber | undefined {
-    const yfReward = yfContract.bondReward;
-    const yfLPReward = yfLPContract.bondReward;
-    const yfBONDReward = yfBONDContract.bondReward;
+  function xfundReward(): BigNumber | undefined {
+    const yfLPReward = yfLPContract.xfundReward;
+    const yfXFUNDReward = yfXFUNDContract.xfundReward;
 
     if (
-      yfReward === undefined ||
       yfLPReward === undefined ||
-      yfBONDReward === undefined
+      yfXFUNDReward === undefined
     )
       return undefined;
 
-    return yfReward.plus(yfLPReward).plus(yfBONDReward);
+    return yfLPReward.plus(yfXFUNDReward);
   }
 
   const value = {
-    bond: bondContract,
-    usdc: usdcContract,
-    dai: daiContract,
-    susd: susdContract,
+    xfund: xfundContract,
     uniswap: uniswapContract,
-    yf: yfContract,
     yfLP: yfLPContract,
-    yfBOND: yfBONDContract,
+    yfXFUND: yfXFUNDContract,
     staking: stakingContract,
-    daoBarn: daoBarnContract,
-    daoReward: daoRewardContract,
-    daoGovernance: daoGovernanceContract,
     aggregated: {
-      get yfStakedValue(): BigNumber | undefined {
-        return yfStakedValue();
-      },
-      get yfEffectiveStakedValue(): BigNumber | undefined {
-        return yfEffectiveStakedValue();
-      },
       get yfLPStakedValue(): BigNumber | undefined {
         return yfLPStakedValue();
       },
@@ -475,17 +352,17 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
       get myLPEffectiveStakedValue(): BigNumber | undefined {
         return myLPEffectiveStakedValue();
       },
-      get yfBONDStakedValue(): BigNumber | undefined {
-        return yfBONDStakedValue();
+      get yfXFUNDStakedValue(): BigNumber | undefined {
+        return yfXFUNDStakedValue();
       },
-      get myBONDStakedValue(): BigNumber | undefined {
-        return myBONDStakedValue();
+      get myXFUNDStakedValue(): BigNumber | undefined {
+        return myXFUNDStakedValue();
       },
-      get yfBONDEffectiveStakedValue(): BigNumber | undefined {
-        return yfBONDEffectiveStakedValue();
+      get yfXFUNDEffectiveStakedValue(): BigNumber | undefined {
+        return yfXFUNDEffectiveStakedValue();
       },
-      get myBondEffectiveStakedValue(): BigNumber | undefined {
-        return myBondEffectiveStakedValue();
+      get myXfundEffectiveStakedValue(): BigNumber | undefined {
+        return myXfundEffectiveStakedValue();
       },
       get totalStaked(): BigNumber | undefined {
         return totalStaked();
@@ -499,14 +376,11 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
       get totalPotentialReward(): BigNumber | undefined {
         return totalPotentialReward();
       },
-      get totalBondReward(): BigNumber | undefined {
-        return totalBondReward();
+      get totalXfundReward(): BigNumber | undefined {
+        return totalXfundReward();
       },
-      get bondReward(): BigNumber | undefined {
-        return bondReward();
-      },
-      get bondLockedPrice(): BigNumber | undefined {
-        return bondLockedPrice();
+      get xfundReward(): BigNumber | undefined {
+        return xfundReward();
       },
     },
     getPoolUsdPrice,

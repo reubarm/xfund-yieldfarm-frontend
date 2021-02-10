@@ -8,6 +8,7 @@ import { DAITokenMeta } from 'web3/contracts/dai';
 import { SUSDTokenMeta } from 'web3/contracts/susd';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
 import { BONDTokenMeta } from 'web3/contracts/bond';
+import { XFUNDTokenMeta } from 'web3/contracts/xfund';
 
 export const MAX_UINT_256 = new BigNumber(2).pow(256).minus(1);
 export const ZERO_BIG_NUMBER = new BigNumber(0);
@@ -110,6 +111,18 @@ export function formatUSDValue(
   return val.isPositive() ? `$${formattedValue}` : `-$${formattedValue}`;
 }
 
+export function formatETHValue(value?: BigNumber): string {
+  return `${formatBigValue(value, 4)} ETH`;
+}
+
+export function formatLPValue(value?: BigNumber): string {
+  return `${formatBigValue(value, 9)} LP`;
+}
+
+export function formatXFUNDValue(value?: BigNumber): string {
+  return `${formatBigValue(value, 9)}`;
+}
+
 export function formatBONDValue(value?: BigNumber): string {
   return formatBigValue(value, 4);
 }
@@ -136,6 +149,8 @@ export function getTokenMeta(tokenAddr: string): TokenMeta | undefined {
       return UNISWAPTokenMeta;
     case BONDTokenMeta.address:
       return BONDTokenMeta;
+    case XFUNDTokenMeta.address:
+      return XFUNDTokenMeta;
     default:
       return undefined;
   }
@@ -145,6 +160,7 @@ export enum PoolTypes {
   STABLE = 'stable',
   UNILP = 'unilp',
   BOND = 'bond',
+  XFUND = 'xfund',
 }
 
 export const getPoolIcons = memoize(
@@ -156,6 +172,8 @@ export const getPoolIcons = memoize(
         return [UNISWAPTokenMeta.icon];
       case PoolTypes.BOND:
         return [BONDTokenMeta.icon];
+      case PoolTypes.XFUND:
+        return [XFUNDTokenMeta.icon];
       default:
         return [];
     }
@@ -170,6 +188,8 @@ export const getPoolNames = memoize((poolType: PoolTypes): string[] => {
       return [UNISWAPTokenMeta.name];
     case PoolTypes.BOND:
       return [BONDTokenMeta.name];
+    case PoolTypes.XFUND:
+      return [XFUNDTokenMeta.name];
     default:
       return [];
   }

@@ -6,10 +6,9 @@ import Grid from 'components/custom/grid';
 import { Heading, Label, Paragraph } from 'components/custom/typography';
 import ExternalLink from 'components/custom/externalLink';
 
-import { formatBONDValue, formatUSDValue } from 'web3/utils';
+import { formatXFUNDValue, formatUSDValue, formatETHValue } from 'web3/utils';
 import { useWeb3Contracts } from 'web3/contracts';
-import { BONDTokenMeta } from 'web3/contracts/bond';
-import { USDCTokenMeta } from 'web3/contracts/usdc';
+import { XFUNDTokenMeta } from 'web3/contracts/xfund';
 import { useWeekCountdown } from 'hooks/useCountdown';
 
 import s from './styles.module.scss';
@@ -22,7 +21,7 @@ const PoolStats: React.FunctionComponent = () => {
   }, [staking]);
   const [untilNextEpoch] = useWeekCountdown(epochEnd);
 
-  const totalBondReward = formatBONDValue(aggregated.totalBondReward);
+  const totalBondReward = formatXFUNDValue(aggregated.totalXfundReward);
 
   return (
     <Grid
@@ -32,7 +31,7 @@ const PoolStats: React.FunctionComponent = () => {
       <Card>
         <Grid flow="row" gap={48}>
           <Grid flow="col" align="center" justify="space-between">
-            <Label type="lb2" semiBold color="red500">
+            <Label type="lb2" semiBold color="blue500">
               Total Value Locked
             </Label>
             <Tooltip
@@ -55,10 +54,10 @@ const PoolStats: React.FunctionComponent = () => {
           </Grid>
           <Grid flow="row" gap={4}>
             <Heading type="h2" bold color="grey900">
-              {formatUSDValue(aggregated.totalStaked)}
+              {formatETHValue(aggregated.totalStaked)}
             </Heading>
             <Paragraph type="p1" color="grey500">
-              {formatUSDValue(aggregated.totalEffectiveStaked)} effective locked
+              {formatETHValue(aggregated.totalEffectiveStaked)} effective locked
             </Paragraph>
           </Grid>
         </Grid>
@@ -67,17 +66,17 @@ const PoolStats: React.FunctionComponent = () => {
       <Card>
         <Grid flow="row" gap={48}>
           <Grid flow="col" align="center" justify="space-between">
-            <Label type="lb2" semiBold color="red500">
-              Bond Rewards
+            <Label type="lb2" semiBold color="blue500">
+              xFUND Rewards
             </Label>
             <Tooltip
               type="info"
-              title={`This number shows the $BOND token rewards distributed so far out of the total of ${totalBondReward} that are going to be available for Yield Farming.`}
+              title={`This number shows the xFUND token rewards distributed so far out of the total of ${totalBondReward} that are going to be available for Yield Farming.`}
             />
           </Grid>
           <Grid flow="row" gap={4}>
             <Heading type="h2" bold color="grey900">
-              {formatBONDValue(aggregated.bondReward)}
+              {formatXFUNDValue(aggregated.xfundReward)}
             </Heading>
             <Paragraph type="p1" color="grey500">
               out of {totalBondReward}
@@ -89,16 +88,16 @@ const PoolStats: React.FunctionComponent = () => {
       <Card>
         <Grid flow="row" gap={48}>
           <Grid flow="col" align="center" justify="space-between">
-            <Label type="lb2" semiBold color="red500">
-              Bond Price
+            <Label type="lb2" semiBold color="blue500">
+              xFUND Price
             </Label>
           </Grid>
           <Grid flow="row" gap={4}>
             <Heading type="h2" bold color="grey900">
-              {formatUSDValue(uniswap.bondPrice)}
+              {formatETHValue(uniswap.xfundPrice)}
             </Heading>
             <ExternalLink
-              href={`https://app.uniswap.org/#/swap?inputCurrency=${BONDTokenMeta.address}&outputCurrency=${USDCTokenMeta.address}`}
+              href={`https://app.uniswap.org/#/swap?inputCurrency=${XFUNDTokenMeta.address}&outputCurrency=ETH`}
               className={s.link}>
               Uniswap market
             </ExternalLink>
@@ -109,7 +108,7 @@ const PoolStats: React.FunctionComponent = () => {
       <Card>
         <Grid flow="row" gap={48}>
           <Grid flow="col" align="center" justify="space-between">
-            <Label type="lb2" semiBold color="red500">
+            <Label type="lb2" semiBold color="blue500">
               Time Left
             </Label>
             <Tooltip

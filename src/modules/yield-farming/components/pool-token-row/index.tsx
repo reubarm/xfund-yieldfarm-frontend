@@ -21,11 +21,8 @@ import {
   ZERO_BIG_NUMBER,
 } from 'web3/utils';
 import { useWeb3Contracts } from 'web3/contracts';
-import { USDCTokenMeta } from 'web3/contracts/usdc';
-import { DAITokenMeta } from 'web3/contracts/dai';
-import { SUSDTokenMeta } from 'web3/contracts/susd';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { BONDTokenMeta } from 'web3/contracts/bond';
+import { XFUNDTokenMeta } from 'web3/contracts/xfund';
 import { CONTRACT_STAKING_ADDR } from 'web3/contracts/staking';
 import useMergeState from 'hooks/useMergeState';
 
@@ -83,16 +80,10 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
 
   const icon = React.useMemo<TokenIconNames | undefined>(() => {
     switch (token) {
-      case USDCTokenMeta:
-        return 'usdc-token';
-      case DAITokenMeta:
-        return 'dai-token';
-      case SUSDTokenMeta:
-        return 'susd-token';
       case UNISWAPTokenMeta:
         return 'uniswap-token';
-      case BONDTokenMeta:
-        return 'bond-token';
+      case XFUNDTokenMeta:
+        return 'xfund-token';
       default:
         return;
     }
@@ -106,27 +97,6 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
     let isEnded: boolean | undefined;
 
     switch (token) {
-      case USDCTokenMeta:
-        walletBalance = web3c.usdc.balance;
-        allowance = web3c.usdc.allowance;
-        stakedBalance = web3c.staking.usdc.balance;
-        effectiveStakedBalance = web3c.staking.usdc.epochUserBalance;
-        isEnded = web3c.yf.isEnded;
-        break;
-      case DAITokenMeta:
-        walletBalance = web3c.dai.balance;
-        allowance = web3c.dai.allowance;
-        stakedBalance = web3c.staking.dai.balance;
-        effectiveStakedBalance = web3c.staking.dai.epochUserBalance;
-        isEnded = web3c.yf.isEnded;
-        break;
-      case SUSDTokenMeta:
-        walletBalance = web3c.susd.balance;
-        allowance = web3c.susd.allowance;
-        stakedBalance = web3c.staking.susd.balance;
-        effectiveStakedBalance = web3c.staking.susd.epochUserBalance;
-        isEnded = web3c.yf.isEnded;
-        break;
       case UNISWAPTokenMeta:
         walletBalance = web3c.uniswap.balance;
         allowance = web3c.uniswap.allowance;
@@ -134,12 +104,12 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
         effectiveStakedBalance = web3c.staking.uniswap.epochUserBalance;
         isEnded = web3c.yfLP.isEnded;
         break;
-      case BONDTokenMeta:
-        walletBalance = web3c.bond.balance;
-        allowance = web3c.bond.allowance;
-        stakedBalance = web3c.staking.bond.balance;
-        effectiveStakedBalance = web3c.staking.bond.epochUserBalance;
-        isEnded = web3c.yfBOND.isEnded;
+      case XFUNDTokenMeta:
+        walletBalance = web3c.xfund.balance;
+        allowance = web3c.xfund.allowance;
+        stakedBalance = web3c.staking.xfund.balance;
+        effectiveStakedBalance = web3c.staking.xfund.epochUserBalance;
+        isEnded = web3c.yfXFUND.isEnded;
         break;
       default:
         return;
@@ -178,20 +148,11 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
 
     try {
       switch (token) {
-        case USDCTokenMeta:
-          await web3c.usdc.approveSend(value);
-          break;
-        case DAITokenMeta:
-          await web3c.dai.approveSend(value);
-          break;
-        case SUSDTokenMeta:
-          await web3c.susd.approveSend(value);
-          break;
         case UNISWAPTokenMeta:
           await web3c.uniswap.approveSend(value);
           break;
-        case BONDTokenMeta:
-          await web3c.bond.approveSend(CONTRACT_STAKING_ADDR, value);
+        case XFUNDTokenMeta:
+          await web3c.xfund.approveSend(value);
           break;
         default:
           break;
@@ -218,25 +179,13 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
       }
 
       switch (token) {
-        case USDCTokenMeta:
-          web3c.usdc.reload();
-          web3c.yf.reload();
-          break;
-        case DAITokenMeta:
-          web3c.dai.reload();
-          web3c.yf.reload();
-          break;
-        case SUSDTokenMeta:
-          web3c.susd.reload();
-          web3c.yf.reload();
-          break;
         case UNISWAPTokenMeta:
           web3c.uniswap.reload();
           web3c.yfLP.reload();
           break;
-        case BONDTokenMeta:
-          web3c.bond.reload();
-          web3c.yfBOND.reload();
+        case XFUNDTokenMeta:
+          web3c.xfund.reload();
+          web3c.yfXFUND.reload();
           break;
       }
     } catch (e) {

@@ -8,11 +8,8 @@ import { useWallet } from 'wallets/wallet';
 import { TokenMeta } from 'web3/types';
 import { getGasValue, getHumanValue, getNonHumanValue } from 'web3/utils';
 import Web3Contract, { BatchContractMethod } from 'web3/contract';
-import { USDCTokenMeta } from 'web3/contracts/usdc';
-import { DAITokenMeta } from 'web3/contracts/dai';
-import { SUSDTokenMeta } from 'web3/contracts/susd';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { BONDTokenMeta } from 'web3/contracts/bond';
+import { XFUNDTokenMeta } from 'web3/contracts/xfund';
 
 export const CONTRACT_STAKING_ADDR = String(
   process.env.REACT_APP_CONTRACT_STAKING_ADDR,
@@ -31,11 +28,8 @@ type StakingContractData = {
   epoch1Start?: number;
   epochDuration?: number;
   currentEpochEnd?: number;
-  usdc: StakingTokenData;
-  dai: StakingTokenData;
-  susd: StakingTokenData;
   uniswap: StakingTokenData;
-  bond: StakingTokenData;
+  xfund: StakingTokenData;
 };
 
 export type StakingContract = StakingContractData & {
@@ -60,27 +54,6 @@ const InitialData: StakingContractData = {
   epoch1Start: undefined,
   epochDuration: undefined,
   currentEpochEnd: undefined,
-  usdc: {
-    epochPoolSize: undefined,
-    nextEpochPoolSize: undefined,
-    balance: undefined,
-    epochUserBalance: undefined,
-    nextEpochUserBalance: undefined,
-  },
-  dai: {
-    epochPoolSize: undefined,
-    nextEpochPoolSize: undefined,
-    balance: undefined,
-    epochUserBalance: undefined,
-    nextEpochUserBalance: undefined,
-  },
-  susd: {
-    epochPoolSize: undefined,
-    nextEpochPoolSize: undefined,
-    balance: undefined,
-    epochUserBalance: undefined,
-    nextEpochUserBalance: undefined,
-  },
   uniswap: {
     epochPoolSize: undefined,
     nextEpochPoolSize: undefined,
@@ -88,7 +61,7 @@ const InitialData: StakingContractData = {
     epochUserBalance: undefined,
     nextEpochUserBalance: undefined,
   },
-  bond: {
+  xfund: {
     epochPoolSize: undefined,
     nextEpochPoolSize: undefined,
     balance: undefined,
@@ -138,23 +111,14 @@ export function useStakingContract(): StakingContract {
     }));
 
     const [
-      usdcEpochPoolSize,
-      usdcNextEpochPoolSize,
-      daiEpochPoolSize,
-      daiNextEpochPoolSize,
-      susdEpochPoolSize,
-      susdNextEpochPoolSize,
       uniEpochPoolSize,
       uniNextEpochPoolSize,
       bondEpochPoolSize,
       bondNextEpochPoolSize,
     ] = await contract.batch([
       ...[
-        USDCTokenMeta,
-        DAITokenMeta,
-        SUSDTokenMeta,
         UNISWAPTokenMeta,
-        BONDTokenMeta,
+        XFUNDTokenMeta,
       ].reduce((ac: BatchContractMethod[], token) => {
         return [
           ...ac,
@@ -176,28 +140,13 @@ export function useStakingContract(): StakingContract {
 
     setData(prevState => ({
       ...prevState,
-      usdc: {
-        ...prevState.usdc,
-        epochPoolSize: usdcEpochPoolSize,
-        nextEpochPoolSize: usdcNextEpochPoolSize,
-      },
-      dai: {
-        ...prevState.dai,
-        epochPoolSize: daiEpochPoolSize,
-        nextEpochPoolSize: daiNextEpochPoolSize,
-      },
-      susd: {
-        ...prevState.susd,
-        epochPoolSize: susdEpochPoolSize,
-        nextEpochPoolSize: susdNextEpochPoolSize,
-      },
       uniswap: {
         ...prevState.uniswap,
         epochPoolSize: uniEpochPoolSize,
         nextEpochPoolSize: uniNextEpochPoolSize,
       },
-      bond: {
-        ...prevState.bond,
+      xfund: {
+        ...prevState.xfund,
         epochPoolSize: bondEpochPoolSize,
         nextEpochPoolSize: bondNextEpochPoolSize,
       },
@@ -207,15 +156,6 @@ export function useStakingContract(): StakingContract {
   useAsyncEffect(async () => {
     const { currentEpoch } = data;
 
-    let usdcBalance: BigNumber | undefined;
-    let usdcEpochUserBalance: BigNumber | undefined;
-    let usdcNextEpochUserBalance: BigNumber | undefined;
-    let daiBalance: BigNumber | undefined;
-    let daiEpochUserBalance: BigNumber | undefined;
-    let daiNextEpochUserBalance: BigNumber | undefined;
-    let susdBalance: BigNumber | undefined;
-    let susdEpochUserBalance: BigNumber | undefined;
-    let susdNextEpochUserBalance: BigNumber | undefined;
     let uniswapBalance: BigNumber | undefined;
     let uniswapEpochUserBalance: BigNumber | undefined;
     let uniswapNextEpochUserBalance: BigNumber | undefined;
@@ -225,15 +165,6 @@ export function useStakingContract(): StakingContract {
 
     if (wallet.account && currentEpoch !== undefined) {
       [
-        usdcBalance,
-        usdcEpochUserBalance,
-        usdcNextEpochUserBalance,
-        daiBalance,
-        daiEpochUserBalance,
-        daiNextEpochUserBalance,
-        susdBalance,
-        susdEpochUserBalance,
-        susdNextEpochUserBalance,
         uniswapBalance,
         uniswapEpochUserBalance,
         uniswapNextEpochUserBalance,
@@ -242,11 +173,8 @@ export function useStakingContract(): StakingContract {
         bondNextEpochUserBalance,
       ] = await contract.batch([
         ...[
-          USDCTokenMeta,
-          DAITokenMeta,
-          SUSDTokenMeta,
           UNISWAPTokenMeta,
-          BONDTokenMeta,
+          XFUNDTokenMeta,
         ].reduce(
           (ac: BatchContractMethod[], token) => [
             ...ac,
@@ -276,32 +204,14 @@ export function useStakingContract(): StakingContract {
 
     setData(prevState => ({
       ...prevState,
-      usdc: {
-        ...prevState.usdc,
-        balance: usdcBalance,
-        epochUserBalance: usdcEpochUserBalance,
-        nextEpochUserBalance: usdcNextEpochUserBalance,
-      },
-      dai: {
-        ...prevState.dai,
-        balance: daiBalance,
-        epochUserBalance: daiEpochUserBalance,
-        nextEpochUserBalance: daiNextEpochUserBalance,
-      },
-      susd: {
-        ...prevState.susd,
-        balance: susdBalance,
-        epochUserBalance: susdEpochUserBalance,
-        nextEpochUserBalance: susdNextEpochUserBalance,
-      },
       uniswap: {
         ...prevState.uniswap,
         balance: uniswapBalance,
         epochUserBalance: uniswapEpochUserBalance,
         nextEpochUserBalance: uniswapNextEpochUserBalance,
       },
-      bond: {
-        ...prevState.bond,
+      xfund: {
+        ...prevState.xfund,
         balance: bondBalance,
         epochUserBalance: bondEpochUserBalance,
         nextEpochUserBalance: bondNextEpochUserBalance,

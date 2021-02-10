@@ -24,11 +24,8 @@ import {
 } from 'web3/utils';
 import { useWallet } from 'wallets/wallet';
 import { useWeb3Contracts } from 'web3/contracts';
-import { USDCTokenMeta } from 'web3/contracts/usdc';
-import { DAITokenMeta } from 'web3/contracts/dai';
-import { SUSDTokenMeta } from 'web3/contracts/susd';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { BONDTokenMeta } from 'web3/contracts/bond';
+import { XFUNDTokenMeta } from 'web3/contracts/xfund';
 
 import { ReactComponent as EmptyBoxSvg } from 'resources/svg/empty-box.svg';
 
@@ -110,7 +107,7 @@ export type PoolTransactionTableProps = {
   withdrawals?: boolean;
   stableToken?: boolean;
   unilpToken?: boolean;
-  bondToken?: boolean;
+  xfundToken?: boolean;
 };
 
 const PoolTransactionTableInner: React.FunctionComponent<PoolTransactionTableProps> = props => {
@@ -125,14 +122,6 @@ const PoolTransactionTableInner: React.FunctionComponent<PoolTransactionTablePro
   const tokenFilterOptions = React.useMemo<SelectOption[]>(() => {
     const options: SelectOption[] = [];
 
-    if (props.stableToken) {
-      options.push(
-        { value: USDCTokenMeta.address, label: USDCTokenMeta.name },
-        { value: DAITokenMeta.address, label: DAITokenMeta.name },
-        { value: SUSDTokenMeta.address, label: SUSDTokenMeta.name },
-      );
-    }
-
     if (props.unilpToken) {
       options.push({
         value: UNISWAPTokenMeta.address,
@@ -140,8 +129,8 @@ const PoolTransactionTableInner: React.FunctionComponent<PoolTransactionTablePro
       });
     }
 
-    if (props.bondToken) {
-      options.push({ value: BONDTokenMeta.address, label: BONDTokenMeta.name });
+    if (props.xfundToken) {
+      options.push({ value: XFUNDTokenMeta.address, label: XFUNDTokenMeta.name });
     }
 
     if (options.length !== 1) {
@@ -149,7 +138,7 @@ const PoolTransactionTableInner: React.FunctionComponent<PoolTransactionTablePro
     }
 
     return options;
-  }, [props.stableToken, props.unilpToken, props.bondToken]);
+  }, [props.stableToken, props.unilpToken, props.xfundToken]);
 
   let tokenDefaultOptions: string = String(tokenFilterOptions[0].value);
   let typeDefaultOption: string = 'all';
