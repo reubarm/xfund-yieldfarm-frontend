@@ -9,8 +9,11 @@ import PoolRewards from './components/pool-rewards';
 import PoolStats from './components/pool-stats';
 import PoolOverview from './components/pool-overview';
 import PoolStak from './components/pool-stak';
+import { getNetworkName } from 'web3/utils';
 
 import s from './styles.module.scss';
+
+const WEB3_CHAIN_ID = Number(process.env.REACT_APP_WEB3_CHAIN_ID);
 
 const YieldFarmingView: React.FunctionComponent = () => {
   const wallet = useWallet();
@@ -41,7 +44,7 @@ const YieldFarmingView: React.FunctionComponent = () => {
 
   return (
     <div className={s.component}>
-      <LayoutHeader title="Yield Farming" />
+      <LayoutHeader title={`Yield Farming (${getNetworkName(WEB3_CHAIN_ID)})`} />
       {!isMobile && wallet.isActive && <PoolRewards />}
 
       <div className={s.body}>

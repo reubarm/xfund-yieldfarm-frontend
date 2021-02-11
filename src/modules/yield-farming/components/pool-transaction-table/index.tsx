@@ -18,6 +18,7 @@ import PoolTxListProvider, {
 import {
   formatBigValue,
   formatUSDValue,
+  formatETHValue,
   getEtherscanTxUrl,
   getTokenMeta,
   shortenAddr,
@@ -83,11 +84,11 @@ const Columns: ColumnsType<any> = [
         <Tooltip
           title={
             <span>
-              <strong>{formatBigValue(record.amount)}</strong>&nbsp;
+              <strong>{formatBigValue(record.amount, 12)}</strong>&nbsp;
               {tokenMeta?.name}
             </span>
           }>
-          {formatUSDValue(value)}
+          {formatETHValue(value)}
         </Tooltip>
       );
     },

@@ -104,7 +104,6 @@ const PoolTxListProvider: React.FunctionComponent = props => {
         url.searchParams.append('type', typeFilterRef.current);
       }
 
-      console.log("url", url)
       try {
         const result = await fetch(url.toString());
         const stakingActions: StakingAction[] = await result.json();

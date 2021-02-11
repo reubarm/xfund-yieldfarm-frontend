@@ -60,7 +60,7 @@ const PoolTxChartProvider: React.FunctionComponent = props => {
     loadingRef.current = true;
     forceRender({});
 
-    const url = new URL('/staking-actions/chart', API_URL);
+    const url = new URL('/api/staking-actions/chart', API_URL);
 
     if (poolFilterRef.current) {
       url.searchParams.append('pool', poolFilterRef.current);

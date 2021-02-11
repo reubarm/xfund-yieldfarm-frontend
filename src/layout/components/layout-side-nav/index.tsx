@@ -68,8 +68,8 @@ const LayoutSideNav: React.FunctionComponent<LayoutSideNavProps> = props => {
       width={200}>
       <Grid flow="row" gap={48} className={s.headerWrap}>
         <Grid flow="col" gap={12} className={s.headerLogo}>
-          <Icons name="xfund-token" />
-          {expanded && <Icons name="xfund" width="113" color="grey900" />}
+          <Icons name="xfund-token" width="24" height="29" />
+          {expanded && <Icons name="xfund" width="113" height="130" color="grey900" />}
         </Grid>
         <Grid flow="row" gap={24}>
           <NavLink

@@ -44,9 +44,6 @@ const ConnectWalletModal: React.FunctionComponent<ConnectWalletModalProps> = pro
       <Heading type="h2" bold className={s.headerLabel}>
         Connect Wallet
       </Heading>
-      <Paragraph type="p1" className={s.headerNote}>
-        Please select the wallet of your liking
-      </Paragraph>
       <div className={s.list}>
         {WalletConnectors.map(connector => (
           <Button

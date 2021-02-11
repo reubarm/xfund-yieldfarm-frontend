@@ -24,6 +24,8 @@ yarn-error.log*
 
 # env
 .env
+.env.mainnet
+.env.rinkeby
 
 # IDEs
 .idea
