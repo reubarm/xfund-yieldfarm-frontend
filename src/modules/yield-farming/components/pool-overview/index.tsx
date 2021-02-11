@@ -15,7 +15,7 @@ const PoolOverview: React.FunctionComponent = () => {
         <PoolCard unilpToken />
         <PoolCard xfundToken />
       </div>
-      {/*<PoolTransactionChart />*/}
+      <PoolTransactionChart />
       <PoolTransactionTable
         label="Transactions"
         stableToken

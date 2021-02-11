@@ -43,7 +43,7 @@ const PoolRewards: React.FunctionComponent = () => {
             <Heading type="h3" bold color="grey900">
               {formatXFUNDValue(web3c.aggregated.totalCurrentReward)}
             </Heading>
-            <Icons name="xfund-token" />
+            <Icons name="xfund-token" width="24" height="29" />
             {wallet.isActive && (
               <Button
                 type="light"
@@ -63,7 +63,7 @@ const PoolRewards: React.FunctionComponent = () => {
             <Heading type="h3" bold color="grey900">
               {formatXFUNDValue(web3c.xfund.balance)}
             </Heading>
-            <Icons name="xfund-token" />
+            <Icons name="xfund-token" width="24" height="29" />
           </Grid>
         </Grid>
         <div className={s.delimiter} />
@@ -74,14 +74,14 @@ const PoolRewards: React.FunctionComponent = () => {
             </Paragraph>
             <Tooltip
               type="info"
-              title="This number shows the $BOND rewards you would potentially be able to harvest this epoch, but is subject to change - in case more users deposit, or you withdraw some of your stake."
+              title="This number shows the xFUND rewards you would potentially be able to harvest this epoch, but is subject to change - in case more users deposit, or you withdraw some of your stake."
             />
           </Grid>
           <Grid flow="col" gap={16} align="center">
             <Heading type="h3" bold color="grey900">
               {formatXFUNDValue(web3c.aggregated.totalPotentialReward)}
             </Heading>
-            <Icons name="xfund-token" />
+            <Icons name="xfund-token" width="24" height="29" />
           </Grid>
         </Grid>
       </Grid>

@@ -11,6 +11,7 @@ import PoolTxChartProvider, {
 
 import {
   formatUSDValue,
+  formatETHValue,
   getPoolIcons,
   getPoolNames,
   PoolTypes,
@@ -167,10 +168,10 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
                   <ReCharts.YAxis
                     axisLine={false}
                     tickLine={false}
-                    tickFormatter={(value: any) => formatUSDValue(value, 2, 0)}
+                    tickFormatter={(value: any) => formatETHValue(value)}
                   />
                   <ReCharts.Tooltip
-                    formatter={(value: any) => formatUSDValue(value)}
+                    formatter={(value: any) => formatETHValue(value)}
                   />
                   <ReCharts.Legend
                     align="right"

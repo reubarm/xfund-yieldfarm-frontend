@@ -162,10 +162,6 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
     }
   }
 
-  function handleDaoStaking() {
-    history.push('/governance/wallet');
-  }
-
   return (
     <div className={s.component}>
       {state.type && (
@@ -248,9 +244,12 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
         )}
         {wallet.isActive && (
           <div className={s.row}>
+
+            {!state.isEnded && (
+              <>
             <div className={s.labelWrap}>
               <Label type="lb2" semiBold className={s.label}>
-                My Pool Balance
+                Pool Balance
               </Label>
               <Tooltip
                 type="info"
@@ -271,6 +270,7 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
                 }
               />
             </div>
+
             <Paragraph type="p1" semiBold className={s.value}>
               {formatETHValue(state.myBalance)}
             </Paragraph>
@@ -278,8 +278,8 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
               {formatETHValue(state.myEffectiveBalance)} effective balance
             </Paragraph>
 
-            {!state.isEnded && (
               <PoolStakeShareBar shares={state.myShares} />
+              </>
             )}
           </div>
         )}
@@ -287,12 +287,9 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
           <div className={s.box}>
             <Grid flow="row" align="start">
               <Paragraph type="p2" semiBold color="grey500">
-                The $XFUND staking pool ended after 12 epochs on Feb 08, 00:00 UTC. Deposits are now disabled, but
-                you
-                can
-                still withdraw your tokens and collect any unclaimed rewards. To continue to stake $XFUND
+                The $XFUND staking pool ended after 10 epochs on Feb 11, 06:00 UTC. Deposits are now disabled, but
+                you can still withdraw your tokens and collect any unclaimed rewards.
               </Paragraph>
-              <Button type="link" onClick={handleDaoStaking}>Go to governance staking</Button>
             </Grid>
           </div>
         )}

@@ -17,7 +17,7 @@ const DEFAULT_THEME_KEY = 'default';
 const DARK_THEME_KEY = 'dark';
 
 const ThemeProvider: React.FunctionComponent = props => {
-  const [theme, setTheme] = useLocalStorage('bb-theme', DEFAULT_THEME_KEY);
+  const [theme, setTheme] = useLocalStorage('bb-theme', DARK_THEME_KEY);
 
   const value = React.useMemo<ThemeContextType>(
     () => ({

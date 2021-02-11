@@ -23,10 +23,10 @@ const UserRejectedModal: React.FunctionComponent<UserRejectedModalProps> = props
           />
           <Grid flow="row" gap={8} align="center">
             <Heading type="h3" semiBold color="grey900">
-              Error
+              Transaction rejected
             </Heading>
             <Paragraph type="p2" semiBold color="grey500">
-              Transaction rejected
+              The transaction was cancelled by user
             </Paragraph>
           </Grid>
         </Grid>
