@@ -57,7 +57,7 @@ const PoolStats: React.FunctionComponent = () => {
               {formatETHValue(aggregated.totalStaked)}
             </Heading>
             <Paragraph type="p1" color="grey500">
-              {formatETHValue(aggregated.totalEffectiveStaked)} effective locked
+              {formatETHValue(aggregated.totalEffectiveStaked)} epoch locked
             </Paragraph>
           </Grid>
         </Grid>

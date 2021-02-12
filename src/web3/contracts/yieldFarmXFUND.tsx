@@ -19,6 +19,7 @@ type YieldFarmXFUNDContractData = {
   totalReward?: BigNumber;
   epochReward?: BigNumber;
   currentEpoch?: number;
+  epochForPoolCalc?: number;
   xfundReward?: BigNumber;
   poolSize?: BigNumber;
   nextPoolSize?: BigNumber;
@@ -41,6 +42,7 @@ const InitialData: YieldFarmXFUNDContractData = {
   totalReward: undefined,
   epochReward: undefined,
   currentEpoch: undefined,
+  epochForPoolCalc: undefined,
   xfundReward: undefined,
   poolSize: undefined,
   nextPoolSize: undefined,
@@ -93,6 +95,7 @@ export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
 
     const isEnded = currentEpoch > totalEpochs;
 
+    const epochForPoolCalc = currentEpoch
     currentEpoch = Math.min(currentEpoch, totalEpochs);
 
     const epochReward =
@@ -114,19 +117,20 @@ export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
       totalReward,
       epochReward,
       currentEpoch,
+      epochForPoolCalc,
       xfundReward,
     }));
 
     const [poolSize, nextPoolSize] = await contract.batch([
       {
         method: 'getPoolSize',
-        methodArgs: [currentEpoch],
+        methodArgs: [epochForPoolCalc],
         transform: (value: string) =>
           getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
       },
       {
         method: 'getPoolSize',
-        methodArgs: [currentEpoch + 1],
+        methodArgs: [epochForPoolCalc + 1],
         transform: (value: string) =>
           getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
       },
@@ -140,23 +144,23 @@ export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
   }, [reload]);
 
   useAsyncEffect(async () => {
-    const { currentEpoch } = data;
+    const { epochForPoolCalc } = data;
 
     let epochStake: BigNumber | undefined;
     let nextEpochStake: BigNumber | undefined;
     let currentReward: BigNumber | undefined;
 
-    if (wallet.account && currentEpoch !== undefined) {
+    if (wallet.account && epochForPoolCalc !== undefined) {
       [epochStake, nextEpochStake, currentReward] = await contract.batch([
         {
           method: 'getEpochStake',
-          methodArgs: [wallet.account, currentEpoch],
+          methodArgs: [wallet.account, epochForPoolCalc],
           transform: (value: string) =>
             getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
         },
         {
           method: 'getEpochStake',
-          methodArgs: [wallet.account, currentEpoch + 1],
+          methodArgs: [wallet.account, epochForPoolCalc + 1],
           transform: (value: string) =>
             getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
         },
@@ -175,7 +179,7 @@ export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
       nextEpochStake,
       currentReward,
     }));
-  }, [reload, wallet.account, data.currentEpoch]);
+  }, [reload, wallet.account, data.epochForPoolCalc]);
 
   useAsyncEffect(async () => {
     const { epochStake, poolSize, epochReward } = data;

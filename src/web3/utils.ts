@@ -79,7 +79,7 @@ export function getGasValue(price: number): number {
 export function formatBigValue(
   value?: BigNumber | number,
   decimals: number = 4,
-  defaultValue: string = '-',
+  defaultValue: string = '0',
   minDecimals: number | undefined = undefined,
 ): string {
   if (value === undefined) {

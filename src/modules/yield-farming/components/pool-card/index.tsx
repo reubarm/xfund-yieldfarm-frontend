@@ -236,20 +236,20 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
                 {formatETHValue(state.balance)}
               </Paragraph>
               <Paragraph type="p2" className={s.hint}>
-                {formatETHValue(state.effectiveBalance)} effective balance
+                {formatETHValue(state.effectiveBalance)} effective epoch balance
               </Paragraph>
               <PoolStakeShareBar shares={state.shares} />
             </div>
           </>
         )}
         {wallet.isActive && (
+          <>
+          {!state.isEnded && (
           <div className={s.row}>
 
-            {!state.isEnded && (
-              <>
             <div className={s.labelWrap}>
               <Label type="lb2" semiBold className={s.label}>
-                Pool Balance
+                My Pool Balance
               </Label>
               <Tooltip
                 type="info"
@@ -275,19 +275,19 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
               {formatETHValue(state.myBalance)}
             </Paragraph>
             <Paragraph type="p2" className={s.hint}>
-              {formatETHValue(state.myEffectiveBalance)} effective balance
+              {formatETHValue(state.myEffectiveBalance)} effective epoch balance
             </Paragraph>
-
               <PoolStakeShareBar shares={state.myShares} />
-              </>
-            )}
+
           </div>
+              )}
+          </>
         )}
         {state.isEnded && (
           <div className={s.box}>
             <Grid flow="row" align="start">
               <Paragraph type="p2" semiBold color="grey500">
-                The $XFUND staking pool ended after 10 epochs on Feb 11, 06:00 UTC. Deposits are now disabled, but
+                This staking pool has ended. Deposits are now disabled, but
                 you can still withdraw your tokens and collect any unclaimed rewards.
               </Paragraph>
             </Grid>
