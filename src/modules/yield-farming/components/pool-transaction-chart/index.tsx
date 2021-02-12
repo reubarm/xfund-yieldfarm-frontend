@@ -188,7 +188,7 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
                     <ReCharts.Bar
                       dataKey="deposits"
                       name="Deposits"
-                      fill="#ff4339"
+                      fill="#4f6ae6"
                       stackId="stack"
                     />
                   )}
@@ -196,7 +196,7 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
                     <ReCharts.Bar
                       dataKey="withdrawals"
                       name="Withdrawals"
-                      fill="#4f6ae6"
+                      fill="#ff4339"
                       stackId="stack"
                     />
                   )}
