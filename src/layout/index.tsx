@@ -32,22 +32,22 @@ const LayoutView: React.FunctionComponent = () => {
           </Antd.Layout.Content>
           <Antd.Layout.Footer className={s.footer}>
             <div className={s.footerLinks}>
-              <ExternalLink href="http://www.barnbridge.com/">
+              <ExternalLink href="http://www.unification.com/">
                 Website
               </ExternalLink>
-              <ExternalLink href="https://discord.com/invite/FfEhsVk">
+              <ExternalLink href="https://discord.gg/SeB69w5">
                 Discord
               </ExternalLink>
-              <ExternalLink href="https://twitter.com/barn_bridge">
+              <ExternalLink href="https://twitter.com/unificationund">
                 Twitter
               </ExternalLink>
-              <ExternalLink href="https://github.com/BarnBridge/BarnBridge-Whitepaper">
+              <ExternalLink href="https://go.unification.com/whitepaper">
                 Whitepaper
               </ExternalLink>
-              <ExternalLink href="https://github.com/BarnBridge/">
+              <ExternalLink href="https://github.com/unification-com/">
                 Github
               </ExternalLink>
-              <ExternalLink href="https://docs.barnbridge.com/">
+              <ExternalLink href="https://docs.unification.io/">
                 Docs
               </ExternalLink>
               <ExternalLink

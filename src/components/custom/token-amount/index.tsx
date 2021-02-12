@@ -62,7 +62,7 @@ const TokenAmount: React.FunctionComponent<TokenAmountProps> = props => {
         placeholder={`0 (Max ${formatBigValue(bnMaxValue, displayDecimals)})`}
         addonBefore={tokenIcon ? (
           <Grid flow="col" gap={4}>
-            <Icons name={tokenIcon} width={24} height={24} />
+            <Icons name={tokenIcon} width={24} height={29} />
           </Grid>
         ) : undefined}
         addonAfter={(

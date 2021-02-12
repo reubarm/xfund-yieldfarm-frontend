@@ -197,7 +197,7 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
   const CardTitle = (
     <Grid flow="col" gap={24} colsTemplate="1fr 1fr 1fr" align="center">
       <Grid flow="col" gap={12} align="center">
-        {icon && <Icons name={icon} width={40} height={40} />}
+        {icon && <Icons name={icon} width={40} height={49} />}
         <Paragraph type="p1" semiBold color="grey900">
           {token.name}
         </Paragraph>
