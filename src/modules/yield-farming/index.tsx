@@ -42,9 +42,11 @@ const YieldFarmingView: React.FunctionComponent = () => {
     };
   }, [isMobile]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const title = (WEB3_CHAIN_ID === 1) ? 'xFUND Yield' : `xFUND Yield (${getNetworkName(WEB3_CHAIN_ID)})`
+
   return (
     <div className={s.component}>
-      <LayoutHeader title={`Yield Farming (${getNetworkName(WEB3_CHAIN_ID)})`} />
+      <LayoutHeader title={title} />
       {!isMobile && wallet.isActive && <PoolRewards />}
 
       <div className={s.body}>

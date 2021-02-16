@@ -94,7 +94,7 @@ const PoolStats: React.FunctionComponent = () => {
           </Grid>
           <Grid flow="row" gap={4}>
             <Heading type="h2" bold color="grey900">
-              {formatETHValue(uniswap.xfundPrice)}
+              {formatETHValue(uniswap.xfundPrice, 3)}
             </Heading>
             <ExternalLink
               href={`https://app.uniswap.org/#/swap?inputCurrency=${XFUNDTokenMeta.address}&outputCurrency=ETH`}

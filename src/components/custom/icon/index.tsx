@@ -15,6 +15,7 @@ export type TokenIconNames =
   | 'uniswap-token'
   | 'xfund-token';
 export type NavIconNames =
+  | 'xfund-token'
   | 'paper-bill-outlined'
   | 'chats-outlined'
   | 'bar-charts-outlined'

@@ -17,10 +17,12 @@ export type NavLinkProps = {
   label: string;
   path: string;
   expanded: boolean;
+  iconWidth: number;
+  iconHeight: number;
 };
 
 const NavLink: React.FunctionComponent<NavLinkProps> = props => {
-  const { icon, label, path, expanded } = props;
+  const { icon, label, path, expanded, iconWidth, iconHeight } = props;
 
   const history = useHistory();
   const isActivePath = Boolean(useRouteMatch({ path, exact: path === '/' }));
@@ -34,7 +36,7 @@ const NavLink: React.FunctionComponent<NavLinkProps> = props => {
       <Grid flow="col" className={cx(s.navLink, isActivePath && s.isActive)}>
         <div className={s.activeTick} />
         <Button type="light" onClick={handleClick}>
-          <Icons name={icon} />
+          <Icons name={icon} width={iconWidth} height={iconHeight} />
           {expanded && (
             <Paragraph type="p2" semiBold className={s.linkLabel}>{label}</Paragraph>
           )}
@@ -67,9 +69,15 @@ const LayoutSideNav: React.FunctionComponent<LayoutSideNavProps> = props => {
       collapsedWidth={72}
       width={200}>
       <Grid flow="row" gap={48} className={s.headerWrap}>
-        <Grid flow="col" gap={12} className={s.headerLogo}>
-          <Icons name="xfund-token" width="24" height="29" />
-          {expanded && <Icons name="xfund" width="113" height="130" color="grey900" />}
+        <Grid flow="col" gap={12}>
+          <NavLink
+            label=""
+            icon="xfund-token"
+            path="/"
+            expanded={expanded}
+            iconWidth={24}
+            iconHeight={29}
+          />
         </Grid>
         <Grid flow="row" gap={24}>
           <NavLink
@@ -77,6 +85,8 @@ const LayoutSideNav: React.FunctionComponent<LayoutSideNavProps> = props => {
             icon="savings-outlined"
             path="/yield-farming"
             expanded={expanded}
+            iconWidth={24}
+            iconHeight={24}
           />
           {/*<NavLink*/}
           {/*  label="Voting"*/}

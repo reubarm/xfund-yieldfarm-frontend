@@ -111,8 +111,8 @@ export function formatUSDValue(
   return val.isPositive() ? `$${formattedValue}` : `-$${formattedValue}`;
 }
 
-export function formatETHValue(value?: BigNumber): string {
-  return `${formatBigValue(value, 4)} ETH`;
+export function formatETHValue(value?: BigNumber, decimals: number = 4): string {
+  return `${formatBigValue(value, decimals)} ETH`;
 }
 
 export function formatLPValue(value?: BigNumber): string {

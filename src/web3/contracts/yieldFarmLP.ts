@@ -66,7 +66,11 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
   const [data, setData] = React.useState<YieldFarmLPContractData>(InitialData);
 
   useAsyncEffect(async () => {
-    let [totalEpochs, totalReward, currentEpoch] = await contract.batch([
+    let [delayedEpochs, totalEpochs, totalReward, currentEpoch] = await contract.batch([
+      {
+        method: 'EPOCHS_DELAYED_FROM_STAKING_CONTRACT',
+        transform: (value: string) => Number(value),
+      },
       {
         method: 'NR_OF_EPOCHS',
         transform: (value: string) => Number(value),
@@ -99,7 +103,7 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
     setData(prevState => ({
       ...prevState,
       isEnded,
-      delayedEpochs: 1,
+      delayedEpochs,
       totalEpochs,
       totalReward,
       epochReward,

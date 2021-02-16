@@ -61,7 +61,7 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
       setState(prevState => ({
         ...prevState,
         type: PoolTypes.UNILP,
-        enabled: web3c.yfLP.currentEpoch! > 0,
+        enabled: true,
         isEnded: web3c.yfLP.isEnded,
         currentEpoch: web3c.yfLP.currentEpoch,
         totalEpochs: web3c.yfLP.totalEpochs,
