@@ -13,9 +13,11 @@ export type TokenIconNames =
   | 'susd-token'
   | 'usdc-token'
   | 'uniswap-token'
-  | 'xfund-token';
+  | 'xfund-token'
+  | 'unix-token';
 export type NavIconNames =
   | 'xfund-token'
+  | 'unix-token'
   | 'paper-bill-outlined'
   | 'chats-outlined'
   | 'bar-charts-outlined'

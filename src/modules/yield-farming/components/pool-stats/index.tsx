@@ -6,9 +6,9 @@ import Grid from 'components/custom/grid';
 import { Heading, Label, Paragraph } from 'components/custom/typography';
 import ExternalLink from 'components/custom/externalLink';
 
-import { formatXFUNDValue, formatUSDValue, formatETHValue } from 'web3/utils';
+import { formatUNIXValue, formatETHValue } from 'web3/utils';
 import { useWeb3Contracts } from 'web3/contracts';
-import { XFUNDTokenMeta } from 'web3/contracts/xfund';
+import { UNIXTokenMeta } from 'web3/contracts/unix';
 import { useWeekCountdown } from 'hooks/useCountdown';
 
 import s from './styles.module.scss';
@@ -21,7 +21,7 @@ const PoolStats: React.FunctionComponent = () => {
   }, [staking]);
   const [untilNextEpoch] = useWeekCountdown(epochEnd);
 
-  const totalBondReward = formatXFUNDValue(aggregated.totalXfundReward);
+  const totalBondReward = formatUNIXValue(aggregated.totalUnixReward);
 
   return (
     <Grid
@@ -67,16 +67,16 @@ const PoolStats: React.FunctionComponent = () => {
         <Grid flow="row" gap={48}>
           <Grid flow="col" align="center" justify="space-between">
             <Label type="lb2" semiBold color="blue500">
-              xFUND Rewards
+              UNiX Rewards
             </Label>
             <Tooltip
               type="info"
-              title={`This number shows the xFUND token rewards distributed so far out of the total of ${totalBondReward} that are going to be available for Yield Farming.`}
+              title={`This number shows the UNiX token rewards distributed so far out of the total of ${totalBondReward} that are going to be available for Yield Farming.`}
             />
           </Grid>
           <Grid flow="row" gap={4}>
             <Heading type="h2" bold color="grey900">
-              {formatXFUNDValue(aggregated.xfundReward)}
+              {formatUNIXValue(aggregated.unixReward)}
             </Heading>
             <Paragraph type="p1" color="grey500">
               out of {totalBondReward}
@@ -89,15 +89,15 @@ const PoolStats: React.FunctionComponent = () => {
         <Grid flow="row" gap={48}>
           <Grid flow="col" align="center" justify="space-between">
             <Label type="lb2" semiBold color="blue500">
-              xFUND Price
+              UNiX Price
             </Label>
           </Grid>
           <Grid flow="row" gap={4}>
             <Heading type="h2" bold color="grey900">
-              {formatETHValue(uniswap.xfundPrice, 3)}
+              {formatETHValue(uniswap.unixPrice, 3)}
             </Heading>
             <ExternalLink
-              href={`https://app.uniswap.org/#/swap?inputCurrency=${XFUNDTokenMeta.address}&outputCurrency=ETH`}
+              href={`https://v2.app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=${UNIXTokenMeta.address}`}
               className={s.link}>
               Uniswap market
             </ExternalLink>
@@ -113,7 +113,7 @@ const PoolStats: React.FunctionComponent = () => {
             </Label>
             <Tooltip
               type="info"
-              title="This counter shows the time left in the current epoch. The pool(s) below are synchronized and have epochs that last a week. You can deposit to the pool(s) during the duration of an epoch and receive rewards proportional to the time they are staked, but the funds must stay staked until the clock runs out and the epoch ends in order to be able to harvest the rewards."
+              title="This counter shows the time left in the current epoch. The pool(s) below are synchronized and have epochs that last 2 weeks. You can deposit to the pool(s) during the duration of an epoch and receive rewards proportional to the time they are staked, but the funds must stay staked until the clock runs out and the epoch ends in order to be able to harvest the rewards."
             />
           </Grid>
           <Grid flow="row" gap={4}>

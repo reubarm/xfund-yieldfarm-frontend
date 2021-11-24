@@ -42,7 +42,7 @@ const YieldFarmingView: React.FunctionComponent = () => {
     };
   }, [isMobile]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const title = (WEB3_CHAIN_ID === 1) ? 'xFUND Yield' : `xFUND Yield (${getNetworkName(WEB3_CHAIN_ID)})`
+  const title = (WEB3_CHAIN_ID === 1) ? 'UNiX Yield' : `UNiX Yield (${getNetworkName(WEB3_CHAIN_ID)})`
 
   return (
     <div className={s.component}>
@@ -66,9 +66,9 @@ const YieldFarmingView: React.FunctionComponent = () => {
                   render={() => <PoolStak unilpToken />}
                 />
                 <Route
-                  path="/yield-farming/xfund"
+                  path="/yield-farming/unix"
                   exact
-                  render={() => <PoolStak xfundToken />}
+                  render={() => <PoolStak unixToken />}
                 />
               </>
             )}

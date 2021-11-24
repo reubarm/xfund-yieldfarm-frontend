@@ -14,16 +14,10 @@ import GasFeeList from 'components/custom/gas-fee-list';
 import { Label, Paragraph, Small } from 'components/custom/typography';
 
 import { TokenMeta } from 'web3/types';
-import {
-  formatBigValue,
-  getNonHumanValue,
-  MAX_UINT_256,
-  ZERO_BIG_NUMBER,
-} from 'web3/utils';
+import { formatBigValue, getNonHumanValue, MAX_UINT_256, PoolTypes, ZERO_BIG_NUMBER } from 'web3/utils';
 import { useWeb3Contracts } from 'web3/contracts';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { XFUNDTokenMeta } from 'web3/contracts/xfund';
-import { CONTRACT_STAKING_ADDR } from 'web3/contracts/staking';
+import { UNIXTokenMeta } from 'web3/contracts/unix';
 import useMergeState from 'hooks/useMergeState';
 
 import s from './styles.module.scss';
@@ -32,6 +26,7 @@ export type PoolTokenRowProps = {
   token: TokenMeta;
   type: 'deposit' | 'withdraw';
   expanded?: boolean;
+  poolType: PoolTypes;
 };
 
 type PoolTokenRowState = {
@@ -72,7 +67,7 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
   const web3c = useWeb3Contracts();
   const [form] = Antd.Form.useForm<PoolTokenRowFormData>();
 
-  const { type, token, expanded = false } = props;
+  const { type, token, poolType, expanded = false } = props;
   const isDeposit = type === 'deposit';
   const isWithdraw = type === 'withdraw';
 
@@ -81,9 +76,9 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
   const icon = React.useMemo<TokenIconNames | undefined>(() => {
     switch (token) {
       case UNISWAPTokenMeta:
-        return 'uniswap-token';
-      case XFUNDTokenMeta:
-        return 'xfund-token';
+        return 'unix-token';
+      case UNIXTokenMeta:
+        return 'unix-token';
       default:
         return;
     }
@@ -96,20 +91,20 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
     let effectiveStakedBalance: BigNumber | undefined;
     let isEnded: boolean | undefined;
 
-    switch (token) {
-      case UNISWAPTokenMeta:
+    switch (poolType) {
+      case PoolTypes.UNILP:
         walletBalance = web3c.uniswap.balance;
         allowance = web3c.uniswap.allowance;
         stakedBalance = web3c.staking.uniswap.balance;
         effectiveStakedBalance = web3c.staking.uniswap.epochUserBalance;
         isEnded = web3c.yfLP.isEnded;
         break;
-      case XFUNDTokenMeta:
-        walletBalance = web3c.xfund.balance;
-        allowance = web3c.xfund.allowance;
-        stakedBalance = web3c.staking.xfund.balance;
-        effectiveStakedBalance = web3c.staking.xfund.epochUserBalance;
-        isEnded = web3c.yfXFUND.isEnded;
+      case PoolTypes.UNIX:
+        walletBalance = web3c.unix.balance;
+        allowance = web3c.unix.allowance;
+        stakedBalance = web3c.staking.unix.balance;
+        effectiveStakedBalance = web3c.staking.unix.epochUserBalance;
+        isEnded = web3c.yfUNIX.isEnded;
         break;
       default:
         return;
@@ -151,8 +146,8 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
         case UNISWAPTokenMeta:
           await web3c.uniswap.approveSend(value);
           break;
-        case XFUNDTokenMeta:
-          await web3c.xfund.approveSend(value);
+        case UNIXTokenMeta:
+          await web3c.unix.approveSend(value);
           break;
         default:
           break;
@@ -183,9 +178,9 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
           web3c.uniswap.reload();
           web3c.yfLP.reload();
           break;
-        case XFUNDTokenMeta:
-          web3c.xfund.reload();
-          web3c.yfXFUND.reload();
+        case UNIXTokenMeta:
+          web3c.unix.reload();
+          web3c.yfUNIX.reload();
           break;
       }
     } catch (e) {

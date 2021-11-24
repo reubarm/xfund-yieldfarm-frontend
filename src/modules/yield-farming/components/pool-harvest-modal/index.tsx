@@ -2,7 +2,7 @@ import React from 'react';
 import BigNumber from 'bignumber.js';
 
 import {
-  formatXFUNDValue,
+  formatUNIXValue,
   getPoolIcons,
   getPoolNames,
   PoolTypes,
@@ -50,10 +50,10 @@ const PoolHarvestSelect: React.FunctionComponent<PoolHarvestSelectProps> = props
           </Label>
           <Grid flow="col" gap={4}>
             <Paragraph type="p1" semiBold color="grey900">
-              {formatXFUNDValue(reward)}
+              {formatUNIXValue(reward)}
             </Paragraph>
             <Paragraph type="p2" color="grey500">
-              XFUND
+              UNiX
             </Paragraph>
           </Grid>
         </Grid>
@@ -65,9 +65,9 @@ const PoolHarvestSelect: React.FunctionComponent<PoolHarvestSelectProps> = props
 const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props => {
   const { ...modalProps } = props;
 
-  const { yfLP, yfXFUND, xfund } = useWeb3Contracts();
+  const { yfLP, yfUNIX, unix } = useWeb3Contracts();
   const [yfLPHarvesting, setYFLPHarvesting] = React.useState<boolean>(false);
-  const [yfXFUNDHarvesting, setYFXFUNDHarvesting] = React.useState<boolean>(
+  const [yfUNIXHarvesting, setYfUNIXHarvesting] = React.useState<boolean>(
     false,
   );
 
@@ -76,24 +76,25 @@ const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props =
 
     try {
       await yfLP.massHarvestSend();
-      xfund.reload();
+      unix.reload();
     } catch (e) {
     }
 
     setYFLPHarvesting(false);
   }
 
-  async function handleYFXFUNDHarvest() {
-    setYFXFUNDHarvesting(true);
+  async function handleYFUNIXHarvest() {
+    setYfUNIXHarvesting(true);
 
     try {
-      await yfXFUND.massHarvestSend();
-      xfund.reload();
+      await yfUNIX.massHarvestSend();
+      unix.reload();
     } catch (e) {
     }
 
-    setYFXFUNDHarvesting(false);
+    setYfUNIXHarvesting(false);
   }
+
 
   return (
     <Modal width={832} centered {...modalProps}>
@@ -115,11 +116,11 @@ const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props =
             onClick={handleYFLPHarvest}
           />
           <PoolHarvestSelect
-            icons={getPoolIcons(PoolTypes.XFUND)}
-            label={getPoolNames(PoolTypes.XFUND).join('/')}
-            reward={yfXFUND?.currentReward}
-            loading={yfXFUNDHarvesting}
-            onClick={handleYFXFUNDHarvest}
+            icons={getPoolIcons(PoolTypes.UNIX)}
+            label={getPoolNames(PoolTypes.UNIX).join('/')}
+            reward={yfUNIX?.currentReward}
+            loading={yfUNIXHarvesting}
+            onClick={handleYFUNIXHarvest}
           />
         </Grid>
       </Grid>

@@ -6,13 +6,13 @@ import { useAsyncEffect } from 'hooks/useAsyncEffect';
 import { useWallet } from 'wallets/wallet';
 import { getHumanValue, ZERO_BIG_NUMBER } from 'web3/utils';
 import Web3Contract from 'web3/contract';
-import { XFUNDTokenMeta } from 'web3/contracts/xfund';
+import { UNIXTokenMeta } from 'web3/contracts/unix';
 
-export const CONTRACT_YIELD_FARM_XFUND_ADDR = String(
-  process.env.REACT_APP_CONTRACT_YIELD_FARM_XFUND_ADDR,
+export const CONTRACT_YIELD_FARM_UNIX_ADDR = String(
+  process.env.REACT_APP_CONTRACT_YIELD_FARM_UNIX_ADDR,
 );
 
-type YieldFarmXFUNDContractData = {
+type YieldFarmUNIXContractData = {
   isEnded?: boolean;
   delayedEpochs?: number;
   totalEpochs?: number;
@@ -20,7 +20,7 @@ type YieldFarmXFUNDContractData = {
   epochReward?: BigNumber;
   currentEpoch?: number;
   epochForPoolCalc?: number;
-  xfundReward?: BigNumber;
+  unixReward?: BigNumber;
   poolSize?: BigNumber;
   nextPoolSize?: BigNumber;
   epochStake?: BigNumber;
@@ -29,13 +29,13 @@ type YieldFarmXFUNDContractData = {
   potentialReward?: BigNumber;
 };
 
-export type YieldFarmXFUNDContract = YieldFarmXFUNDContractData & {
+export type YieldFarmUNIXContract = YieldFarmUNIXContractData & {
   contract: Web3Contract;
   massHarvestSend: () => void;
   reload: () => void;
 };
 
-const InitialData: YieldFarmXFUNDContractData = {
+const InitialData: YieldFarmUNIXContractData = {
   isEnded: undefined,
   delayedEpochs: undefined,
   totalEpochs: undefined,
@@ -43,7 +43,7 @@ const InitialData: YieldFarmXFUNDContractData = {
   epochReward: undefined,
   currentEpoch: undefined,
   epochForPoolCalc: undefined,
-  xfundReward: undefined,
+  unixReward: undefined,
   poolSize: undefined,
   nextPoolSize: undefined,
   epochStake: undefined,
@@ -52,19 +52,19 @@ const InitialData: YieldFarmXFUNDContractData = {
   potentialReward: undefined,
 };
 
-export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
+export function useYieldFarmUNIXContract(): YieldFarmUNIXContract {
   const [reload] = useReload();
   const wallet = useWallet();
 
   const contract = React.useMemo<Web3Contract>(() => {
     return new Web3Contract(
-      require('web3/abi/yield_farm_xfund.json'),
-      CONTRACT_YIELD_FARM_XFUND_ADDR,
-      'YIELD_FARM_XFUND',
+      require('web3/abi/yield_farm_unix.json'),
+      CONTRACT_YIELD_FARM_UNIX_ADDR,
+      'YIELD_FARM_UNIX',
     );
   }, []);
 
-  const [data, setData] = React.useState<YieldFarmXFUNDContractData>(
+  const [data, setData] = React.useState<YieldFarmUNIXContractData>(
     InitialData,
   );
 
@@ -101,12 +101,12 @@ export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
     const epochReward =
       totalEpochs !== 0 ? totalReward?.div(totalEpochs) : ZERO_BIG_NUMBER;
 
-    let xfundReward = ZERO_BIG_NUMBER;
+    let unixReward = ZERO_BIG_NUMBER;
 
     if (currentEpoch > 0) {
-      const xfundEpoch =
+      const unixEpoch =
         currentEpoch === totalEpochs ? currentEpoch : currentEpoch - 1;
-      xfundReward = epochReward.multipliedBy(xfundEpoch);
+      unixReward = epochReward.multipliedBy(unixEpoch);
     }
 
     setData(prevState => ({
@@ -118,7 +118,7 @@ export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
       epochReward,
       currentEpoch,
       epochForPoolCalc,
-      xfundReward,
+      unixReward: unixReward,
     }));
 
     const [poolSize, nextPoolSize] = await contract.batch([
@@ -126,13 +126,13 @@ export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
         method: 'getPoolSize',
         methodArgs: [epochForPoolCalc],
         transform: (value: string) =>
-          getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
+          getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
       },
       {
         method: 'getPoolSize',
         methodArgs: [epochForPoolCalc + 1],
         transform: (value: string) =>
-          getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
+          getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
       },
     ]);
 
@@ -156,19 +156,19 @@ export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
           method: 'getEpochStake',
           methodArgs: [wallet.account, epochForPoolCalc],
           transform: (value: string) =>
-            getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
+            getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
         },
         {
           method: 'getEpochStake',
           methodArgs: [wallet.account, epochForPoolCalc + 1],
           transform: (value: string) =>
-            getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
+            getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
         },
         {
           method: 'massHarvest',
           callArgs: { from: wallet.account },
           transform: (value: string) =>
-            getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
+            getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
         },
       ]);
     }
@@ -215,7 +215,7 @@ export function useYieldFarmXFUNDContract(): YieldFarmXFUNDContract {
       .then(reload);
   }, [reload, contract, wallet.account]);
 
-  return React.useMemo<YieldFarmXFUNDContract>(
+  return React.useMemo<YieldFarmUNIXContract>(
     () => ({
       ...data,
       contract,

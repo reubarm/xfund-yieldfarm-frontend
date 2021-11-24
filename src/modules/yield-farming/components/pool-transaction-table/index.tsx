@@ -17,7 +17,6 @@ import PoolTxListProvider, {
 } from 'modules/yield-farming/components/pool-tx-list-provider';
 import {
   formatBigValue,
-  formatUSDValue,
   formatETHValue,
   getEtherscanTxUrl,
   getTokenMeta,
@@ -26,7 +25,7 @@ import {
 import { useWallet } from 'wallets/wallet';
 import { useWeb3Contracts } from 'web3/contracts';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { XFUNDTokenMeta } from 'web3/contracts/xfund';
+import { UNIXTokenMeta } from 'web3/contracts/unix';
 
 import { ReactComponent as EmptyBoxSvg } from 'resources/svg/empty-box.svg';
 
@@ -108,7 +107,8 @@ export type PoolTransactionTableProps = {
   withdrawals?: boolean;
   stableToken?: boolean;
   unilpToken?: boolean;
-  xfundToken?: boolean;
+  unixToken?: boolean;
+  sslpToken?: boolean;
 };
 
 const PoolTransactionTableInner: React.FunctionComponent<PoolTransactionTableProps> = props => {
@@ -130,8 +130,8 @@ const PoolTransactionTableInner: React.FunctionComponent<PoolTransactionTablePro
       });
     }
 
-    if (props.xfundToken) {
-      options.push({ value: XFUNDTokenMeta.address, label: XFUNDTokenMeta.name });
+    if (props.unixToken) {
+      options.push({ value: UNIXTokenMeta.address, label: UNIXTokenMeta.name });
     }
 
     if (options.length !== 1) {
@@ -139,7 +139,7 @@ const PoolTransactionTableInner: React.FunctionComponent<PoolTransactionTablePro
     }
 
     return options;
-  }, [props.stableToken, props.unilpToken, props.xfundToken]);
+  }, [props.unilpToken, props.unixToken, props.sslpToken]);
 
   let tokenDefaultOptions: string = String(tokenFilterOptions[0].value);
   let typeDefaultOption: string = 'all';

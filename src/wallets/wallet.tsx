@@ -13,12 +13,7 @@ import { useAsyncEffect } from 'hooks/useAsyncEffect';
 import { useRefState } from 'hooks/useRefState';
 
 import { WalletConnector } from 'wallets/types';
-import { CoinbaseWalletConfig } from 'wallets/connectors/coinbase';
-import { LedgerWalletConfig } from 'wallets/connectors/ledger';
 import { MetaMaskWalletConfig } from 'wallets/connectors/metamask';
-import { PortisWalletConfig } from 'wallets/connectors/portis';
-import { TrezorWalletConfig } from 'wallets/connectors/trezor';
-import { WalletConnectConfig } from 'wallets/connectors/wallet-connect';
 import { getNetworkName } from 'web3/utils';
 
 import ConnectWalletModal from 'wallets/components/connect-wallet-modal';
@@ -32,11 +27,6 @@ const WEB3_POLLING_INTERVAL = Number(
 
 export const WalletConnectors: WalletConnector[] = [
   MetaMaskWalletConfig,
-  // WalletConnectConfig,
-  // LedgerWalletConfig,
-  // TrezorWalletConfig,
-  // CoinbaseWalletConfig,
-  // PortisWalletConfig,
 ];
 
 type WalletData = {
