@@ -115,16 +115,12 @@ export function formatETHValue(value?: BigNumber, decimals: number = 4): string 
   return `${formatBigValue(value, decimals)} ETH`;
 }
 
-export function formatLPValue(value?: BigNumber): string {
-  return `${formatBigValue(value, 9)} LP`;
+export function formatLPValue(value?: BigNumber, decimals: number = 4): string {
+  return `${formatBigValue(value, decimals)} LP`;
 }
 
-export function formatUNIXValue(value?: BigNumber): string {
-  return `${formatBigValue(value, 18)}`;
-}
-
-export function formatBONDValue(value?: BigNumber): string {
-  return formatBigValue(value, 4);
+export function formatUNIXValue(value?: BigNumber, decimals: number = 4): string {
+  return `${formatBigValue(value, decimals)}`;
 }
 
 export function shortenAddr(
