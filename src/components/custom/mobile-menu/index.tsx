@@ -82,8 +82,8 @@ const MobileMenu: React.FunctionComponent = () => {
           <Burger isOpen={isOpen} />
         </Button>
         <Grid flow="col" gap={8}>
-          <Icons name="xfund-token" />
-          <Icons name="xfund" width={113} />
+          <Icons name="unix-token" />
+          <Icons name="unix-token" width={113} />
         </Grid>
       </Grid>
       <div className={s.mask} />
@@ -96,20 +96,20 @@ const MobileMenu: React.FunctionComponent = () => {
               label="Pools"
             />
           </FadeBlock>
-          <FadeBlock visible={isOpen}>
-            <MobileMenuLink
-              path="/governance"
-              icon="bank-outlined"
-              label="Voting"
-            />
-          </FadeBlock>
-          <FadeBlock visible={isOpen}>
-            <MobileMenuLink
-              path="/bonds"
-              icon="paper-bill-outlined"
-              label="Bonds"
-            />
-          </FadeBlock>
+          {/*<FadeBlock visible={isOpen}>*/}
+          {/*  <MobileMenuLink*/}
+          {/*    path="/governance"*/}
+          {/*    icon="bank-outlined"*/}
+          {/*    label="Voting"*/}
+          {/*  />*/}
+          {/*</FadeBlock>*/}
+          {/*<FadeBlock visible={isOpen}>*/}
+          {/*  <MobileMenuLink*/}
+          {/*    path="/bonds"*/}
+          {/*    icon="paper-bill-outlined"*/}
+          {/*    label="Bonds"*/}
+          {/*  />*/}
+          {/*</FadeBlock>*/}
         </Grid>
 
         <FadeBlock visible={isOpen}>

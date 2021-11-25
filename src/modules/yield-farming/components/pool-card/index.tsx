@@ -9,26 +9,17 @@ import IconsSet from 'components/custom/icons-set';
 import { Label, Paragraph } from 'components/custom/typography';
 import PoolStakeShareBar, { PoolTokenShare } from '../pool-stake-share-bar';
 
-import {
-  formatBigValue,
-  formatXFUNDValue,
-  formatUSDValue,
-  formatETHValue,
-  getPoolIcons,
-  getPoolNames,
-  PoolTypes,
-} from 'web3/utils';
+import { formatBigValue, formatETHValue, formatUNIXValue, getPoolIcons, getPoolNames, PoolTypes } from 'web3/utils';
 import { useWallet } from 'wallets/wallet';
 import { useWeb3Contracts } from 'web3/contracts';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { XFUNDTokenMeta } from 'web3/contracts/xfund';
+import { UNIXTokenMeta } from 'web3/contracts/unix';
 
 import s from './styles.module.scss';
 
 export type PoolCardProps = {
-  stableToken?: boolean;
   unilpToken?: boolean;
-  xfundToken?: boolean;
+  unixToken?: boolean;
 };
 
 type PoolCardState = {
@@ -52,7 +43,7 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
   const wallet = useWallet();
   const web3c = useWeb3Contracts();
 
-  const { stableToken = false, unilpToken = false, xfundToken = false } = props;
+  const { unilpToken = false, unixToken = false } = props;
 
   const [state, setState] = React.useState<PoolCardState>({});
 
@@ -104,61 +95,62 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
           },
         ],
       }));
-    } else if (xfundToken) {
+    } else if (unixToken) {
       setState(prevState => ({
         ...prevState,
-        type: PoolTypes.XFUND,
+        type: PoolTypes.UNIX,
         enabled: true,
-        isEnded: web3c.yfXFUND.isEnded,
-        currentEpoch: web3c.yfXFUND.currentEpoch,
-        totalEpochs: web3c.yfXFUND.totalEpochs,
-        epochReward: web3c.yfXFUND.epochReward,
-        potentialReward: web3c.yfXFUND.potentialReward,
-        balance: web3c.aggregated.yfXFUNDStakedValue,
-        myBalance: web3c.aggregated.myXFUNDStakedValue,
-        effectiveBalance: web3c.aggregated.yfXFUNDEffectiveStakedValue,
-        myEffectiveBalance: web3c.aggregated.myXFUNDEffectiveStakedValue,
+        isEnded: web3c.yfUNIX.isEnded,
+        currentEpoch: web3c.yfUNIX.currentEpoch,
+        totalEpochs: web3c.yfUNIX.totalEpochs,
+        epochReward: web3c.yfUNIX.epochReward,
+        potentialReward: web3c.yfUNIX.potentialReward,
+        balance: web3c.aggregated.yfUNIXStakedValue,
+        myBalance: web3c.aggregated.myUNIXStakedValue,
+        effectiveBalance: web3c.aggregated.yfUNIXEffectiveStakedValue,
+        myEffectiveBalance: web3c.aggregated.myUNIXEffectiveStakedValue,
         shares: [
           {
-            icon: XFUNDTokenMeta.icon,
-            name: XFUNDTokenMeta.name,
+            icon: UNIXTokenMeta.icon,
+            name: UNIXTokenMeta.name,
             color: 'var(--text-color-3)',
             value: formatBigValue(
-              web3c.yfXFUND.nextPoolSize,
-              XFUNDTokenMeta.decimals,
+              web3c.yfUNIX.nextPoolSize,
+              UNIXTokenMeta.decimals,
             ),
             share:
-              web3c.staking.xfund.nextEpochPoolSize
+              web3c.staking.unix.nextEpochPoolSize
                 ?.multipliedBy(100)
-                .div(web3c.yfXFUND.nextPoolSize ?? 1)
+                .div(web3c.yfUNIX.nextPoolSize ?? 1)
                 .toNumber() ?? 0,
           },
         ],
         myShares: [
           {
-            icon: XFUNDTokenMeta.icon,
-            name: XFUNDTokenMeta.name,
+            icon: UNIXTokenMeta.icon,
+            name: UNIXTokenMeta.name,
             color: 'var(--text-color-3)',
             value: formatBigValue(
-              web3c.yfXFUND.nextEpochStake,
-              XFUNDTokenMeta.decimals,
+              web3c.yfUNIX.nextEpochStake,
+              UNIXTokenMeta.decimals,
             ),
             share:
-              web3c.staking.xfund.nextEpochUserBalance
+              web3c.staking.unix.nextEpochUserBalance
                 ?.multipliedBy(100)
-                .div(web3c.yfXFUND.nextEpochStake ?? 1)
+                .div(web3c.yfUNIX.nextEpochStake ?? 1)
                 .toNumber() ?? 0,
           },
         ],
       }));
+
     }
-  }, [stableToken, unilpToken, xfundToken, web3c]);
+  }, [unilpToken, unixToken, web3c]);
 
   function handleStaking() {
     if (unilpToken) {
       history.push('/yield-farming/unilp');
-    } else if (xfundToken) {
-      history.push('/yield-farming/xfund');
+    } else if (unixToken) {
+      history.push('/yield-farming/unix');
     }
   }
 
@@ -195,17 +187,23 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
                 Reward
               </Label>
               <Paragraph type="p1" semiBold className={s.value}>
-                {formatXFUNDValue(state.epochReward)} XFUND
+                {formatUNIXValue(state.epochReward)} UniX
               </Paragraph>
             </div>
             {wallet.isActive && (
               <div className={s.row}>
+                <div className={s.labelWrap}>
                 <Label type="lb2" semiBold className={s.label}>
                   My Potential Reward
                 </Label>
+                <Tooltip
+                  type="info"
+                  title="NOTE: No rewards are distributed for epoch 0 - the information displayed during epoch 0 is informational for projection"
+                />
                 <Paragraph type="p1" semiBold className={s.value}>
-                  {formatXFUNDValue(state.potentialReward)} XFUND
+                  {formatUNIXValue(state.potentialReward)} UniX
                 </Paragraph>
+                </div>
               </div>
             )}
 

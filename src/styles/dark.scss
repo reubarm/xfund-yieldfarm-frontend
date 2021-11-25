@@ -1,8 +1,8 @@
 @import 'colors';
 
 :root .theme-dark {
-  --color-body-bg: #202529;
-  --color-card-bg: #282c30;
+  --color-body-bg: #17171E;
+  --color-card-bg: #1A1A21;
   --color-overlay-bg: #36393d;
   --color-mask-bg: rgba(32, 37, 41, 0.8);
   --color-border: #43484d;
@@ -26,8 +26,8 @@
   --text-color-green500: #{$color-green500};
   --text-color-green500-rgb: #{hexToRGB($color-green500)};
 
-  --text-color-blue500: #{$color-blue400};
-  --text-color-blue500-rgb: #{hexToRGB($color-blue500)};
+  --text-color-blue500: #{$color-purple500};
+  --text-color-blue500-rgb: #{hexToRGB($color-purple600)};
 
   --text-color-yellow500: #{$color-yellow500};
   --text-color-yellow500-rgb: #{hexToRGB($color-yellow500)};
@@ -37,10 +37,10 @@
   --text-color-red600: #{$color-red600};
 
   // LAYOUT-SIDE-NAV
-  --side-nav-tick-color: #{$color-blue500};
+  --side-nav-tick-color: #{$color-purple500};
   --side-nav-link-color: #606268;
   --side-nav-link-text-color: #fff;
   --side-nav-link-bg-color: rgba(255, 67, 57, 0.08);
-  --side-nav-link-active-color: #{$color-blue500};
+  --side-nav-link-active-color: #{$color-purple500};
   --side-nav-link-active-bg-color: rgba(255, 67, 57, 0.08);
 }

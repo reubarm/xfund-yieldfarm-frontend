@@ -8,25 +8,25 @@ import YieldFarmingView from 'modules/yield-farming';
 import Warnings from 'components/custom/warnings';
 import MobileMenu from 'components/custom/mobile-menu';
 import ExternalLink from 'components/custom/externalLink';
-import StayTuned from 'components/custom/stay-tuned';
+// import StayTuned from 'components/custom/stay-tuned';
 import LayoutSideNav from 'layout/components/layout-side-nav';
 
-import { XFUNDTokenMeta } from 'web3/contracts/xfund';
+import { UNIXTokenMeta } from 'web3/contracts/unix';
+import { CONTRACT_STAKING_ADDR } from 'web3/contracts/staking'
+import { CONTRACT_YIELD_FARM_LP_ADDR } from 'web3/contracts/yieldFarmLP'
+import { CONTRACT_YIELD_FARM_UNIX_ADDR } from 'web3/contracts/yieldFarmUNIX'
 
 import s from './styles.module.scss';
 
 const LayoutView: React.FunctionComponent = () => {
   return (
     <Antd.Layout className={s.container}>
-      {!isMobile ? <LayoutSideNav /> : <MobileMenu />}
+      {/*{!isMobile ? <LayoutSideNav /> : <MobileMenu />}*/}
       <Antd.Layout className={s.main}>
         <Warnings>
           <Antd.Layout.Content className={s.content}>
             <Switch>
               <Route path="/yield-farming" component={YieldFarmingView} />
-              {/*<Route path="/governance/:vt(\w+)" component={GovernanceView} />*/}
-              {/*<Route path="/governance" component={GovernanceView} />*/}
-              {/*<Route path="/bonds" render={() => <StayTuned />} />*/}
               <Redirect from="/" to="/yield-farming" />
             </Switch>
           </Antd.Layout.Content>
@@ -51,12 +51,25 @@ const LayoutView: React.FunctionComponent = () => {
                 Docs
               </ExternalLink>
               <ExternalLink
-                href={`https://app.uniswap.org/#/add/${XFUNDTokenMeta.address}/ETH`}>
-                Uniswap v2 ETH/xFUND add liquidity
+                href={`https://app.uniswap.org/#/add/v2/${UNIXTokenMeta.address}/ETH`}>
+                Uniswap v2 ETH/UNiX add liquidity
               </ExternalLink>
               <ExternalLink
-                href={`https://app.uniswap.org/#/swap?inputCurrency=${XFUNDTokenMeta.address}&outputCurrency=ETH`}>
-                Uniswap v2 ETH/xFUND market
+                href={`https://app.uniswap.org/#/swap?inputCurrency=${UNIXTokenMeta.address}&outputCurrency=ETH`}>
+                Uniswap v2 ETH/UNiX market
+              </ExternalLink>
+              <br/>
+              <ExternalLink
+                href={`https://etherscan.io/address/${CONTRACT_STAKING_ADDR}#code`}>
+                Staking Contract
+              </ExternalLink>
+              <ExternalLink
+                href={`https://etherscan.io/address/${CONTRACT_YIELD_FARM_LP_ADDR}#code`}>
+                LP Farm Contract
+              </ExternalLink>
+              <ExternalLink
+                href={`https://etherscan.io/address/${CONTRACT_YIELD_FARM_UNIX_ADDR}#code`}>
+                UNiX Farm Contract
               </ExternalLink>
             </div>
           </Antd.Layout.Footer>

@@ -7,7 +7,7 @@ import { useWallet } from 'wallets/wallet';
 import { getHumanValue, ZERO_BIG_NUMBER } from 'web3/utils';
 import Web3Contract from 'web3/contract';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { XFUNDTokenMeta } from 'web3/contracts/xfund';
+import { UNIXTokenMeta } from 'web3/contracts/unix';
 
 export const CONTRACT_YIELD_FARM_LP_ADDR = String(
   process.env.REACT_APP_CONTRACT_YIELD_FARM_LP_ADDR,
@@ -20,7 +20,7 @@ type YieldFarmLPContractData = {
   totalReward?: BigNumber;
   epochReward?: BigNumber;
   currentEpoch?: number;
-  xfundReward?: BigNumber;
+  unixReward?: BigNumber;
   poolSize?: BigNumber;
   nextPoolSize?: BigNumber;
   epochStake?: BigNumber;
@@ -42,7 +42,7 @@ const InitialData: YieldFarmLPContractData = {
   totalReward: undefined,
   epochReward: undefined,
   currentEpoch: undefined,
-  xfundReward: undefined,
+  unixReward: undefined,
   poolSize: undefined,
   nextPoolSize: undefined,
   epochStake: undefined,
@@ -92,12 +92,12 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
     const epochReward =
       totalEpochs !== 0 ? totalReward?.div(totalEpochs) : ZERO_BIG_NUMBER;
 
-    let xfundReward = ZERO_BIG_NUMBER;
+    let unixReward = ZERO_BIG_NUMBER;
 
     if (currentEpoch > 0) {
-      const xfundEpoch =
+      const unixEpoch =
         currentEpoch === totalEpochs ? currentEpoch : currentEpoch - 1;
-      xfundReward = epochReward.multipliedBy(xfundEpoch);
+      unixReward = epochReward.multipliedBy(unixEpoch);
     }
 
     setData(prevState => ({
@@ -108,7 +108,7 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
       totalReward,
       epochReward,
       currentEpoch,
-      xfundReward,
+      unixReward: unixReward,
     }));
 
     const [poolSize, nextPoolSize] = await contract.batch([
@@ -158,7 +158,7 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
           method: 'massHarvest',
           callArgs: { from: wallet.account },
           transform: (value: string) =>
-            getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
+            getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
         },
       ]);
     }

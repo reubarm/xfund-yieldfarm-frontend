@@ -6,7 +6,7 @@ import LedgerDerivationPathModal from 'wallets/components/ledger-deriviation-pat
 import useMergeState from 'hooks/useMergeState';
 
 import Modal, { ModalProps } from 'components/antd/modal';
-import { Heading, Paragraph } from 'components/custom/typography';
+import { Heading } from 'components/custom/typography';
 import Button from 'components/antd/button';
 
 import s from './styles.module.css';

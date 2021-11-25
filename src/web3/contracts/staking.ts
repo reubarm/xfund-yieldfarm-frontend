@@ -9,7 +9,7 @@ import { TokenMeta } from 'web3/types';
 import { getGasValue, getHumanValue, getNonHumanValue } from 'web3/utils';
 import Web3Contract, { BatchContractMethod } from 'web3/contract';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { XFUNDTokenMeta } from 'web3/contracts/xfund';
+import { UNIXTokenMeta } from 'web3/contracts/unix';
 
 export const CONTRACT_STAKING_ADDR = String(
   process.env.REACT_APP_CONTRACT_STAKING_ADDR,
@@ -29,7 +29,7 @@ type StakingContractData = {
   epochDuration?: number;
   currentEpochEnd?: number;
   uniswap: StakingTokenData;
-  xfund: StakingTokenData;
+  unix: StakingTokenData;
 };
 
 export type StakingContract = StakingContractData & {
@@ -61,7 +61,7 @@ const InitialData: StakingContractData = {
     epochUserBalance: undefined,
     nextEpochUserBalance: undefined,
   },
-  xfund: {
+  unix: {
     epochPoolSize: undefined,
     nextEpochPoolSize: undefined,
     balance: undefined,
@@ -113,12 +113,12 @@ export function useStakingContract(): StakingContract {
     const [
       uniEpochPoolSize,
       uniNextEpochPoolSize,
-      bondEpochPoolSize,
-      bondNextEpochPoolSize,
+      unixEpochPoolSize,
+      unixNextEpochPoolSize,
     ] = await contract.batch([
       ...[
         UNISWAPTokenMeta,
-        XFUNDTokenMeta,
+        UNIXTokenMeta,
       ].reduce((ac: BatchContractMethod[], token) => {
         return [
           ...ac,
@@ -145,10 +145,10 @@ export function useStakingContract(): StakingContract {
         epochPoolSize: uniEpochPoolSize,
         nextEpochPoolSize: uniNextEpochPoolSize,
       },
-      xfund: {
-        ...prevState.xfund,
-        epochPoolSize: bondEpochPoolSize,
-        nextEpochPoolSize: bondNextEpochPoolSize,
+      unix: {
+        ...prevState.unix,
+        epochPoolSize: unixEpochPoolSize,
+        nextEpochPoolSize: unixNextEpochPoolSize,
       },
     }));
   }, [reload]);
@@ -159,22 +159,22 @@ export function useStakingContract(): StakingContract {
     let uniswapBalance: BigNumber | undefined;
     let uniswapEpochUserBalance: BigNumber | undefined;
     let uniswapNextEpochUserBalance: BigNumber | undefined;
-    let bondBalance: BigNumber | undefined;
-    let bondEpochUserBalance: BigNumber | undefined;
-    let bondNextEpochUserBalance: BigNumber | undefined;
+    let unixBalance: BigNumber | undefined;
+    let unixEpochUserBalance: BigNumber | undefined;
+    let unixNextEpochUserBalance: BigNumber | undefined;
 
     if (wallet.account && currentEpoch !== undefined) {
       [
         uniswapBalance,
         uniswapEpochUserBalance,
         uniswapNextEpochUserBalance,
-        bondBalance,
-        bondEpochUserBalance,
-        bondNextEpochUserBalance,
+        unixBalance,
+        unixEpochUserBalance,
+        unixNextEpochUserBalance,
       ] = await contract.batch([
         ...[
           UNISWAPTokenMeta,
-          XFUNDTokenMeta,
+          UNIXTokenMeta,
         ].reduce(
           (ac: BatchContractMethod[], token) => [
             ...ac,
@@ -210,11 +210,11 @@ export function useStakingContract(): StakingContract {
         epochUserBalance: uniswapEpochUserBalance,
         nextEpochUserBalance: uniswapNextEpochUserBalance,
       },
-      xfund: {
-        ...prevState.xfund,
-        balance: bondBalance,
-        epochUserBalance: bondEpochUserBalance,
-        nextEpochUserBalance: bondNextEpochUserBalance,
+      unix: {
+        ...prevState.unix,
+        balance: unixBalance,
+        epochUserBalance: unixEpochUserBalance,
+        nextEpochUserBalance: unixNextEpochUserBalance,
       },
     }));
   }, [reload, wallet.account, data.currentEpoch]);

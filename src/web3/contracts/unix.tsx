@@ -9,46 +9,46 @@ import { useWallet } from 'wallets/wallet';
 import Web3Contract from 'web3/contract';
 import { CONTRACT_STAKING_ADDR } from 'web3/contracts/staking';
 
-import { ReactComponent as XFUNDIcon } from 'resources/svg/tokens/xfund.svg';
+import { ReactComponent as UNIXIcon } from 'resources/svg/tokens/unix.svg';
 
-const CONTRACT_XFUND_ADDR = String(process.env.REACT_APP_CONTRACT_XFUND_ADDR).toLowerCase();
+const CONTRACT_UNIX_ADDR = String(process.env.REACT_APP_CONTRACT_UNIX_ADDR).toLowerCase();
 
-export const XFUNDTokenMeta: TokenMeta = {
-    icon: <XFUNDIcon key="xfund" />,
-    name: 'xFUND',
-    address: CONTRACT_XFUND_ADDR,
-    decimals: 9,
+export const UNIXTokenMeta: TokenMeta = {
+    icon: <UNIXIcon key="unix" name="unix-token" />,
+    name: 'UniX',
+    address: CONTRACT_UNIX_ADDR,
+    decimals: 18,
 };
 
-type XFUNDContractData = {
+type UNIXContractData = {
     balance?: BigNumber;
     allowance?: BigNumber;
 };
 
-export type XFUNDContract = XFUNDContractData & {
+export type UNIXContract = UNIXContractData & {
     contract: Web3Contract;
     reload(): void;
     approveSend(value: BigNumber): Promise<any>;
 };
 
-const InitialData: XFUNDContractData = {
+const InitialData: UNIXContractData = {
     balance: undefined,
     allowance: undefined,
 };
 
-export function useXFUNDContract(): XFUNDContract {
+export function useUNIXContract(): UNIXContract {
     const [reload] = useReload();
     const wallet = useWallet();
 
     const contract = React.useMemo<Web3Contract>(() => {
         return new Web3Contract(
-            require('web3/abi/xfund.json'),
-            CONTRACT_XFUND_ADDR,
-            'xFUND',
+            require('web3/abi/unix.json'),
+            CONTRACT_UNIX_ADDR,
+            'UniX',
         );
     }, []);
 
-    const [data, setData] = React.useState<XFUNDContractData>(InitialData);
+    const [data, setData] = React.useState<UNIXContractData>(InitialData);
 
     useAsyncEffect(async () => {
         let balance: BigNumber | undefined = undefined;
@@ -59,7 +59,7 @@ export function useXFUNDContract(): XFUNDContract {
                 {
                     method: 'balanceOf',
                     methodArgs: [wallet.account],
-                    transform: (value: string) => getHumanValue(new BigNumber(value), XFUNDTokenMeta.decimals),
+                    transform: (value: string) => getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
                 },
                 {
                     method: 'allowance',

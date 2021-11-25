@@ -13,14 +13,13 @@ const PoolOverview: React.FunctionComponent = () => {
       <div className={s.labelOverview}>Overview</div>
       <div className={s.cards}>
         <PoolCard unilpToken />
-        <PoolCard xfundToken />
+        <PoolCard unixToken />
       </div>
       <PoolTransactionChart />
       <PoolTransactionTable
         label="Transactions"
-        stableToken
         unilpToken
-        xfundToken
+        unixToken
       />
     </div>
   );

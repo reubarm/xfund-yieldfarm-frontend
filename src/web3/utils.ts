@@ -3,12 +3,8 @@ import BigNumber from 'bignumber.js';
 import memoize from 'lodash/memoize';
 
 import { TokenMeta } from 'web3/types';
-import { USDCTokenMeta } from 'web3/contracts/usdc';
-import { DAITokenMeta } from 'web3/contracts/dai';
-import { SUSDTokenMeta } from 'web3/contracts/susd';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
-import { BONDTokenMeta } from 'web3/contracts/bond';
-import { XFUNDTokenMeta } from 'web3/contracts/xfund';
+import { UNIXTokenMeta } from 'web3/contracts/unix';
 
 export const MAX_UINT_256 = new BigNumber(2).pow(256).minus(1);
 export const ZERO_BIG_NUMBER = new BigNumber(0);
@@ -24,6 +20,8 @@ export function getEtherscanTxUrl(
       return `https://etherscan.io/tx/${txHash}`;
     case 4:
       return `https://rinkeby.etherscan.io/tx/${txHash}`;
+    case 31337:
+      return ""
     default:
       throw new Error(`Not supported chainId=${chainId}.`);
   }
@@ -38,6 +36,8 @@ export function getEtherscanAddressUrl(
       return `https://etherscan.io/address/${address}`;
     case 4:
       return `https://rinkeby.etherscan.io/address/${address}`;
+    case 31337:
+      return ""
     default:
       throw new Error(`Not supported chainId=${chainId}.`);
   }
@@ -119,8 +119,8 @@ export function formatLPValue(value?: BigNumber): string {
   return `${formatBigValue(value, 9)} LP`;
 }
 
-export function formatXFUNDValue(value?: BigNumber): string {
-  return `${formatBigValue(value, 9)}`;
+export function formatUNIXValue(value?: BigNumber): string {
+  return `${formatBigValue(value, 18)}`;
 }
 
 export function formatBONDValue(value?: BigNumber): string {
@@ -139,18 +139,10 @@ export function shortenAddr(
 
 export function getTokenMeta(tokenAddr: string): TokenMeta | undefined {
   switch (tokenAddr.toLowerCase()) {
-    case USDCTokenMeta.address:
-      return USDCTokenMeta;
-    case DAITokenMeta.address:
-      return DAITokenMeta;
-    case SUSDTokenMeta.address:
-      return SUSDTokenMeta;
     case UNISWAPTokenMeta.address:
       return UNISWAPTokenMeta;
-    case BONDTokenMeta.address:
-      return BONDTokenMeta;
-    case XFUNDTokenMeta.address:
-      return XFUNDTokenMeta;
+    case UNIXTokenMeta.address:
+      return UNIXTokenMeta;
     default:
       return undefined;
   }
@@ -160,20 +152,17 @@ export enum PoolTypes {
   STABLE = 'stable',
   UNILP = 'unilp',
   BOND = 'bond',
-  XFUND = 'xfund',
+  UNIX = 'unix',
+  SSLP = 'sslp',
 }
 
 export const getPoolIcons = memoize(
   (poolType: PoolTypes): React.ReactNode[] => {
     switch (poolType) {
-      case PoolTypes.STABLE:
-        return [USDCTokenMeta.icon, DAITokenMeta.icon, SUSDTokenMeta.icon];
       case PoolTypes.UNILP:
         return [UNISWAPTokenMeta.icon];
-      case PoolTypes.BOND:
-        return [BONDTokenMeta.icon];
-      case PoolTypes.XFUND:
-        return [XFUNDTokenMeta.icon];
+      case PoolTypes.UNIX:
+        return [UNIXTokenMeta.icon];
       default:
         return [];
     }
@@ -182,14 +171,10 @@ export const getPoolIcons = memoize(
 
 export const getPoolNames = memoize((poolType: PoolTypes): string[] => {
   switch (poolType) {
-    case PoolTypes.STABLE:
-      return [USDCTokenMeta.name, DAITokenMeta.name, SUSDTokenMeta.name];
     case PoolTypes.UNILP:
       return [UNISWAPTokenMeta.name];
-    case PoolTypes.BOND:
-      return [BONDTokenMeta.name];
-    case PoolTypes.XFUND:
-      return [XFUNDTokenMeta.name];
+    case PoolTypes.UNIX:
+      return [UNIXTokenMeta.name];
     default:
       return [];
   }

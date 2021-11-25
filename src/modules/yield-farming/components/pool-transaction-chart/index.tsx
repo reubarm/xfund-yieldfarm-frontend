@@ -10,7 +10,6 @@ import PoolTxChartProvider, {
 } from 'modules/yield-farming/components/pool-tx-chart-provider';
 
 import {
-  formatUSDValue,
   formatETHValue,
   getPoolIcons,
   getPoolNames,
@@ -28,8 +27,8 @@ const PoolFilters: SelectOption[] = [
     label: getPoolNames(PoolTypes.UNILP).join('/'),
   },
   {
-    value: 'xfund',
-    label: getPoolNames(PoolTypes.XFUND).join('/'),
+    value: 'unix',
+    label: getPoolNames(PoolTypes.UNIX).join('/'),
   },
 ];
 
@@ -55,17 +54,17 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
     const filters = [{ value: 'all', label: 'All epochs' }];
 
     if (poolFilter === PoolTypes.UNILP) {
-      for (let i = 1; i <= web3c.yfLP.currentEpoch!; i++) {
+      for (let i = 0; i <= web3c.yfLP.currentEpoch!; i++) {
         filters.push({ value: String(i), label: `Epoch ${i}` });
       }
-    } else if (poolFilter === PoolTypes.XFUND) {
-      for (let i = 0; i <= web3c.yfXFUND.currentEpoch!; i++) {
+    } else if (poolFilter === PoolTypes.UNIX) {
+      for (let i = 0; i <= web3c.yfUNIX.currentEpoch!; i++) {
         filters.push({ value: String(i), label: `Epoch ${i}` });
       }
     }
 
     return filters;
-  }, [web3c.staking, web3c.yfLP, web3c.yfXFUND, poolFilter]);
+  }, [web3c.staking, web3c.yfLP, web3c.yfUNIX, poolFilter]);
 
   React.useEffect(() => {
     poolTxChart

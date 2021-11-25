@@ -9,7 +9,7 @@ import PoolHarvestModal from '../pool-harvest-modal';
 
 import { useWallet } from 'wallets/wallet';
 import { useWeb3Contracts } from 'web3/contracts';
-import { formatXFUNDValue } from 'web3/utils';
+import { formatUNIXValue } from 'web3/utils';
 import useMergeState from 'hooks/useMergeState';
 
 import s from './styles.module.scss';
@@ -41,9 +41,9 @@ const PoolRewards: React.FunctionComponent = () => {
           </Paragraph>
           <Grid flow="col" gap={16} align="center">
             <Heading type="h3" bold color="grey900">
-              {formatXFUNDValue(web3c.aggregated.totalCurrentReward)}
+              {formatUNIXValue(web3c.aggregated.totalCurrentReward)}
             </Heading>
-            <Icons name="xfund-token" width="24" height="29" />
+            <Icons name="unix-token" width="24" height="29" />
             {wallet.isActive && (
               <Button
                 type="light"
@@ -57,13 +57,13 @@ const PoolRewards: React.FunctionComponent = () => {
         <div className={s.delimiter} />
         <Grid flow="row" gap={4}>
           <Paragraph type="p2" color="grey500">
-            xFUND Balance
+            UNiX Balance
           </Paragraph>
           <Grid flow="col" gap={16} align="center">
             <Heading type="h3" bold color="grey900">
-              {formatXFUNDValue(web3c.xfund.balance)}
+              {formatUNIXValue(web3c.unix.balance)}
             </Heading>
-            <Icons name="xfund-token" width="24" height="29" />
+            <Icons name="unix-token" width="24" height="29" />
           </Grid>
         </Grid>
         <div className={s.delimiter} />
@@ -74,14 +74,23 @@ const PoolRewards: React.FunctionComponent = () => {
             </Paragraph>
             <Tooltip
               type="info"
-              title="This number shows the xFUND rewards you would potentially be able to harvest this epoch, but is subject to change - in case more users deposit, or you withdraw some of your stake."
+              title={
+                <span>
+                This number shows the UNiX rewards you would potentially be able to harvest this epoch,
+                  but is subject to change - in case more users deposit, or you withdraw some of your stake.
+                  <br/>
+                  <br/>
+                  NOTE: No rewards are distributed for epoch 0 - the information displayed during epoch 0 is
+                  informational for projection
+                </span>
+              }
             />
           </Grid>
           <Grid flow="col" gap={16} align="center">
             <Heading type="h3" bold color="grey900">
-              {formatXFUNDValue(web3c.aggregated.totalPotentialReward)}
+              {formatUNIXValue(web3c.aggregated.totalPotentialReward)}
             </Heading>
-            <Icons name="xfund-token" width="24" height="29" />
+            <Icons name="unix-token" width="24" height="29" />
           </Grid>
         </Grid>
       </Grid>
