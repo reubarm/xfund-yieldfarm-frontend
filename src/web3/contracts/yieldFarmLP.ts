@@ -108,7 +108,7 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
       totalReward,
       epochReward,
       currentEpoch,
-      unixReward: unixReward,
+      unixReward,
     }));
 
     const [poolSize, nextPoolSize] = await contract.batch([

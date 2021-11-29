@@ -21,7 +21,7 @@ const PoolStats: React.FunctionComponent = () => {
   }, [staking]);
   const [untilNextEpoch] = useWeekCountdown(epochEnd);
 
-  const totalBondReward = formatUNIXValue(aggregated.totalUnixReward);
+  const totalUnixReward = formatUNIXValue(aggregated.totalReward);
 
   return (
     <Grid
@@ -71,7 +71,7 @@ const PoolStats: React.FunctionComponent = () => {
             </Label>
             <Tooltip
               type="info"
-              title={`This number shows the UNiX token rewards distributed so far out of the total of ${totalBondReward} that are going to be available for Yield Farming.`}
+              title={`This number shows the UNiX token rewards distributed so far out of the total of ${totalUnixReward} that are going to be available for Yield Farming.`}
             />
           </Grid>
           <Grid flow="row" gap={4}>
@@ -79,7 +79,7 @@ const PoolStats: React.FunctionComponent = () => {
               {formatUNIXValue(aggregated.unixReward)}
             </Heading>
             <Paragraph type="p1" color="grey500">
-              out of {totalBondReward}
+              out of {totalUnixReward}
             </Paragraph>
           </Grid>
         </Grid>

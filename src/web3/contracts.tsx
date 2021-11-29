@@ -47,7 +47,7 @@ export type Web3ContractsData = {
     totalEffectiveStaked?: BigNumber;
     totalCurrentReward?: BigNumber;
     totalPotentialReward?: BigNumber;
-    totalUnixReward?: BigNumber;
+    totalReward?: BigNumber;
     unixReward?: BigNumber;
     unixLockedPrice?: BigNumber;
   };
@@ -309,7 +309,7 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
     return total;
   }
 
-  function totalUNIXReward(): BigNumber | undefined {
+  function totalReward(): BigNumber | undefined {
     const yfLPTotalReward = yfLPContract.totalReward;
     const yfUNIXTotalReward = yfUNIXContract.totalReward;
 
@@ -325,7 +325,6 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   function unixReward(): BigNumber | undefined {
     const yfLPReward = yfLPContract.unixReward;
     const yfUNIXReward = yfUNIXContract.unixReward;
-
     if (
       yfLPReward === undefined ||
       yfUNIXReward === undefined
@@ -366,8 +365,6 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
       get myUNIXEffectiveStakedValue(): BigNumber | undefined {
         return myUNIXEffectiveStakedValue();
       },
-      ////////////////
-
       get totalStaked(): BigNumber | undefined {
         return totalStaked();
       },
@@ -380,8 +377,8 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
       get totalPotentialReward(): BigNumber | undefined {
         return totalPotentialReward();
       },
-      get totalUNIXReward(): BigNumber | undefined {
-        return totalUNIXReward();
+      get totalReward(): BigNumber | undefined {
+        return totalReward();
       },
       get unixReward(): BigNumber | undefined {
         return unixReward();
