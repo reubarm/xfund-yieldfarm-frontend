@@ -9,7 +9,15 @@ import IconsSet from 'components/custom/icons-set';
 import { Label, Paragraph } from 'components/custom/typography';
 import PoolStakeShareBar, { PoolTokenShare } from '../pool-stake-share-bar';
 
-import { formatBigValue, formatETHValue, formatUNIXValue, getPoolIcons, getPoolNames, PoolTypes } from 'web3/utils';
+import {
+  formatBigValue,
+  formatETHValue,
+  formatUNIXValue,
+  formatUSDValue,
+  getPoolIcons,
+  getPoolNames,
+  PoolTypes
+} from 'web3/utils';
 import { useWallet } from 'wallets/wallet';
 import { useWeb3Contracts } from 'web3/contracts';
 import { UNISWAPTokenMeta } from 'web3/contracts/uniswap';
@@ -231,10 +239,10 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
                 />
               </div>
               <Paragraph type="p1" semiBold className={s.value}>
-                {formatETHValue(state.balance)}
+                {formatUSDValue(state.balance)}
               </Paragraph>
               <Paragraph type="p2" className={s.hint}>
-                {formatETHValue(state.effectiveBalance)} effective epoch balance
+                {formatUSDValue(state.effectiveBalance)} effective epoch balance
               </Paragraph>
               <PoolStakeShareBar shares={state.shares} />
             </div>
@@ -270,10 +278,10 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
             </div>
 
             <Paragraph type="p1" semiBold className={s.value}>
-              {formatETHValue(state.myBalance)}
+              {formatUSDValue(state.myBalance)}
             </Paragraph>
             <Paragraph type="p2" className={s.hint}>
-              {formatETHValue(state.myEffectiveBalance)} effective epoch balance
+              {formatUSDValue(state.myEffectiveBalance)} effective epoch balance
             </Paragraph>
               <PoolStakeShareBar shares={state.myShares} />
 

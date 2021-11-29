@@ -14,6 +14,7 @@ import { WETHTokenMeta } from 'web3/contracts/weth';
 import { UNIXTokenMeta } from 'web3/contracts/unix';
 
 import { ReactComponent as UNIXIcon } from 'resources/svg/tokens/unix.svg';
+import {USDCTokenMeta} from "./usdc";
 
 export const CONTRACT_UNISWAP_ADDR = String(
   process.env.REACT_APP_CONTRACT_UNISWAP_V2_ADDR,
@@ -28,7 +29,7 @@ export const UNISWAPTokenMeta: TokenMeta = {
 
 type UNISWAPContractData = {
   totalSupply?: BigNumber;
-  wethReserve?: BigNumber;
+  usdcReserve?: BigNumber;
   unixReserve?: BigNumber;
   stablePrice: BigNumber;
   unilpPrice?: BigNumber;
@@ -45,7 +46,7 @@ export type UNISWAPContract = UNISWAPContractData & {
 
 const InitialData: UNISWAPContractData = {
   totalSupply: undefined,
-  wethReserve: undefined,
+  usdcReserve: undefined,
   unixReserve: undefined,
   stablePrice: new BigNumber(1),
   unilpPrice: undefined,
@@ -92,26 +93,26 @@ export function useUNISWAPContract(): UNISWAPContract {
       },
     ]);
 
-    let wethReserve: BigNumber | undefined;
+    let usdcReserve: BigNumber | undefined;
     let unixReserve: BigNumber | undefined;
 
-    if (token0 === WETHTokenMeta.address) {
-      wethReserve = getHumanValue(reserves[0], WETHTokenMeta.decimals);
+    if (token0 === USDCTokenMeta.address) {
+      usdcReserve = getHumanValue(reserves[0], USDCTokenMeta.decimals);
       unixReserve = getHumanValue(reserves[1], UNIXTokenMeta.decimals);
-    } else if (token1 === WETHTokenMeta.address) {
-      wethReserve = getHumanValue(reserves[1], WETHTokenMeta.decimals);
+    } else if (token1 === USDCTokenMeta.address) {
+      usdcReserve = getHumanValue(reserves[1], USDCTokenMeta.decimals);
       unixReserve = getHumanValue(reserves[0], UNIXTokenMeta.decimals);
     }
 
-    const lpPrice = wethReserve?.div(totalSupply ?? 1);
+    const lpPrice = usdcReserve?.div(totalSupply ?? 1);
 
     //amountB = amountA.mul(reserveB) / reserveA;
-    const unixPrice = wethReserve?.div(unixReserve ?? 1);
+    const unixPrice = usdcReserve?.div(unixReserve ?? 1);
 
     setData(prevState => ({
       ...prevState,
       totalSupply,
-      wethReserve: wethReserve,
+      usdcReserve: usdcReserve,
       unilpPrice: lpPrice,
       unixReserve: unixReserve,
       unixPrice: unixPrice,

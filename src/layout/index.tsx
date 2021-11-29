@@ -55,7 +55,7 @@ const LayoutView: React.FunctionComponent = () => {
                 Uniswap v2 ETH/UNiX add liquidity
               </ExternalLink>
               <ExternalLink
-                href={`https://app.uniswap.org/#/swap?inputCurrency=${UNIXTokenMeta.address}&outputCurrency=ETH`}>
+                href={`https://app.uniswap.org/#/swap?inputCurrency=${UNIXTokenMeta.address}&outputCurrency=${process.env.REACT_APP_CONTRACT_USDC_ADDR}`}>
                 Uniswap v2 ETH/UNiX market
               </ExternalLink>
               <br/>

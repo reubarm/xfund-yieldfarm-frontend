@@ -10,7 +10,7 @@ import PoolTxChartProvider, {
 } from 'modules/yield-farming/components/pool-tx-chart-provider';
 
 import {
-  formatETHValue,
+  formatETHValue, formatUSDValue,
   getPoolIcons,
   getPoolNames,
   PoolTypes,
@@ -167,10 +167,10 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
                   <ReCharts.YAxis
                     axisLine={false}
                     tickLine={false}
-                    tickFormatter={(value: any) => formatETHValue(value)}
+                    tickFormatter={(value: any) => formatUSDValue(value)}
                   />
                   <ReCharts.Tooltip
-                    formatter={(value: any) => formatETHValue(value)}
+                    formatter={(value: any) => formatUSDValue(value)}
                   />
                   <ReCharts.Legend
                     align="right"
