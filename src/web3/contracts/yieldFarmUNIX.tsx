@@ -118,7 +118,7 @@ export function useYieldFarmUNIXContract(): YieldFarmUNIXContract {
       epochReward,
       currentEpoch,
       epochForPoolCalc,
-      unixReward: unixReward,
+      unixReward,
     }));
 
     const [poolSize, nextPoolSize] = await contract.batch([
