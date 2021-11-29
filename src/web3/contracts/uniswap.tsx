@@ -22,7 +22,7 @@ export const CONTRACT_UNISWAP_ADDR = String(
 
 export const UNISWAPTokenMeta: TokenMeta = {
   icon: <UNIXIcon key="unix" name="unix-token" />,
-  name: 'ETH-UNIX Uniswap LP',
+  name: 'USDC-UNIX Uniswap LP',
   address: CONTRACT_UNISWAP_ADDR,
   decimals: 18,
 };
