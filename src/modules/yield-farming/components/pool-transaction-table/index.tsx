@@ -17,7 +17,7 @@ import PoolTxListProvider, {
 } from 'modules/yield-farming/components/pool-tx-list-provider';
 import {
   formatBigValue,
-  formatETHValue,
+  formatETHValue, formatUSDValue,
   getEtherscanTxUrl,
   getTokenMeta,
   shortenAddr,
@@ -87,7 +87,7 @@ const Columns: ColumnsType<any> = [
               {tokenMeta?.name}
             </span>
           }>
-          {formatETHValue(value)}
+          {formatUSDValue(value)}
         </Tooltip>
       );
     },

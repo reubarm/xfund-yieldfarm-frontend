@@ -6,7 +6,7 @@ import Grid from 'components/custom/grid';
 import { Heading, Label, Paragraph } from 'components/custom/typography';
 import ExternalLink from 'components/custom/externalLink';
 
-import { formatUNIXValue, formatETHValue } from 'web3/utils';
+import {formatUNIXValue, formatETHValue, formatUSDValue} from 'web3/utils';
 import { useWeb3Contracts } from 'web3/contracts';
 import { UNIXTokenMeta } from 'web3/contracts/unix';
 import { useWeekCountdown } from 'hooks/useCountdown';
@@ -54,10 +54,10 @@ const PoolStats: React.FunctionComponent = () => {
           </Grid>
           <Grid flow="row" gap={4}>
             <Heading type="h2" bold color="grey900">
-              {formatETHValue(aggregated.totalStaked)}
+              {formatUSDValue(aggregated.totalStaked)}
             </Heading>
             <Paragraph type="p1" color="grey500">
-              {formatETHValue(aggregated.totalEffectiveStaked)} epoch locked
+              {formatUSDValue(aggregated.totalEffectiveStaked)} epoch locked
             </Paragraph>
           </Grid>
         </Grid>
@@ -94,10 +94,10 @@ const PoolStats: React.FunctionComponent = () => {
           </Grid>
           <Grid flow="row" gap={4}>
             <Heading type="h2" bold color="grey900">
-              {formatETHValue(uniswap.unixPrice, 3)}
+              {formatUSDValue(uniswap.unixPrice, 3)}
             </Heading>
             <ExternalLink
-              href={`https://v2.app.uniswap.org/#/swap?inputCurrency=ETH&outputCurrency=${UNIXTokenMeta.address}`}
+              href={`https://v2.app.uniswap.org/#/swap?inputCurrency=${process.env.REACT_APP_CONTRACT_USDC_ADDR}&outputCurrency=${UNIXTokenMeta.address}`}
               className={s.link}>
               Uniswap market
             </ExternalLink>
