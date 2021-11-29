@@ -42,7 +42,7 @@ const YieldFarmingView: React.FunctionComponent = () => {
     };
   }, [isMobile]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const title = (WEB3_CHAIN_ID === 1) ? 'UNiX Yield' : `UNiX Yield (${getNetworkName(WEB3_CHAIN_ID)})`
+  const title = (WEB3_CHAIN_ID === 1) ? 'UniX Yield' : `UniX Yield (${getNetworkName(WEB3_CHAIN_ID)})`
 
   return (
     <div className={s.component}>
