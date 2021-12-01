@@ -104,7 +104,7 @@ export function useUNISWAPContract(): UNISWAPContract {
       unixReserve = getHumanValue(reserves[0], UNIXTokenMeta.decimals);
     }
 
-    const lpPrice = usdcReserve?.div(totalSupply ?? 1);
+    const lpPrice = usdcReserve?.div(totalSupply ?? 1).multipliedBy(2);
 
     //amountB = amountA.mul(reserveB) / reserveA;
     const unixPrice = usdcReserve?.div(unixReserve ?? 1);
