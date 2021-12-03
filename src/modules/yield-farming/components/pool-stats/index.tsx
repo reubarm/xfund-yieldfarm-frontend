@@ -113,7 +113,7 @@ const PoolStats: React.FunctionComponent = () => {
             </Label>
             <Tooltip
               type="info"
-              title="This counter shows the time left in the current epoch. The pool(s) below are synchronized and have epochs that last 2 weeks. You can deposit to the pool(s) during the duration of an epoch and receive rewards proportional to the time they are staked, but the funds must stay staked until the clock runs out and the epoch ends in order to be able to harvest the rewards."
+              title="This counter shows the time left in the current epoch. The pool(s) below are synchronized and have epochs that last 30 days. You can deposit to the pool(s) during the duration of an epoch and receive rewards proportional to the time they are staked, but the funds must stay staked until the clock runs out and the epoch ends in order to be able to harvest the rewards."
             />
           </Grid>
           <Grid flow="row" gap={4}>
