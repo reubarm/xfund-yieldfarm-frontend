@@ -44,6 +44,7 @@ type PoolCardState = {
   myEffectiveBalance?: BigNumber;
   shares?: PoolTokenShare[];
   myShares?: PoolTokenShare[];
+  estApy?: BigNumber;
 };
 
 const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
@@ -70,6 +71,7 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
         myBalance: web3c.aggregated.myLPStakedValue,
         effectiveBalance: web3c.aggregated.yfLPEffectiveStakedValue,
         myEffectiveBalance: web3c.aggregated.myLPEffectiveStakedValue,
+        estApy: web3c.aggregated.estLPApy,
         shares: [
           {
             icon: UNISWAPTokenMeta.icon,
@@ -117,6 +119,7 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
         myBalance: web3c.aggregated.myUNIXStakedValue,
         effectiveBalance: web3c.aggregated.yfUNIXEffectiveStakedValue,
         myEffectiveBalance: web3c.aggregated.myUNIXEffectiveStakedValue,
+        estApy: web3c.aggregated.estUnixApy,
         shares: [
           {
             icon: UNIXTokenMeta.icon,
@@ -191,11 +194,20 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
         {!state.isEnded && (
           <>
             <div className={s.row}>
+              <div className={s.labelWrap}>
               <Label type="lb2" semiBold className={s.label}>
                 Reward
               </Label>
+              <Tooltip
+                  type="info"
+                  title="APY is estimated using the formula (Total Reward Per Day * 365) / Total Pool Size"
+              />
+              </div>
               <Paragraph type="p1" semiBold className={s.value}>
                 {formatUNIXValue(state.epochReward)} UniX
+              </Paragraph>
+              <Paragraph type="p1" semiBold className={s.value}>
+                {formatBigValue(state.estApy, 1)}% APY
               </Paragraph>
             </div>
             {wallet.isActive && (

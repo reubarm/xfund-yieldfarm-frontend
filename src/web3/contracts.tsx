@@ -3,7 +3,7 @@ import * as Antd from 'antd';
 import BigNumber from 'bignumber.js';
 
 import { useWallet } from 'wallets/wallet';
-import { PoolTypes, ZERO_BIG_NUMBER } from 'web3/utils';
+import {getHumanValue, PoolTypes, ZERO_BIG_NUMBER} from 'web3/utils';
 import Web3Contract from 'web3/contract';
 import {
   UNIXContract,
@@ -50,6 +50,8 @@ export type Web3ContractsData = {
     totalReward?: BigNumber;
     unixReward?: BigNumber;
     unixLockedPrice?: BigNumber;
+    estUnixApy?: BigNumber;
+    estLPApy?: BigNumber;
   };
 };
 
@@ -334,6 +336,53 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
     return yfLPReward.plus(yfUNIXReward);
   }
 
+  function estUnixApy(): BigNumber | undefined {
+    const yfUnixReward = yfUNIXContract.epochReward
+    const epochLength = stakingContract.epochDuration
+    const yfUnixStake = yfUNIXContract.nextPoolSize
+
+    if (
+        yfUnixReward === undefined ||
+        yfUnixStake === undefined ||
+        epochLength === undefined
+    )
+      return undefined;
+
+    const epochLengthSecs = epochLength / 1_000
+    const epochDays = new BigNumber(epochLengthSecs).dividedBy(86400)
+    const rewardPerDay = yfUnixReward.dividedBy(epochDays)
+
+    const annualReward = rewardPerDay.multipliedBy(365)
+
+    return annualReward.dividedBy(yfUnixStake).multipliedBy(100)
+  }
+
+  function estLPApy(): BigNumber | undefined {
+    const yfLpReward = yfLPContract.epochReward
+    const yfLpStaked = yfLPStakedValue()
+    const price = uniswapContract.unixPrice;
+    const numEpochs = yfLPContract.totalEpochs
+    const epochLength = stakingContract.epochDuration
+
+    if (
+        yfLpReward === undefined ||
+        yfLpStaked === undefined ||
+        price === undefined ||
+        numEpochs === undefined ||
+        epochLength === undefined
+    )
+      return undefined;
+
+    const epochLengthSecs = epochLength / 1_000
+    const epochDays = new BigNumber(epochLengthSecs).dividedBy(86400)
+    const rewardPerDay = yfLpReward.dividedBy(epochDays)
+
+    const rewardValue = rewardPerDay.multipliedBy(price)
+
+    const annualReward = rewardValue.multipliedBy(365)
+    return annualReward.dividedBy(yfLpStaked).multipliedBy(100)
+  }
+
   const value = {
     unix: unixContract,
     uniswap: uniswapContract,
@@ -382,6 +431,12 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
       },
       get unixReward(): BigNumber | undefined {
         return unixReward();
+      },
+      get estUnixApy(): BigNumber | undefined {
+        return estUnixApy();
+      },
+      get estLPApy(): BigNumber | undefined {
+        return estLPApy();
       },
     },
     getPoolUsdPrice,
