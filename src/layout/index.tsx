@@ -32,23 +32,17 @@ const LayoutView: React.FunctionComponent = () => {
           </Antd.Layout.Content>
           <Antd.Layout.Footer className={s.footer}>
             <div className={s.footerLinks}>
-              <ExternalLink href="http://www.unification.com/">
+              <ExternalLink href="http://unixgaming.org">
                 Website
               </ExternalLink>
-              <ExternalLink href="https://discord.gg/SeB69w5">
+              <ExternalLink href="http://discord.gg/unix">
                 Discord
               </ExternalLink>
-              <ExternalLink href="https://twitter.com/unificationund">
+              <ExternalLink href="https://twitter.com/unixplaytoearn">
                 Twitter
               </ExternalLink>
-              <ExternalLink href="https://go.unification.com/whitepaper">
+              <ExternalLink href="https://www.unixgaming.org/litepaper.pdf">
                 Whitepaper
-              </ExternalLink>
-              <ExternalLink href="https://github.com/unification-com/">
-                Github
-              </ExternalLink>
-              <ExternalLink href="https://docs.unification.io/">
-                Docs
               </ExternalLink>
               <ExternalLink
                 href={`https://app.uniswap.org/#/add/v2/${UNIXTokenMeta.address}/ETH`}>
