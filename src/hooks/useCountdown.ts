@@ -5,6 +5,7 @@ export function useWeekCountdown(endDate?: number): string[] {
   const [countdown, setCountdown] = React.useState<string>('');
 
   React.useEffect(() => {
+
     if (!endDate) {
       return;
     }
@@ -31,12 +32,17 @@ export function useWeekCountdown(endDate?: number): string[] {
 
       setCountdown(
         formatDuration(duration, {
-          format: ['days', 'hours', 'minutes'],
+          format: ['months', 'days', 'hours', 'minutes'],
           delimiter: ' ',
           zero: true,
           locale: {
             formatDistance: (token, value) => {
               switch (token) {
+                case 'xMonths':
+                  if(value > 0) {
+                    return `${String(value).padStart(2, '0')}mo`;
+                  }
+                  return '';
                 case 'xDays':
                   return `${String(value).padStart(2, '0')}d`;
                 case 'xHours':
