@@ -12,6 +12,27 @@
   color: var(--text-color-2);
 }
 
+.title {
+  color: white;
+  background: -webkit-linear-gradient(left, #f600b6, #2407e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  font-size: 3em;
+  text-transform: uppercase;
+  margin: 20px auto 0;
+  font-weight: 900;
+}
+
+.subtitle {
+  color: white;
+  text-align: center;
+  font-size: 2em;
+  text-transform: uppercase;
+  margin: 0 auto 40px;
+  font-weight: 900;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));

@@ -1,6 +1,18 @@
 .component {
 }
 
+.title {
+  color: white;
+  background: -webkit-linear-gradient(left, #f600b6, #2407e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  font-size: 3em;
+  text-transform: uppercase;
+  margin: 20px auto;
+  font-weight: 900;
+}
+
 .body {
   padding: var(--content-padding);
 }

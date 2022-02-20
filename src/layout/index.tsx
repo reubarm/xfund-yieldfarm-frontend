@@ -31,6 +31,7 @@ const LayoutView: React.FunctionComponent = () => {
             </Switch>
           </Antd.Layout.Content>
           <Antd.Layout.Footer className={s.footer}>
+            <img src="/unixverse.png" width="230" height="37" alt="Unixverse" className={s.footerLogo} />
             <div className={s.footerLinks}>
               <ExternalLink href="http://unixgaming.org">
                 Website

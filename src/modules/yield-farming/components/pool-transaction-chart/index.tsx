@@ -10,7 +10,8 @@ import PoolTxChartProvider, {
 } from 'modules/yield-farming/components/pool-tx-chart-provider';
 
 import {
-  formatETHValue, formatUSDValue,
+  formatETHValue,
+  formatUSDValue,
   getPoolIcons,
   getPoolNames,
   PoolTypes,
@@ -160,17 +161,23 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
                   }}>
                   <ReCharts.CartesianGrid
                     vertical={false}
-                    stroke="#666"
+                    stroke="#FFF"
                     strokeDasharray="3 3"
                   />
-                  <ReCharts.XAxis dataKey="timestamp" tickMargin={24} />
+                  <ReCharts.XAxis
+                    dataKey="timestamp"
+                    tickMargin={24}
+                    stroke="#FFF"
+                  />
                   <ReCharts.YAxis
                     axisLine={false}
                     tickLine={false}
                     tickFormatter={(value: any) => formatUSDValue(value)}
+                    stroke="#FFF"
                   />
                   <ReCharts.Tooltip
-                    formatter={(value: any) => formatUSDValue(value)}
+                    formatter={(value: any) => formatETHValue(value)}
+                    cursor={{ fill: '#441953' }}
                   />
                   <ReCharts.Legend
                     align="right"
@@ -179,15 +186,15 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
                     wrapperStyle={{
                       top: 0,
                       right: 12,
-                      color: 'var(--text-color-5)',
+                      color: '#FFF',
                     }}
                   />
-                  <ReCharts.ReferenceLine y={0} stroke="#666" />
+                  <ReCharts.ReferenceLine y={0} stroke="#FFF" />
                   {(typeFilter === 'all' || typeFilter === 'deposits') && (
                     <ReCharts.Bar
                       dataKey="deposits"
                       name="Deposits"
-                      fill="#4f6ae6"
+                      fill="#E426B2"
                       stackId="stack"
                     />
                   )}
@@ -195,7 +202,7 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
                     <ReCharts.Bar
                       dataKey="withdrawals"
                       name="Withdrawals"
-                      fill="#ff4339"
+                      fill="#201CE0"
                       stackId="stack"
                     />
                   )}

@@ -6,7 +6,9 @@
 
 .main {
   position: relative;
-  background-color: var(--color-body-bg);
+  background-image: url('../resources/img/bg.jpg');
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 :global(.mobile-menu-open) .main {
@@ -20,7 +22,11 @@
 .footer {
   padding: 0 64px 32px;
   background-color: transparent;
-  text-align: right;
+  text-align: center;
+}
+
+.footerLinks {
+  margin-top: 40px;
 }
 
 .footerLinks a {
@@ -31,6 +37,10 @@
   font-size: 14px;
   line-height: 24px;
   color: var(--text-color-4);
+}
+
+.footerLogo {
+  margin: 0 auto;
 }
 
 /* RESPONSIVE */

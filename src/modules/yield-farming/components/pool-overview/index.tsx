@@ -9,8 +9,8 @@ import s from './styles.module.scss';
 const PoolOverview: React.FunctionComponent = () => {
   return (
     <div>
-      <div className={s.labelPools}>Pools</div>
-      <div className={s.labelOverview}>Overview</div>
+      <div className={s.title}>Pools</div>
+      <div className={s.subtitle}>Overview</div>
       <div className={s.cards}>
         <PoolCard unilpToken />
         <PoolCard unixToken />
