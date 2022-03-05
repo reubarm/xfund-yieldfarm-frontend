@@ -62,11 +62,11 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
         ...prevState,
         type: PoolTypes.UNILP,
         enabled: true,
-        isEnded: web3c.yfLP.isEnded,
-        currentEpoch: web3c.yfLP.currentEpoch,
-        totalEpochs: web3c.yfLP.totalEpochs,
-        epochReward: web3c.yfLP.epochReward,
-        potentialReward: web3c.yfLP.potentialReward,
+        isEnded: web3c.yfLPV2.isEnded,
+        currentEpoch: web3c.yfLPV2.currentEpoch,
+        totalEpochs: web3c.yfLPV2.totalEpochs,
+        epochReward: web3c.yfLPV2.epochReward,
+        potentialReward: web3c.yfLPV2.potentialReward,
         balance: web3c.aggregated.yfLPStakedValue,
         myBalance: web3c.aggregated.myLPStakedValue,
         effectiveBalance: web3c.aggregated.yfLPEffectiveStakedValue,
@@ -78,13 +78,13 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
             name: UNISWAPTokenMeta.name,
             color: 'var(--text-color-3)',
             value: formatBigValue(
-              web3c.yfLP.nextPoolSize,
+              web3c.yfLPV2.nextPoolSize,
               UNISWAPTokenMeta.decimals,
             ),
             share:
               web3c.staking.uniswap.nextEpochPoolSize
                 ?.multipliedBy(100)
-                .div(web3c.yfLP.nextPoolSize ?? 1)
+                .div(web3c.yfLPV2.nextPoolSize ?? 1)
                 .toNumber() ?? 0,
           },
         ],
@@ -94,13 +94,13 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
             name: UNISWAPTokenMeta.name,
             color: 'var(--text-color-3)',
             value: formatBigValue(
-              web3c.yfLP.nextEpochStake,
+              web3c.yfLPV2.nextEpochStake,
               UNISWAPTokenMeta.decimals,
             ),
             share:
               web3c.staking.uniswap.nextEpochUserBalance
                 ?.multipliedBy(100)
-                .div(web3c.yfLP.nextEpochStake ?? 1)
+                .div(web3c.yfLPV2.nextEpochStake ?? 1)
                 .toNumber() ?? 0,
           },
         ],
@@ -110,11 +110,11 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
         ...prevState,
         type: PoolTypes.UNIX,
         enabled: true,
-        isEnded: web3c.yfUNIX.isEnded,
-        currentEpoch: web3c.yfUNIX.currentEpoch,
-        totalEpochs: web3c.yfUNIX.totalEpochs,
-        epochReward: web3c.yfUNIX.epochReward,
-        potentialReward: web3c.yfUNIX.potentialReward,
+        isEnded: web3c.yfUNIXV2.isEnded,
+        currentEpoch: web3c.yfUNIXV2.currentEpoch,
+        totalEpochs: web3c.yfUNIXV2.totalEpochs,
+        epochReward: web3c.yfUNIXV2.epochReward,
+        potentialReward: web3c.yfUNIXV2.potentialReward,
         balance: web3c.aggregated.yfUNIXStakedValue,
         myBalance: web3c.aggregated.myUNIXStakedValue,
         effectiveBalance: web3c.aggregated.yfUNIXEffectiveStakedValue,
@@ -126,13 +126,13 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
             name: UNIXTokenMeta.name,
             color: 'var(--text-color-3)',
             value: formatBigValue(
-              web3c.yfUNIX.nextPoolSize,
+              web3c.yfUNIXV2.nextPoolSize,
               UNIXTokenMeta.decimals,
             ),
             share:
               web3c.staking.unix.nextEpochPoolSize
                 ?.multipliedBy(100)
-                .div(web3c.yfUNIX.nextPoolSize ?? 1)
+                .div(web3c.yfUNIXV2.nextPoolSize ?? 1)
                 .toNumber() ?? 0,
           },
         ],
@@ -142,13 +142,13 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
             name: UNIXTokenMeta.name,
             color: 'var(--text-color-3)',
             value: formatBigValue(
-              web3c.yfUNIX.nextEpochStake,
+              web3c.yfUNIXV2.nextEpochStake,
               UNIXTokenMeta.decimals,
             ),
             share:
               web3c.staking.unix.nextEpochUserBalance
                 ?.multipliedBy(100)
-                .div(web3c.yfUNIX.nextEpochStake ?? 1)
+                .div(web3c.yfUNIXV2.nextEpochStake ?? 1)
                 .toNumber() ?? 0,
           },
         ],

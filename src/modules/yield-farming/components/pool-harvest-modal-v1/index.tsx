@@ -62,10 +62,10 @@ const PoolHarvestSelect: React.FunctionComponent<PoolHarvestSelectProps> = props
   );
 };
 
-const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props => {
+const PoolHarvestModalV1: React.FunctionComponent<PoolHarvestModalProps> = props => {
   const { ...modalProps } = props;
 
-  const { yfLPV2, yfUNIXV2, unix } = useWeb3Contracts();
+  const { yfLP, yfUNIX, unix } = useWeb3Contracts();
   const [yfLPHarvesting, setYFLPHarvesting] = React.useState<boolean>(false);
   const [yfUNIXHarvesting, setYfUNIXHarvesting] = React.useState<boolean>(
     false,
@@ -75,7 +75,7 @@ const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props =
     setYFLPHarvesting(true);
 
     try {
-      await yfLPV2.massHarvestSend();
+      await yfLP.massHarvestSend();
       unix.reload();
     } catch (e) {
     }
@@ -87,7 +87,7 @@ const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props =
     setYfUNIXHarvesting(true);
 
     try {
-      await yfUNIXV2.massHarvestSend();
+      await yfUNIX.massHarvestSend();
       unix.reload();
     } catch (e) {
     }
@@ -111,14 +111,14 @@ const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props =
           <PoolHarvestSelect
             icons={getPoolIcons(PoolTypes.UNILP)}
             label={getPoolNames(PoolTypes.UNILP).join('/')}
-            reward={yfLPV2?.currentReward}
+            reward={yfLP?.currentReward}
             loading={yfLPHarvesting}
             onClick={handleYFLPHarvest}
           />
           <PoolHarvestSelect
             icons={getPoolIcons(PoolTypes.UNIX)}
             label={getPoolNames(PoolTypes.UNIX).join('/')}
-            reward={yfUNIXV2?.currentReward}
+            reward={yfUNIX?.currentReward}
             loading={yfUNIXHarvesting}
             onClick={handleYFUNIXHarvest}
           />
@@ -128,4 +128,4 @@ const PoolHarvestModal: React.FunctionComponent<PoolHarvestModalProps> = props =
   );
 };
 
-export default PoolHarvestModal;
+export default PoolHarvestModalV1;

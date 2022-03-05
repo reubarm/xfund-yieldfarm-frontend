@@ -97,14 +97,14 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
         allowance = web3c.uniswap.allowance;
         stakedBalance = web3c.staking.uniswap.balance;
         effectiveStakedBalance = web3c.staking.uniswap.epochUserBalance;
-        isEnded = web3c.yfLP.isEnded;
+        isEnded = web3c.yfLPV2.isEnded;
         break;
       case PoolTypes.UNIX:
         walletBalance = web3c.unix.balance;
         allowance = web3c.unix.allowance;
         stakedBalance = web3c.staking.unix.balance;
         effectiveStakedBalance = web3c.staking.unix.epochUserBalance;
-        isEnded = web3c.yfUNIX.isEnded;
+        isEnded = web3c.yfUNIXV2.isEnded;
         break;
       default:
         return;
@@ -176,11 +176,11 @@ const PoolTokenRow: React.FunctionComponent<PoolTokenRowProps> = props => {
       switch (token) {
         case UNISWAPTokenMeta:
           web3c.uniswap.reload();
-          web3c.yfLP.reload();
+          web3c.yfLPV2.reload();
           break;
         case UNIXTokenMeta:
           web3c.unix.reload();
-          web3c.yfUNIX.reload();
+          web3c.yfUNIXV2.reload();
           break;
       }
     } catch (e) {
