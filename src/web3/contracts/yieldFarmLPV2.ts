@@ -88,7 +88,7 @@ export function useYieldFarmLPContractV2(): YieldFarmLPContractV2 {
     const isEnded = currentEpoch > totalEpochs;
 
     // Hard code currentEpoch since V2 contract has it at 1 instead of 4
-    currentEpoch = Math.min(currentEpoch, totalEpochs) + delayedEpochs;
+    currentEpoch = Math.min(currentEpoch, totalEpochs);
 
     const epochReward =
       totalEpochs !== 0 ? totalReward?.div(totalEpochs) : ZERO_BIG_NUMBER;

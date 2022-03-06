@@ -96,7 +96,7 @@ export function useYieldFarmUNIXContractV2(): YieldFarmUNIXContractV2 {
     const isEnded = currentEpoch > totalEpochs;
 
     const epochForPoolCalc = currentEpoch
-    currentEpoch = Math.min(currentEpoch, totalEpochs) + delayedEpochs;
+    currentEpoch = Math.min(currentEpoch, totalEpochs);
 
     const epochReward =
       totalEpochs !== 0 ? totalReward?.div(totalEpochs) : ZERO_BIG_NUMBER;

@@ -175,7 +175,7 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
               {getPoolNames(state.type).join('/')}
             </Paragraph>
             <Label type="lb2" semiBold className={s.epochLabel}>
-              EPOCH {state.currentEpoch ?? '-'}/{state.totalEpochs ?? '-'}
+              EPOCH {state.currentEpoch ? state.currentEpoch + 3 : '-'}/{state.totalEpochs ? state.totalEpochs + 3 : '-'}
             </Label>
           </div>
           {wallet.isActive && (
@@ -195,13 +195,13 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
           <>
             <div className={s.row}>
               <div className={s.labelWrap}>
-              <Label type="lb2" semiBold className={s.label}>
-                Reward
-              </Label>
-              <Tooltip
+                <Label type="lb2" semiBold className={s.label}>
+                  Reward
+                </Label>
+                <Tooltip
                   type="info"
                   title="APY is estimated using the formula (Total Reward Per Day * 365) / Total Pool Size"
-              />
+                />
               </div>
               <Paragraph type="p1" semiBold className={s.value}>
                 {formatUNIXValue(state.epochReward)} UniX
@@ -213,16 +213,16 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
             {wallet.isActive && (
               <div className={s.row}>
                 <div className={s.labelWrap}>
-                <Label type="lb2" semiBold className={s.label}>
-                  My Potential Reward
-                </Label>
-                <Tooltip
-                  type="info"
-                  title="NOTE: No rewards are distributed for epoch 0 - the information displayed during epoch 0 is informational for projection"
-                />
-                <Paragraph type="p1" semiBold className={s.value}>
-                  {formatUNIXValue(state.potentialReward)} UniX
-                </Paragraph>
+                  <Label type="lb2" semiBold className={s.label}>
+                    My Potential Reward
+                  </Label>
+                  <Tooltip
+                    type="info"
+                    title="NOTE: No rewards are distributed for epoch 0 - the information displayed during epoch 0 is informational for projection"
+                  />
+                  <Paragraph type="p1" semiBold className={s.value}>
+                    {formatUNIXValue(state.potentialReward)} UniX
+                  </Paragraph>
                 </div>
               </div>
             )}
@@ -236,17 +236,17 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
                   type="info"
                   title={
                     <span>
-                  This number shows the total staked balance of the pool, and
-                  the effective balance of the pool.
-                  <br />
-                  <br />
-                  When staking tokens during an epoch that is currently running,
-                  your effective deposit amount will be proportionally reduced
-                  by the time that has passed from that epoch. Once an epoch
-                  ends, your staked balance and effective staked balance will be
-                  the equal, therefore pool balance and effective pool balance
-                  will differ in most cases.
-                </span>
+                      This number shows the total staked balance of the pool, and
+                      the effective balance of the pool.
+                      <br />
+                      <br />
+                      When staking tokens during an epoch that is currently running,
+                      your effective deposit amount will be proportionally reduced
+                      by the time that has passed from that epoch. Once an epoch
+                      ends, your staked balance and effective staked balance will be
+                      the equal, therefore pool balance and effective pool balance
+                      will differ in most cases.
+                    </span>
                   }
                 />
               </div>
@@ -262,43 +262,43 @@ const PoolCard: React.FunctionComponent<PoolCardProps> = props => {
         )}
         {wallet.isActive && (
           <>
-          {!state.isEnded && (
-          <div className={s.row}>
+            {!state.isEnded && (
+              <div className={s.row}>
 
-            <div className={s.labelWrap}>
-              <Label type="lb2" semiBold className={s.label}>
-                My Pool Balance
-              </Label>
-              <Tooltip
-                type="info"
-                title={
-                  <span>
-                    This number shows your total staked balance in the pool, and
-                    your effective staked balance in the pool.
-                    <br />
-                    <br />
-                    When staking tokens during an epoch that is currently
-                    running, your effective deposit amount will be
-                    proportionally reduced by the time that has passed from that
-                    epoch. Once an epoch ends, your staked balance and effective
-                    staked balance will be the equal, therefore your pool
-                    balance and your effective pool balance will differ in most
-                    cases.
-                  </span>
-                }
-              />
-            </div>
+                <div className={s.labelWrap}>
+                  <Label type="lb2" semiBold className={s.label}>
+                    My Pool Balance
+                  </Label>
+                  <Tooltip
+                    type="info"
+                    title={
+                      <span>
+                        This number shows your total staked balance in the pool, and
+                        your effective staked balance in the pool.
+                        <br />
+                        <br />
+                        When staking tokens during an epoch that is currently
+                        running, your effective deposit amount will be
+                        proportionally reduced by the time that has passed from that
+                        epoch. Once an epoch ends, your staked balance and effective
+                        staked balance will be the equal, therefore your pool
+                        balance and your effective pool balance will differ in most
+                        cases.
+                      </span>
+                    }
+                  />
+                </div>
 
-            <Paragraph type="p1" semiBold className={s.value}>
-              {formatUSDValue(state.myBalance)}
-            </Paragraph>
-            <Paragraph type="p2" className={s.hint}>
-              {formatUSDValue(state.myEffectiveBalance)} effective epoch balance
-            </Paragraph>
-              <PoolStakeShareBar shares={state.myShares} />
+                <Paragraph type="p1" semiBold className={s.value}>
+                  {formatUSDValue(state.myBalance)}
+                </Paragraph>
+                <Paragraph type="p2" className={s.hint}>
+                  {formatUSDValue(state.myEffectiveBalance)} effective epoch balance
+                </Paragraph>
+                <PoolStakeShareBar shares={state.myShares} />
 
-          </div>
-              )}
+              </div>
+            )}
           </>
         )}
         {state.isEnded && (
