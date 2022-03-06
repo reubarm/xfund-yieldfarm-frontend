@@ -3,7 +3,7 @@ import * as Antd from 'antd';
 import BigNumber from 'bignumber.js';
 
 import { useWallet } from 'wallets/wallet';
-import {getHumanValue, PoolTypes, ZERO_BIG_NUMBER} from 'web3/utils';
+import { getHumanValue, PoolTypes, ZERO_BIG_NUMBER } from 'web3/utils';
 import Web3Contract from 'web3/contract';
 import {
   UNIXContract,
@@ -350,26 +350,34 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   function totalReward(): BigNumber | undefined {
     const yfLPTotalReward = yfLPContractV2.totalReward;
     const yfUNIXTotalReward = yfUNIXContractV2.totalReward;
+    const yfLPTotalRewardV1 = yfLPContract.totalReward;
+    const yfUNIXTotalRewardV1 = yfUNIXContract.totalReward;
 
     if (
       yfLPTotalReward === undefined ||
-      yfUNIXTotalReward === undefined
+      yfUNIXTotalReward === undefined ||
+      yfLPTotalRewardV1 === undefined ||
+      yfUNIXTotalRewardV1 === undefined
     )
       return undefined;
 
-    return yfLPTotalReward.plus(yfUNIXTotalReward);
+    return yfLPTotalReward.plus(yfUNIXTotalReward).plus(yfLPTotalRewardV1.div(2)).plus(yfUNIXTotalRewardV1.div(2));
   }
 
   function unixReward(): BigNumber | undefined {
     const yfLPReward = yfLPContractV2.unixReward;
     const yfUNIXReward = yfUNIXContractV2.unixReward;
+    const yfLPRewardV1 = yfLPContract.unixReward;
+    const yfUNIXRewardV1 = yfUNIXContract.unixReward;
     if (
       yfLPReward === undefined ||
-      yfUNIXReward === undefined
+      yfUNIXReward === undefined ||
+      yfLPRewardV1 === undefined ||
+      yfUNIXRewardV1 === undefined
     )
       return undefined;
 
-    return yfLPReward.plus(yfUNIXReward);
+    return yfLPReward.plus(yfUNIXReward).plus(yfLPRewardV1).plus(yfUNIXRewardV1);
   }
 
   function estUnixApy(): BigNumber | undefined {
@@ -378,9 +386,9 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
     const yfUnixStake = yfUNIXContractV2.nextPoolSize
 
     if (
-        yfUnixReward === undefined ||
-        yfUnixStake === undefined ||
-        epochLength === undefined
+      yfUnixReward === undefined ||
+      yfUnixStake === undefined ||
+      epochLength === undefined
     )
       return undefined;
 
@@ -401,11 +409,11 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
     const epochLength = stakingContract.epochDuration
 
     if (
-        yfLpReward === undefined ||
-        yfLpStaked === undefined ||
-        price === undefined ||
-        numEpochs === undefined ||
-        epochLength === undefined
+      yfLpReward === undefined ||
+      yfLpStaked === undefined ||
+      price === undefined ||
+      numEpochs === undefined ||
+      epochLength === undefined
     )
       return undefined;
 
