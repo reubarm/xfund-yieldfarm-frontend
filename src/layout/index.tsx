@@ -15,6 +15,8 @@ import { UNIXTokenMeta } from 'web3/contracts/unix';
 import { CONTRACT_STAKING_ADDR } from 'web3/contracts/staking'
 import { CONTRACT_YIELD_FARM_LP_ADDR } from 'web3/contracts/yieldFarmLP'
 import { CONTRACT_YIELD_FARM_UNIX_ADDR } from 'web3/contracts/yieldFarmUNIX'
+import { CONTRACT_YIELD_FARM_LP_ADDR_V2 } from 'web3/contracts/yieldFarmLPV2'
+import { CONTRACT_YIELD_FARM_UNIX_ADDR_V2 } from 'web3/contracts/yieldFarmUNIXV2'
 
 import s from './styles.module.scss';
 
@@ -65,6 +67,14 @@ const LayoutView: React.FunctionComponent = () => {
               <ExternalLink
                 href={`https://etherscan.io/address/${CONTRACT_YIELD_FARM_UNIX_ADDR}#code`}>
                 UNiX Farm Contract
+              </ExternalLink>
+              <ExternalLink
+                href={`https://etherscan.io/address/${CONTRACT_YIELD_FARM_LP_ADDR_V2}#code`}>
+                LP Farm Contract V2
+              </ExternalLink>
+              <ExternalLink
+                href={`https://etherscan.io/address/${CONTRACT_YIELD_FARM_UNIX_ADDR_V2}#code`}>
+                UNiX Farm Contract V2
               </ExternalLink>
             </div>
           </Antd.Layout.Footer>

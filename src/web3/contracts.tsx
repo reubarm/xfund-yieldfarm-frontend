@@ -3,7 +3,7 @@ import * as Antd from 'antd';
 import BigNumber from 'bignumber.js';
 
 import { useWallet } from 'wallets/wallet';
-import {getHumanValue, PoolTypes, ZERO_BIG_NUMBER} from 'web3/utils';
+import { getHumanValue, PoolTypes, ZERO_BIG_NUMBER } from 'web3/utils';
 import Web3Contract from 'web3/contract';
 import {
   UNIXContract,
@@ -23,6 +23,14 @@ import {
   useYieldFarmUNIXContract,
   YieldFarmUNIXContract,
 } from 'web3/contracts/yieldFarmUNIX';
+import {
+  useYieldFarmLPContractV2,
+  YieldFarmLPContractV2,
+} from 'web3/contracts/yieldFarmLPV2';
+import {
+  useYieldFarmUNIXContractV2,
+  YieldFarmUNIXContractV2,
+} from 'web3/contracts/yieldFarmUNIXV2';
 
 import { StakingContract, useStakingContract } from 'web3/contracts/staking';
 
@@ -33,6 +41,8 @@ export type Web3ContractsData = {
   uniswap: UNISWAPContract;
   yfLP: YieldFarmLPContract;
   yfUNIX: YieldFarmUNIXContract;
+  yfLPV2: YieldFarmLPContractV2;
+  yfUNIXV2: YieldFarmUNIXContractV2;
   staking: StakingContract;
   aggregated: {
     yfLPStakedValue?: BigNumber;
@@ -46,6 +56,7 @@ export type Web3ContractsData = {
     totalStaked?: BigNumber;
     totalEffectiveStaked?: BigNumber;
     totalCurrentReward?: BigNumber;
+    totalCurrentRewardV1?: BigNumber;
     totalPotentialReward?: BigNumber;
     totalReward?: BigNumber;
     unixReward?: BigNumber;
@@ -72,6 +83,8 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   const uniswapContract = useUNISWAPContract();
   const yfLPContract = useYieldFarmLPContract();
   const yfUNIXContract = useYieldFarmUNIXContract();
+  const yfLPContractV2 = useYieldFarmLPContractV2();
+  const yfUNIXContractV2 = useYieldFarmUNIXContractV2();
   const stakingContract = useStakingContract();
 
   const [userRejectedVisible, setUserRejectedVisible] = React.useState<boolean>(
@@ -83,7 +96,9 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
       unixContract.contract,
       uniswapContract.contract,
       yfLPContract.contract,
-      yfUNIXContract.contract,
+      yfUNIXContractV2.contract,
+      yfLPContractV2.contract,
+      yfUNIXContractV2.contract,
       stakingContract.contract,
     ];
 
@@ -120,6 +135,8 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
       uniswapContract.contract,
       yfLPContract.contract,
       yfUNIXContract.contract,
+      yfLPContractV2.contract,
+      yfUNIXContractV2.contract,
       stakingContract.contract,
     ];
 
@@ -153,7 +170,7 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   }
 
   function yfLPStakedValue() {
-    const poolSize = yfLPContract.nextPoolSize;
+    const poolSize = yfLPContractV2.nextPoolSize;
     const price = uniswapContract.unilpPrice;
 
     if (poolSize === undefined || price === undefined) {
@@ -164,7 +181,7 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   }
 
   function myLPStakedValue() {
-    const epochStake = yfLPContract.nextEpochStake;
+    const epochStake = yfLPContractV2.nextEpochStake;
     const price = uniswapContract.unilpPrice;
 
     if (epochStake === undefined || price === undefined) {
@@ -175,7 +192,7 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   }
 
   function yfLPEffectiveStakedValue() {
-    const poolSize = yfLPContract.poolSize;
+    const poolSize = yfLPContractV2.poolSize;
     const price = uniswapContract.unilpPrice;
 
     if (poolSize === undefined || price === undefined) {
@@ -186,7 +203,7 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   }
 
   function myLPEffectiveStakedValue() {
-    const epochStake = yfLPContract.epochStake;
+    const epochStake = yfLPContractV2.epochStake;
     const price = uniswapContract.unilpPrice;
 
     if (epochStake === undefined || price === undefined) {
@@ -198,7 +215,7 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
 
 
   function yfUNIXStakedValue() {
-    const poolSize = yfUNIXContract.nextPoolSize;
+    const poolSize = yfUNIXContractV2.nextPoolSize;
     const price = uniswapContract.unixPrice;
 
     if (poolSize === undefined || price === undefined) {
@@ -209,7 +226,7 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   }
 
   function myUNIXStakedValue() {
-    const epochStake = yfUNIXContract.nextEpochStake;
+    const epochStake = yfUNIXContractV2.nextEpochStake;
     const price = uniswapContract.unixPrice;
 
     if (epochStake === undefined || price === undefined) {
@@ -220,7 +237,7 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   }
 
   function yfUNIXEffectiveStakedValue() {
-    const poolSize = yfUNIXContract.poolSize;
+    const poolSize = yfUNIXContractV2.poolSize;
     const price = uniswapContract.unixPrice;
 
     if (poolSize === undefined || price === undefined) {
@@ -231,7 +248,7 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   }
 
   function myUNIXEffectiveStakedValue() {
-    const epochStake = yfUNIXContract.epochStake;
+    const epochStake = yfUNIXContractV2.epochStake;
     const price = uniswapContract.unixPrice;
 
     if (epochStake === undefined || price === undefined) {
@@ -271,6 +288,25 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
 
   function totalCurrentReward(): BigNumber | undefined {
     const yfLPReward =
+      yfLPContractV2.currentEpoch === 0
+        ? ZERO_BIG_NUMBER
+        : yfLPContractV2.currentReward;
+    const yfUNIXReward =
+      yfUNIXContractV2.currentEpoch === 0
+        ? ZERO_BIG_NUMBER
+        : yfUNIXContractV2.currentReward;
+
+    if (
+      yfLPReward === undefined ||
+      yfUNIXReward === undefined
+    )
+      return undefined;
+
+    return yfLPReward.plus(yfUNIXReward);
+  }
+
+  function totalCurrentRewardV1(): BigNumber | undefined {
+    const yfLPReward =
       yfLPContract.currentEpoch === 0
         ? ZERO_BIG_NUMBER
         : yfLPContract.currentReward;
@@ -289,8 +325,8 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   }
 
   function totalPotentialReward(): BigNumber | undefined {
-    const yfLPReward = yfLPContract.potentialReward;
-    const yfUNIXReward = yfUNIXContract.potentialReward;
+    const yfLPReward = yfLPContractV2.potentialReward;
+    const yfUNIXReward = yfUNIXContractV2.potentialReward;
 
     if (
       yfLPReward === undefined ||
@@ -300,11 +336,11 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
 
     let total = ZERO_BIG_NUMBER;
 
-    if (yfLPContract.isEnded === false) {
+    if (yfLPContractV2.isEnded === false) {
       total = total.plus(yfLPReward);
     }
 
-    if (yfUNIXContract.isEnded === false) {
+    if (yfUNIXContractV2.isEnded === false) {
       total = total.plus(yfUNIXReward);
     }
 
@@ -312,39 +348,47 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   }
 
   function totalReward(): BigNumber | undefined {
-    const yfLPTotalReward = yfLPContract.totalReward;
-    const yfUNIXTotalReward = yfUNIXContract.totalReward;
+    const yfLPTotalReward = yfLPContractV2.totalReward;
+    const yfUNIXTotalReward = yfUNIXContractV2.totalReward;
+    const yfLPTotalRewardV1 = yfLPContract.totalReward;
+    const yfUNIXTotalRewardV1 = yfUNIXContract.totalReward;
 
     if (
       yfLPTotalReward === undefined ||
-      yfUNIXTotalReward === undefined
+      yfUNIXTotalReward === undefined ||
+      yfLPTotalRewardV1 === undefined ||
+      yfUNIXTotalRewardV1 === undefined
     )
       return undefined;
 
-    return yfLPTotalReward.plus(yfUNIXTotalReward);
+    return yfLPTotalReward.plus(yfUNIXTotalReward).plus(yfLPTotalRewardV1.div(2)).plus(yfUNIXTotalRewardV1.div(2));
   }
 
   function unixReward(): BigNumber | undefined {
-    const yfLPReward = yfLPContract.unixReward;
-    const yfUNIXReward = yfUNIXContract.unixReward;
+    const yfLPReward = yfLPContractV2.unixReward;
+    const yfUNIXReward = yfUNIXContractV2.unixReward;
+    const yfLPRewardV1 = yfLPContract.unixReward;
+    const yfUNIXRewardV1 = yfUNIXContract.unixReward;
     if (
       yfLPReward === undefined ||
-      yfUNIXReward === undefined
+      yfUNIXReward === undefined ||
+      yfLPRewardV1 === undefined ||
+      yfUNIXRewardV1 === undefined
     )
       return undefined;
 
-    return yfLPReward.plus(yfUNIXReward);
+    return yfLPReward.plus(yfUNIXReward).plus(yfLPRewardV1).plus(yfUNIXRewardV1);
   }
 
   function estUnixApy(): BigNumber | undefined {
-    const yfUnixReward = yfUNIXContract.epochReward
+    const yfUnixReward = yfUNIXContractV2.epochReward
     const epochLength = stakingContract.epochDuration
-    const yfUnixStake = yfUNIXContract.nextPoolSize
+    const yfUnixStake = yfUNIXContractV2.nextPoolSize
 
     if (
-        yfUnixReward === undefined ||
-        yfUnixStake === undefined ||
-        epochLength === undefined
+      yfUnixReward === undefined ||
+      yfUnixStake === undefined ||
+      epochLength === undefined
     )
       return undefined;
 
@@ -358,18 +402,18 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
   }
 
   function estLPApy(): BigNumber | undefined {
-    const yfLpReward = yfLPContract.epochReward
+    const yfLpReward = yfLPContractV2.epochReward
     const yfLpStaked = yfLPStakedValue()
     const price = uniswapContract.unixPrice;
-    const numEpochs = yfLPContract.totalEpochs
+    const numEpochs = yfLPContractV2.totalEpochs
     const epochLength = stakingContract.epochDuration
 
     if (
-        yfLpReward === undefined ||
-        yfLpStaked === undefined ||
-        price === undefined ||
-        numEpochs === undefined ||
-        epochLength === undefined
+      yfLpReward === undefined ||
+      yfLpStaked === undefined ||
+      price === undefined ||
+      numEpochs === undefined ||
+      epochLength === undefined
     )
       return undefined;
 
@@ -388,6 +432,8 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
     uniswap: uniswapContract,
     yfLP: yfLPContract,
     yfUNIX: yfUNIXContract,
+    yfLPV2: yfLPContractV2,
+    yfUNIXV2: yfUNIXContractV2,
     staking: stakingContract,
     aggregated: {
       get yfLPStakedValue(): BigNumber | undefined {
@@ -422,6 +468,9 @@ const Web3ContractsProvider: React.FunctionComponent = props => {
       },
       get totalCurrentReward(): BigNumber | undefined {
         return totalCurrentReward();
+      },
+      get totalCurrentRewardV1(): BigNumber | undefined {
+        return totalCurrentRewardV1();
       },
       get totalPotentialReward(): BigNumber | undefined {
         return totalPotentialReward();
