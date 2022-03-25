@@ -4,7 +4,7 @@ import BigNumber from 'bignumber.js';
 import { useReload } from 'hooks/useReload';
 import { useAsyncEffect } from 'hooks/useAsyncEffect';
 import { useWallet } from 'wallets/wallet';
-import { getHumanValue, ZERO_BIG_NUMBER } from 'web3/utils';
+import { getHumanValue, ZERO_BIG_NUMBER, formatUNIXValue } from 'web3/utils';
 import Web3Contract from 'web3/contract';
 import { UNIXTokenMeta } from 'web3/contracts/unix';
 
@@ -19,6 +19,7 @@ type YieldFarmUNIXContractData = {
   totalReward?: BigNumber;
   epochReward?: BigNumber;
   currentEpoch?: number;
+  userLastEpochIdHarvested: number;
   epochForPoolCalc?: number;
   unixReward?: BigNumber;
   poolSize?: BigNumber;
@@ -26,11 +27,13 @@ type YieldFarmUNIXContractData = {
   epochStake?: BigNumber;
   nextEpochStake?: BigNumber;
   currentReward?: BigNumber;
+  userLastReward?: BigNumber;
   potentialReward?: BigNumber;
 };
 
 export type YieldFarmUNIXContract = YieldFarmUNIXContractData & {
   contract: Web3Contract;
+  harvestSend: (epoch: number) => void;
   massHarvestSend: () => void;
   reload: () => void;
 };
@@ -42,6 +45,7 @@ const InitialData: YieldFarmUNIXContractData = {
   totalReward: undefined,
   epochReward: undefined,
   currentEpoch: undefined,
+  userLastEpochIdHarvested: 0,
   epochForPoolCalc: undefined,
   unixReward: undefined,
   poolSize: undefined,
@@ -49,6 +53,7 @@ const InitialData: YieldFarmUNIXContractData = {
   epochStake: undefined,
   nextEpochStake: undefined,
   currentReward: undefined,
+  userLastReward: undefined,
   potentialReward: undefined,
 };
 
@@ -149,9 +154,22 @@ export function useYieldFarmUNIXContract(): YieldFarmUNIXContract {
     let epochStake: BigNumber | undefined;
     let nextEpochStake: BigNumber | undefined;
     let currentReward: BigNumber | undefined;
+    let userLastReward: BigNumber | undefined;
 
     if (wallet.account && epochForPoolCalc !== undefined) {
-      [epochStake, nextEpochStake, currentReward] = await contract.batch([
+      let [userLastEpochIdHarvested] = await contract.batch([
+        {
+          method: 'userLastEpochIdHarvested',
+          transform: (value: string) => Number(value + 1),
+        },
+      ]);
+
+      setData(prevState => ({
+        ...prevState,
+        userLastEpochIdHarvested
+      }));
+
+      [epochStake, nextEpochStake, currentReward, userLastReward] = await contract.batch([
         {
           method: 'getEpochStake',
           methodArgs: [wallet.account, epochForPoolCalc],
@@ -170,6 +188,13 @@ export function useYieldFarmUNIXContract(): YieldFarmUNIXContract {
           transform: (value: string) =>
             getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
         },
+        {
+          method: 'harvest',
+          methodArgs: [userLastEpochIdHarvested],
+          callArgs: { from: wallet.account },
+          transform: (value: string) =>
+            getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
+        },
       ]);
     }
 
@@ -178,6 +203,7 @@ export function useYieldFarmUNIXContract(): YieldFarmUNIXContract {
       epochStake,
       nextEpochStake,
       currentReward,
+      userLastReward,
     }));
   }, [reload, wallet.account, data.epochForPoolCalc]);
 
@@ -203,6 +229,18 @@ export function useYieldFarmUNIXContract(): YieldFarmUNIXContract {
     }));
   }, [reload, data.epochStake, data.poolSize, data.epochReward]);
 
+  const harvestSend = React.useCallback((epoch: number) => {
+    if (!wallet.account) {
+      return Promise.reject();
+    }
+
+    return contract
+      .send('harvest', [epoch], {
+        from: wallet.account,
+      })
+      .then(reload);
+  }, [reload, contract, wallet.account]);
+
   const massHarvestSend = React.useCallback(() => {
     if (!wallet.account) {
       return Promise.reject();
@@ -220,8 +258,9 @@ export function useYieldFarmUNIXContract(): YieldFarmUNIXContract {
       ...data,
       contract,
       reload,
+      harvestSend,
       massHarvestSend,
     }),
-    [data, contract, reload, massHarvestSend],
+    [data, contract, reload, harvestSend, massHarvestSend],
   );
 }

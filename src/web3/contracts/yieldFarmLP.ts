@@ -20,18 +20,21 @@ type YieldFarmLPContractData = {
   totalReward?: BigNumber;
   epochReward?: BigNumber;
   currentEpoch?: number;
+  userLastEpochIdHarvested: number;
   unixReward?: BigNumber;
   poolSize?: BigNumber;
   nextPoolSize?: BigNumber;
   epochStake?: BigNumber;
   nextEpochStake?: BigNumber;
   currentReward?: BigNumber;
+  userLastReward?: BigNumber;
   potentialReward?: BigNumber;
 };
 
 export type YieldFarmLPContract = YieldFarmLPContractData & {
   contract: Web3Contract;
   massHarvestSend: () => void;
+  harvestSend: (epoch: number) => void;
   reload: () => void;
 };
 
@@ -42,12 +45,14 @@ const InitialData: YieldFarmLPContractData = {
   totalReward: undefined,
   epochReward: undefined,
   currentEpoch: undefined,
+  userLastEpochIdHarvested: 0,
   unixReward: undefined,
   poolSize: undefined,
   nextPoolSize: undefined,
   epochStake: undefined,
   nextEpochStake: undefined,
   currentReward: undefined,
+  userLastReward: undefined,
   potentialReward: undefined,
 };
 
@@ -139,9 +144,22 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
     let epochStake: BigNumber | undefined;
     let nextEpochStake: BigNumber | undefined;
     let currentReward: BigNumber | undefined;
+    let userLastReward: BigNumber | undefined;
 
     if (wallet.account && currentEpoch !== undefined) {
-      [epochStake, nextEpochStake, currentReward] = await contract.batch([
+      let [userLastEpochIdHarvested] = await contract.batch([
+        {
+          method: 'userLastEpochIdHarvested',
+          transform: (value: string) => Number(value + 1),
+        },
+      ]);
+
+      setData(prevState => ({
+        ...prevState,
+        userLastEpochIdHarvested
+      }));
+
+      [epochStake, nextEpochStake, currentReward, userLastReward] = await contract.batch([
         {
           method: 'getEpochStake',
           methodArgs: [wallet.account, currentEpoch],
@@ -160,6 +178,13 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
           transform: (value: string) =>
             getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
         },
+        {
+          method: 'harvest',
+          methodArgs: [userLastEpochIdHarvested],
+          callArgs: { from: wallet.account },
+          transform: (value: string) =>
+            getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),
+        },
       ]);
     }
 
@@ -168,6 +193,7 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
       epochStake,
       nextEpochStake,
       currentReward,
+      userLastReward,
     }));
   }, [reload, wallet.account, data.currentEpoch]);
 
@@ -205,13 +231,26 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
       .then(reload);
   }, [reload, contract, wallet.account]);
 
+  const harvestSend = React.useCallback((epoch: number) => {
+    if (!wallet.account) {
+      return Promise.reject();
+    }
+
+    return contract
+      .send('harvest', [epoch], {
+        from: wallet.account,
+      })
+      .then(reload);
+  }, [reload, contract, wallet.account]);
+
   return React.useMemo<YieldFarmLPContract>(
     () => ({
       ...data,
       contract,
       reload,
+      harvestSend,
       massHarvestSend,
     }),
-    [data, contract, reload, massHarvestSend],
+    [data, contract, reload, harvestSend, massHarvestSend],
   );
 }
