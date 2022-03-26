@@ -107,7 +107,7 @@ const PoolHarvestModalV1: React.FunctionComponent<PoolHarvestModalProps> = props
             Select the pool you want to claim your reward from
           </Paragraph>
         </Grid>
-        {yfLP?.userLastEpochIdHarvested < 3 &&
+        {yfLP?.userLastEpochIdHarvested <= 3 &&
           <Grid flow="col" gap={24} colsTemplate="repeat(auto-fit, 240px)">
             <Paragraph type="p2" semiBold color="grey500">
               Claim epoch {yfLP?.userLastEpochIdHarvested}/3 <br />
@@ -125,7 +125,7 @@ const PoolHarvestModalV1: React.FunctionComponent<PoolHarvestModalProps> = props
           </Grid>
         }
 
-        {yfUNIX?.userLastEpochIdHarvested < 3 &&
+        {yfUNIX?.userLastEpochIdHarvested <= 3 &&
           <Grid flow="col" gap={24} colsTemplate="repeat(auto-fit, 240px)">
             <Paragraph type="p2" semiBold color="grey500">
               Claim epoch {yfUNIX?.userLastEpochIdHarvested}/3 <br />
