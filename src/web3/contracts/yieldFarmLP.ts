@@ -150,7 +150,8 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
       let [userLastEpochIdHarvested] = await contract.batch([
         {
           method: 'userLastEpochIdHarvested',
-          transform: (value: string) => Number(value + 1),
+          callArgs: { from: wallet.account },
+          transform: (value: number) => Number(++value),
         },
       ]);
 

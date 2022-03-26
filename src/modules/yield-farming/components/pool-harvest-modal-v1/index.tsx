@@ -106,31 +106,42 @@ const PoolHarvestModalV1: React.FunctionComponent<PoolHarvestModalProps> = props
           <Paragraph type="p2" semiBold color="grey500">
             Select the pool you want to claim your reward from
           </Paragraph>
-          {yfUNIX?.userLastEpochIdHarvested < 3 &&
+        </Grid>
+        {yfLP?.userLastEpochIdHarvested < 3 &&
+          <Grid flow="col" gap={24} colsTemplate="repeat(auto-fit, 240px)">
             <Paragraph type="p2" semiBold color="grey500">
-              You will be able to claim epoch {yfUNIX?.userLastEpochIdHarvested + 1} after claiming epoch {yfUNIX?.userLastEpochIdHarvested}
+              Claim epoch {yfLP?.userLastEpochIdHarvested}/3 <br />
+              {yfLP?.userLastEpochIdHarvested < 3 &&
+                  `*You will be able to claim epoch ${yfLP?.userLastEpochIdHarvested + 1} after claiming epoch ${yfLP?.userLastEpochIdHarvested}`
+              }
             </Paragraph>
-          }
-        </Grid>
-        <Grid flow="col" gap={24} colsTemplate="repeat(auto-fit, 240px)">
-          <Paragraph type="p2" semiBold color="grey500">
-            Claim epoch {yfUNIX?.userLastEpochIdHarvested}/3
-          </Paragraph>
-          <PoolHarvestSelect
-            icons={getPoolIcons(PoolTypes.UNILP)}
-            label={getPoolNames(PoolTypes.UNILP).join('/')}
-            reward={yfLP?.userLastReward}
-            loading={yfLPHarvesting}
-            onClick={() => handleYFLPHarvest(yfLP?.userLastEpochIdHarvested)}
-          />
-          <PoolHarvestSelect
-            icons={getPoolIcons(PoolTypes.UNIX)}
-            label={getPoolNames(PoolTypes.UNIX).join('/')}
-            reward={yfUNIX?.userLastReward}
-            loading={yfUNIXHarvesting}
-            onClick={() => handleYFUNIXHarvest(yfUNIX?.userLastEpochIdHarvested)}
-          />
-        </Grid>
+            <PoolHarvestSelect
+              icons={getPoolIcons(PoolTypes.UNILP)}
+              label={getPoolNames(PoolTypes.UNILP).join('/')}
+              reward={yfLP?.userLastReward}
+              loading={yfLPHarvesting}
+              onClick={() => handleYFLPHarvest(yfLP?.userLastEpochIdHarvested)}
+            />
+          </Grid>
+        }
+
+        {yfUNIX?.userLastEpochIdHarvested < 3 &&
+          <Grid flow="col" gap={24} colsTemplate="repeat(auto-fit, 240px)">
+            <Paragraph type="p2" semiBold color="grey500">
+              Claim epoch {yfUNIX?.userLastEpochIdHarvested}/3 <br />
+              {yfUNIX?.userLastEpochIdHarvested < 3 &&
+                  `*You will be able to claim epoch ${yfUNIX?.userLastEpochIdHarvested + 1} after claiming epoch ${yfUNIX?.userLastEpochIdHarvested}`
+              }
+            </Paragraph>
+            <PoolHarvestSelect
+              icons={getPoolIcons(PoolTypes.UNIX)}
+              label={getPoolNames(PoolTypes.UNIX).join('/')}
+              reward={yfUNIX?.userLastReward}
+              loading={yfUNIXHarvesting}
+              onClick={() => handleYFUNIXHarvest(yfUNIX?.userLastEpochIdHarvested)}
+            />    
+          </Grid>
+      }
       </Grid>
     </Modal>
   );
