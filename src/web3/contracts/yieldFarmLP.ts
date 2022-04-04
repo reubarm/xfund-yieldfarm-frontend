@@ -100,9 +100,10 @@ export function useYieldFarmLPContract(): YieldFarmLPContract {
     let unixReward = ZERO_BIG_NUMBER;
 
     if (currentEpoch > 0) {
-      const unixEpoch =
-        currentEpoch === totalEpochs ? currentEpoch : currentEpoch - 1;
-      unixReward = epochReward.multipliedBy(unixEpoch);
+      // const unixEpoch =
+      //   currentEpoch === totalEpochs ? currentEpoch : currentEpoch - 1;
+      // HARD CODED TOTAL EPOCHS TO 3 SINCE V1 ENDS ON EPOCH 3
+      unixReward = epochReward.multipliedBy(3);
     }
 
     setData(prevState => ({
