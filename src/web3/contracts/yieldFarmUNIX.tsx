@@ -162,7 +162,7 @@ export function useYieldFarmUNIXContract(): YieldFarmUNIXContract {
         {
           method: 'userLastEpochIdHarvested',
           callArgs: { from: wallet.account },
-          transform: (value: number) => Number(++value),
+          transform: (value: number) => Number(value),
         },
       ]);
 
@@ -192,7 +192,7 @@ export function useYieldFarmUNIXContract(): YieldFarmUNIXContract {
         },
         {
           method: 'harvest',
-          methodArgs: [userLastEpochIdHarvested],
+          methodArgs: [++userLastEpochIdHarvested],
           callArgs: { from: wallet.account },
           transform: (value: string) =>
             getHumanValue(new BigNumber(value), UNIXTokenMeta.decimals),

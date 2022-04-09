@@ -112,14 +112,14 @@ const PoolRewards: React.FunctionComponent = () => {
               />
             </Paragraph>
             <Grid flow="col" gap={16} align="center">
-              <Heading type="h3" bold color="grey900">
+              {/* <Heading type="h3" bold color="grey900">
                 {formatUNIXValue(web3c.aggregated.totalCurrentRewardV1)}
               </Heading>
-              <Icons name="unix-token" width="24" height="29" />
+              <Icons name="unix-token" width="24" height="29" /> */}
               {wallet.isActive && (
                 <Button
                   type="light"
-                  disabled={web3c.aggregated.totalCurrentRewardV1?.isZero()}
+                  // disabled={web3c.aggregated.totalCurrentRewardV1?.isZero()}
                   onClick={() => setState({ showHarvestModalV1: true })}>
                   Claim
                 </Button>
