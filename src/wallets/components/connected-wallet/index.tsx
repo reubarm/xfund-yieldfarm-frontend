@@ -84,12 +84,15 @@ const ConnectedWallet: React.FunctionComponent = props => {
   if (!wallet.isActive) {
     return !isMobile ? (
       <div className={s.component}>
+        <div className={s.flex}>
+        <a href="http://t.me/unix_token" target="_blank" className={s.join}>Join our Telegram</a>
         <Button
           type="primary"
           className={s.connectBtn}
           onClick={handleWalletConnect}>
-          Connect Wallet
+          Connect
         </Button>
+        </div>
       </div>
     ) : null;
   }

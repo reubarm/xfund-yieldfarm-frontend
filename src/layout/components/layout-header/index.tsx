@@ -18,7 +18,7 @@ const LayoutHeader: React.FunctionComponent<LayoutHeaderProps> = props => {
       flow="col"
       align="center"
       className={s.component}>
-      <img src="/logo.png" width="200" height="114" alt="Unix Yield" />
+      <img className={s.mobile} src="/footer-logo.png" width="200" height="auto" alt="Unix Yield" />
       <ConnectedWallet />
     </Grid>
   );

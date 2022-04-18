@@ -1,17 +1,42 @@
 @import 'src/styles/mixin';
 
 .component {
-  height: 150px;
-  padding: 12px 64px;
-  background: #190520;
   border-bottom: 1px solid #381c2f;
   justify-content: space-between;
+  color: rgb(255, 255, 255);
+  padding: 0 40px;
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  background-image: none;
+  width: calc(100% - 250px);
+  flex-shrink: 0;
+  position: fixed;
+  z-index: 1100;
+  top: 0;
+  left: auto;
+  right: 0;
+  box-shadow: none;
+  backdrop-filter: blur(5px);
+  background-color: rgba(21, 5, 34, 0.4);
+  height: 92px;
+}
+.mobile{
+  visibility: hidden;
 }
 
 /* RESPONSIVE */
+@media (max-width: 1190px) {
+  .mobile{
+    visibility: visible;
+  }
+  .component {
+    padding-top: 60px;
+    padding-bottom: 70px;
+    width: 96%;
+  }
+}
 @media (max-width: 768px) {
   .component {
       align-items: center;
-      justify-content: center;
+      justify-content: inherit;
   }
 }

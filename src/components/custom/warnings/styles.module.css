@@ -3,7 +3,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    width: 100%;
+    width: calc(100% - 250px);
+    margin-left: auto;
     padding: 12px 64px;
     background-color: #ffce45;
 }
@@ -31,6 +32,14 @@
 }
 
 /* RESPONSIVE */
+@media (max-width: 1190px) {
+    .component{
+        width: 100%;
+        position: fixed;
+        top: 0;
+        z-index: 10000;
+    }
+}
 @media (max-width: 768px) {
     .component {
         align-items: flex-start;
