@@ -39,7 +39,7 @@
 .sidebar-logo {
   display: flex;
   flex-direction: column;
-  padding: 24px 0 16px;
+  padding: 54px 0 16px;
 }
 .sidebar-logo a.min-logo {
   margin: 34px 0 0 0;
@@ -295,5 +295,10 @@
    }
   .mini-menu {
     display: none;
+  }
+}
+@media (max-width: 620px) {
+  .menu-button {
+    top: 108px;
   }
 }
