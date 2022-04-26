@@ -12,6 +12,7 @@ import PoolStak from './components/pool-stak';
 import { getNetworkName } from 'web3/utils';
 
 import s from './styles.module.scss';
+import Sidebar from './components/sidebar';
 
 const WEB3_CHAIN_ID = Number(process.env.REACT_APP_WEB3_CHAIN_ID);
 
@@ -49,10 +50,13 @@ const YieldFarmingView: React.FunctionComponent = () => {
 
   return (
     <div className={s.component}>
-      <LayoutHeader />
-      {!isMobile && wallet.isActive && <PoolRewards />}
-
+      <div className={s.flex}>
+      <div className={s.outer}>
+        <Sidebar />
+      </div>
       <div className={s.body}>
+        {!isMobile && wallet.isActive && <PoolRewards />}
+        <LayoutHeader />
         <h1 className={s.title}>Unix Yield</h1>
         <PoolStats />
         <div className={s.content}>
@@ -78,6 +82,7 @@ const YieldFarmingView: React.FunctionComponent = () => {
             )}
           </Switch>
         </div>
+      </div>
       </div>
     </div>
   );

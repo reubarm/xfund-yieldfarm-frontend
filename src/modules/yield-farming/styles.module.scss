@@ -15,6 +15,17 @@
 
 .body {
   padding: var(--content-padding);
+  width: calc(100% - 250px);
+  padding-top: 155px;
+}
+.outer {
+  width: 100%;
+  flex: 0 0 250px;
+  max-width: 250px;
+  height: 100vh;
+}
+.flex{
+  display: flex;
 }
 
 .content {
@@ -22,6 +33,18 @@
 }
 
 /* RESPONSIVE */
+@media (max-width: 1190px) {
+  .body {
+    width: 100%;
+  }
+  .outer {
+    flex: auto;
+    height: auto;
+  }
+  .flex{
+    flex-direction: column;
+  }
+}
 @media (max-width: 1400px) {
   .stats {
     margin-bottom: 32px;
