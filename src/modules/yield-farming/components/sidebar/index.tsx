@@ -47,8 +47,10 @@ const Sidebar: React.FunctionComponent = () => {
               <li><a href="https://unix-fixedraise.sl2.studio/"><img src="/dashboard.svg" alt="Home"/> <span>Home</span></a></li>
               <li><a href="https://unix-fixedraise.sl2.studio/#/projects"><img src="/launchpad.svg" alt="Launchpad"/>
                 <span>Launchpad</span></a></li>
-              <li><a className="active" href="/"><img src="/staking.svg" alt="staking"/>
-                <span>Staking</span></a></li>
+              <li><a href="javascript:void(0)"><img src="/staking.svg" alt="staking"/>
+                <span>Tier Staking</span></a></li>
+              <li><a className="active" href="/"><img src="/yield.svg" alt="yield"/>
+                <span>UniX Yield</span></a></li>
             </ul>
             <ul className="sidebar-social-network list-none">
               <li><a href="https://t.me/FinalRoundOfficial" target="_blank"><img src="/telegram.svg" alt="telegram"/>
