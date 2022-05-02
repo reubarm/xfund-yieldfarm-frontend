@@ -34,7 +34,7 @@
   height: 100%;
   overflow: auto;
   z-index: 9;
-  padding: 0 15px 180px;
+  padding: 0 15px 0 15px;
 }
 .sidebar-logo {
   display: flex;
@@ -181,7 +181,7 @@
   margin-right: 16px;
 }
 .sidebar-social-network {
-  position: fixed;
+  // position: fixed;
   bottom: -10px;
   left: 0;
   padding: 15px 15px 30px !important;
@@ -301,4 +301,21 @@
   .menu-button {
     top: 108px;
   }
+}
+
+.coming-soon {
+  position: absolute;
+  display: block;
+  top: -10px;
+  right: 35px;
+  z-index: 1;
+  background-color: #1976d2 !important;
+  border-radius: 10px;
+  padding: 4px 8px;
+  height: 20px;
+  line-height: 10px;
+}
+
+.coming-soon::before {
+  content: "Coming Soon";
 }
