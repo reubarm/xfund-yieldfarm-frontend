@@ -10,7 +10,7 @@ const Sidebar: React.FunctionComponent = () => {
   }, [getUnixToken])
 
   async function getUnixToken () {
-    const resp = await fetch(`http://51.79.248.102:4000/unix-token`, {
+    const resp = await fetch(`https://api3.unixverse.co/unix-token`, {
       method: 'GET',
     }).then(response => {
       return response;
@@ -20,7 +20,7 @@ const Sidebar: React.FunctionComponent = () => {
       console.log(error)
     });
 
-    setTokenPrice(resp?.data?.market_data?.current_price?.usd || '0.00')
+    setTokenPrice(resp?.token || '0.00')
   }
 
   return (
@@ -29,7 +29,7 @@ const Sidebar: React.FunctionComponent = () => {
         <div className="sidebar-inner">
           <div className="sidebar-logo">
             <div className="upper-logo flex items-center flex-text-center">
-              <a href="https://www.unixgaming.org/"><img width="205" src="/footer-logo.png" alt="mainLogo"/></a>
+              <a href="https://finalround.unixgaming.org/"><img width="205" src="/footer-logo.png" alt="mainLogo"/></a>
               <button className="mini-menu"/>
             </div>
             <a href="https://www.unixgaming.org/" className="min-logo">
@@ -44,8 +44,8 @@ const Sidebar: React.FunctionComponent = () => {
           </div>
           <div className="sidebar-navigation">
             <ul className="sidebar-menu list-none">
-              <li><a href="https://unix-fixedraise.sl2.studio/"><img src="/dashboard.svg" alt="Home"/> <span>Home</span></a></li>
-              <li><a href="https://unix-fixedraise.sl2.studio/#/projects"><img src="/launchpad.svg" alt="Launchpad"/>
+              <li><a href="https://finalround.unixgaming.org/"><img src="/dashboard.svg" alt="Home"/> <span>Home</span></a></li>
+              <li><a href="https://finalround.unixgaming.org/"><img src="/launchpad.svg" alt="Launchpad"/>
                 <span>Launchpad</span></a></li>
               <li><a href="javascript:void(0)"><img src="/staking.svg" alt="staking"/>
                 <span>Tier Staking</span></a></li>
