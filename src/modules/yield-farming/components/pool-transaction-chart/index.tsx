@@ -55,11 +55,11 @@ const PoolTransactionChartInner: React.FunctionComponent = () => {
     const filters = [{ value: 'all', label: 'All epochs' }];
 
     if (poolFilter === PoolTypes.UNILP) {
-      for (let i = 0; i <= web3c.yfLPV2.currentEpoch!; i++) {
+      for (let i = 0; i <= web3c.yfLPV2.currentEpoch!+3; i++) {
         filters.push({ value: String(i), label: `Epoch ${i}` });
       }
     } else if (poolFilter === PoolTypes.UNIX) {
-      for (let i = 0; i <= web3c.yfUNIXV2.currentEpoch!; i++) {
+      for (let i = 0; i <= web3c.yfUNIXV2.currentEpoch!+3; i++) {
         filters.push({ value: String(i), label: `Epoch ${i}` });
       }
     }
