@@ -32,7 +32,7 @@ const YieldFarmingView: React.FunctionComponent = () => {
       });
     } else {
       warningDestructor = warnings.addWarn({
-        text: 'Do not send funds directly to the contract!',
+        text: 'Please claim all rewards.',
         closable: true,
         storageIdentity: 'bb_send_funds_warn',
       });
