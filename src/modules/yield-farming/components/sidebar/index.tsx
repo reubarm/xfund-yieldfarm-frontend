@@ -47,16 +47,16 @@ const Sidebar: React.FunctionComponent = () => {
               <li><a href="https://finalround.unixgaming.org/"><img src="/dashboard.svg" alt="Home"/> <span>Home</span></a></li>
               <li><span className="coming-soon" /><a href="javascript:void(0)"><img src="/launchpad.svg" alt="Launchpad"/>
                 <span>Launchpad</span></a></li>
-              <li><span className="coming-soon" /><a href="javascript:void(0)"><img src="/staking.svg" alt="staking"/>
+              <li><a href="https://final-round.io"><img src="/staking.svg" alt="staking"/>
                 <span>Tier Staking</span></a></li>
               <li><a className="active" href="/"><img src="/yield.svg" alt="yield"/>
                 <span>UniX Yield</span></a></li>
-              <li><span className="coming-soon" /><a href="javascript:void(0)"><img src="/marketplace.svg" alt="yield"/>
+              {/* <li><span className="coming-soon" /><a href="javascript:void(0)"><img src="/marketplace.svg" alt="yield"/>
                 <span style={{whiteSpace: 'nowrap'}}>Market Place</span></a></li>
               <li><span className="coming-soon" /><a href="javascript:void(0)"><img src="/hub.svg" alt="yield"/>
                 <span>Guild Hub</span></a></li>
               <li><span className="coming-soon" /><a href="javascript:void(0)"><img src="/nft.svg" alt="yield"/>
-                <span>NFT's</span></a></li>
+                <span>NFT's</span></a></li> */}
             </ul>
             <ul className="sidebar-social-network list-none">
               <li><a href="https://t.me/FinalRoundOfficial" target="_blank"><img src="/telegram.svg" alt="telegram"/>
